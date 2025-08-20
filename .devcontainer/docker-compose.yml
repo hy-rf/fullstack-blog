@@ -8,8 +8,6 @@ services:
     command: sleep infinity
     networks:
       - devnet
-    depends_on:
-      - db
 
   postgres:
     image: postgres:17
