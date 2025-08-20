@@ -1,0 +1,6 @@
+target/
+.output
+.nuxt
+node_modules
+
+.DS_Store

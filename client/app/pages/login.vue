@@ -1,0 +1,79 @@
+<script setup lang="ts">
+import { ref } from "vue";
+const username = ref("");
+const password = ref("");
+const error = ref("");
+
+const userStore = useUserStore();
+const router = useRouter();
+
+async function login() {
+  error.value = "";
+  try {
+    const res = await fetch(`/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+      credentials: "include",
+    });
+    if (res.ok) {
+      const data = await res.text();
+      console.log("Login response:", data);
+      userStore.fetchUser();
+      error.value = "Login successful!";
+      router.push("/");
+      // TODO: Set user in user store
+    } else {
+      error.value = "Invalid credentials";
+    }
+  } catch {
+    error.value = "Login failed";
+  }
+}
+</script>
+
+<template>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form @submit.prevent="login">
+      <label>
+        Username:
+        <input v-model="username" type="text" required />
+      </label>
+      <label>
+        Password:
+        <input id="password" v-model="password" type="password" required />
+      </label>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</template>
+
+<style scoped>
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+label {
+  display: block;
+  margin-bottom: 1rem;
+}
+button {
+  border: 1px solid gray;
+  border-radius: 16px;
+  padding: 0.5rem 1rem;
+  max-width: 5rem;
+  align-self: end;
+}
+</style>

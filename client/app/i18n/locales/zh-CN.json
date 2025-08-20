@@ -1,0 +1,40 @@
+{
+  "welcome": "欢迎",
+  "auth": {
+    "loading": "加载中",
+    "username_guest": "Guest"
+  },
+  "nav": {
+    "home": "首页",
+    "posts": "帖子",
+    "users": "用户",
+    "new": "新建",
+    "login": "登录",
+    "me": "我的",
+    "logout": "退出",
+    "register": "注册"
+  },
+  "posts": {
+    "title": "帖子",
+    "author": "作者：",
+    "created_at": "创建时间",
+    "search": "搜索帖子",
+    "filter": {
+      "title_content": "标题或内容",
+      "author": "作者",
+      "created_at_start": "创建开始时间",
+      "created_at_end": "创建结束时间",
+      "updated_at": "更新时间"
+    },
+    "page_size": "每页数量"
+  },
+  "post": {
+    "author": "作者：",
+    "author_info": "作者信息",
+    "username": "用户名：",
+    "replies": "回复"
+  },
+  "reply": {
+    "author": "作者"
+  }
+}
