@@ -1,37 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const wsUrl = "wss://localhost:3000/api/chat";
-
-let ws: WebSocket | null = null;
-const isConnecting = ref(false);
-const isOpen = ref(false);
-
-function connect() {
-  if (import.meta.server) return;
-
-  ws = new WebSocket(wsUrl);
-
-  ws.addEventListener("open", () => {
-    console.log("opened");
-  });
-  ws.addEventListener("message", () => {});
-  ws.addEventListener("error", () => {});
-  ws.addEventListener("close", () => {
-    console.log("closed");
-  });
-}
 </script>
 
 <template>
-  <div class="chat-container">
-    <div class="status">
-      <span v-if="isOpen">🟢 Connected</span>
-      <span v-else-if="isConnecting">🟡 Connecting…</span>
-      <span v-else>🔴 Disconnected</span>
-      <button v-if="!isOpen && !isConnecting" @click="connect">Connect</button>
-    </div>
-  </div>
+  <div class="chat-container"></div>
 </template>
 
 <style scoped>

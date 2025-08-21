@@ -26,7 +26,6 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/i18n",
     "nuxt-tiptap-editor",
-    "nuxt-socket-io",
     "nuxt-gtag",
   ],
 
