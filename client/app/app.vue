@@ -85,26 +85,27 @@ const runtimeConfig = useRuntimeConfig();
         </div>
         <div class="user-info">
           <div class="user-avatar">
-            <template>
-              <span>👤 {{ userStore.user.username }}</span>
-            </template>
+            <span>👤 {{ userStore.user.username }}</span>
           </div>
           <div class="auth-links">
-            <template v-if="userStore.user.username == 'Guest'">
-              <ul class="login-and-register">
-                <li>
-                  <NuxtLink to="/login">{{ t("nav.login") }}</NuxtLink>
-                </li>
-                <li>
-                  <NuxtLink to="/register">{{ t("nav.register") }}</NuxtLink>
-                </li>
-              </ul>
-            </template>
-            <template v-if="userStore.user.roles.includes('ROLE_user')">
-              <button class="logout-button" @click="userStore.logout">
-                {{ t("nav.logout") }}
-              </button>
-            </template>
+            <ul
+              v-if="userStore.user.username == 'Guest'"
+              class="login-and-register"
+            >
+              <li>
+                <NuxtLink to="/login">{{ t("nav.login") }}</NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/register">{{ t("nav.register") }}</NuxtLink>
+              </li>
+            </ul>
+            <button
+              v-if="userStore.user.roles.includes('ROLE_user')"
+              class="logout-button"
+              @click="userStore.logout"
+            >
+              {{ t("nav.logout") }}
+            </button>
           </div>
         </div>
       </div>
