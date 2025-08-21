@@ -3,7 +3,6 @@ import { API_BASE_URL } from "~/constants/api_ constants";
 
 export default defineEventHandler(async (event) => {
   const path = event.node.req.url?.split("api")[1];
-  const query = event.node.req.url?.split("?")[1];
   let body: any;
   if (event.node.req.method != "GET") {
     body = await readBody(event);
@@ -23,16 +22,20 @@ export default defineEventHandler(async (event) => {
     headers["X-Refresh-Token"] = `Bearer ${refreshToken}`;
   }
 
-  const options = {
+  const options: {
+    method: string | undefined;
+    headers: Record<string, string>;
+    body?: string;
+  } = {
     method: event.node.req.method,
     headers,
   };
 
   if (event.node.req.method != "GET") {
-    options["body"] = JSON.stringify(body);
+    options.body = JSON.stringify(body);
   }
 
-  const res = await fetch(backendUrl.toString() + "?" + query, options);
+  const res = await fetch(backendUrl.toString(), options);
 
   return res;
 });
