@@ -8,7 +8,7 @@ onMounted(async () => {
     const res = await fetch("/api/users");
     if (!res.ok) throw new Error("Failed to fetch users");
     const data = await res.json();
-    users.value = data.content
+    users.value = data.content;
   } catch (err) {
     console.error(err);
   }

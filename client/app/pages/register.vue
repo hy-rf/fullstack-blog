@@ -35,7 +35,8 @@ const register = async () => {
     <h1>Register</h1>
     <form @submit.prevent="register" autocomplete="off">
       <label for="username"
-        >Username: <input
+        >Username:
+        <input
           type="text"
           id="username"
           v-model="username"
@@ -45,7 +46,8 @@ const register = async () => {
       </label>
 
       <label for="password"
-        >Password: <input
+        >Password:
+        <input
           type="password"
           id="password"
           v-model="password"

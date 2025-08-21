@@ -8,13 +8,23 @@ const { t } = useI18n();
 const headers = useRequestHeaders(["cookie"]);
 
 const { data: user } = await useAsyncData<User>("user", async () => {
-  return await $fetch<User>("http://localhost:3000/api/me", {
-    credentials: "include",
-    headers,
-  });
+  try {
+    return await $fetch<User>(
+      import.meta.server ? "http://localhost:3000/api/me" : "/api/me",
+      {
+        credentials: "include",
+        headers,
+      }
+    );
+  } catch {
+    return {
+      username: "Guest",
+      roles: [],
+    };
+  }
 });
 
-userStore.init(user.value ? user.value : userStore.getInitialUser());
+userStore.init(user.value!);
 
 watch(
   () => userStore.loaded,

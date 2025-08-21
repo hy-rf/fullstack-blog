@@ -1,18 +1,17 @@
 <script setup lang="ts">
-
 const props = defineProps({
   replyId: {
     type: String,
-    required: true
+    required: true,
   },
   showReplyForm: {
     type: Object as () => Ref<boolean>,
-    required: true
+    required: true,
   },
   refreshReplies: {
     type: Object as () => () => void,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const replyContent = ref("");
@@ -47,19 +46,17 @@ const submitReply = async () => {
 
 <template>
   <form class="reply-form" @submit.prevent="submitReply">
-      <label for="reply-content" class="reply-label">Add a reply:</label>
-      <textarea
-        id="reply-content"
-        v-model="replyContent"
-        class="reply-textarea"
-        rows="3"
-        required
-      ></textarea>
-      <button type="submit" class="reply-btn">Submit</button>
-      <div v-if="replyMessage" class="reply-message">{{ replyMessage }}</div>
-    </form>
+    <label for="reply-content" class="reply-label">Add a reply:</label>
+    <textarea
+      id="reply-content"
+      v-model="replyContent"
+      class="reply-textarea"
+      rows="3"
+      required
+    ></textarea>
+    <button type="submit" class="reply-btn">Submit</button>
+    <div v-if="replyMessage" class="reply-message">{{ replyMessage }}</div>
+  </form>
 </template>
 
-<style lang="css" scoped>
-
-</style>
+<style lang="css" scoped></style>

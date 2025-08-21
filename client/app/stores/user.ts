@@ -10,31 +10,32 @@ export const useUserStore = defineStore("user", {
     async fetchUser() {
       const res = await fetch("/api/me", { credentials: "include" });
       if (!res.ok) {
+        this.user = this.getInitialUser();
         this.loaded = true;
         return;
       }
       const data = await res.json();
       const user: User = {
         username: data.username,
-        roles: data.roles
-      }
-      this.user = user
+        roles: data.roles,
+      };
+      this.user = user;
       this.loaded = true;
     },
-    init(user: User){
-      this.user = user
-      this.loaded = true
+    init(user: User) {
+      this.user = user;
+      this.loaded = true;
     },
     async logout() {
       await fetch("/api/leave", { method: "get", credentials: "include" });
-      this.user = this.getInitialUser()
+      this.user = this.getInitialUser();
     },
     getInitialUser() {
       const user: User = {
         username: "Guest",
-        roles: []
-      }
-      return user
-    }
+        roles: [],
+      };
+      return user;
+    },
   },
 });

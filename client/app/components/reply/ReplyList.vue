@@ -20,7 +20,6 @@ async function load() {
 
 onMounted(load);
 watch(() => props.postId, load);
-
 </script>
 
 <template>
