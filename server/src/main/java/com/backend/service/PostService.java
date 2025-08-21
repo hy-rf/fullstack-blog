@@ -73,7 +73,7 @@ public class PostService {
       String sortBy,
       String order, int page,
       int size) {
-    Specification<Post> spec = Specification.where(PostSpecification.hasTitleOrContentLike(keyword))
+    Specification<Post> spec = PostSpecification.hasTitleOrContentLike(keyword)
         .and(PostSpecification.hasAuthorNameLike(authorName))
         .and(PostSpecification.createdAfter(createdAfter))
         .and(PostSpecification.createdBefore(createdBefore));

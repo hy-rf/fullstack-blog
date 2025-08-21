@@ -21,7 +21,6 @@ import com.backend.dto.auth.RegisterResult;
 import com.backend.helper.CookieHelper;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.AuthService;
-import com.backend.service.LoginRateLimiterService;
 import com.backend.viewmodel.auth.CurrentUserResponse;
 import com.backend.viewmodel.auth.LoginRequest;
 import com.backend.viewmodel.auth.RegisterRequest;
@@ -47,9 +46,6 @@ public class AuthController {
   @Autowired
   private AuthService authService;
 
-  @Autowired
-  private LoginRateLimiterService loginRateLimiterService;
-
   @PostMapping("/register")
   @Operation(summary = "Register")
   public ResponseEntity<String> signup(@Valid @RequestBody RegisterRequest registerRequest, HttpSession session,
@@ -68,11 +64,6 @@ public class AuthController {
   @Operation(summary = "Login as user")
   public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session,
       HttpServletResponse response) {
-    if (!loginRateLimiterService.isAllowed(loginRequest.getUsername())) {
-      return ResponseEntity
-          .status(HttpStatus.TOO_MANY_REQUESTS)
-          .body("Too many login attempts. Please try again later.");
-    }
     LoginResult result = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
     return switch (result.getStatus()) {
       case SUCCESS -> {

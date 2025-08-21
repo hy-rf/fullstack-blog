@@ -9,7 +9,6 @@ import com.backend.dto.auth.RegisterResult;
 import com.backend.dto.auth.RegisterStatus;
 import com.backend.helper.CookieHelper;
 import com.backend.service.AuthService;
-import com.backend.service.LoginRateLimiterService;
 import com.backend.viewmodel.auth.LoginRequest;
 import com.backend.viewmodel.auth.RegisterRequest;
 
@@ -39,9 +38,6 @@ public class AuthControllerTest {
 
     @Mock
     private AuthService authService;
-
-    @Mock
-    private LoginRateLimiterService loginRateLimiterService;
 
     @Mock
     private HttpServletResponse response;
@@ -99,7 +95,6 @@ public class AuthControllerTest {
         req.setUsername("user");
         req.setPassword("pass");
 
-        when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
         when(authService.loginUser(any(), any()))
                 .thenReturn(new LoginResult("Success", LoginStatus.SUCCESS, "jwt-token", "refresh-token"));
 
@@ -110,25 +105,11 @@ public class AuthControllerTest {
     }
 
     @Test
-    void testLoginRateLimitExceeded() {
-        LoginRequest req = new LoginRequest();
-        req.setUsername("user");
-        req.setPassword("pass");
-
-        when(loginRateLimiterService.isAllowed(any())).thenReturn(false);
-
-        ResponseEntity<String> result = authController.login(req, session, response);
-        // assertEquals(ResponseEntity.badRequest().body("Too many login attempts.
-        // Please try again later."), result);
-    }
-
-    @Test
     void testLoginInvalidPassword() {
         LoginRequest req = new LoginRequest();
         req.setUsername("user");
         req.setPassword("wrong_password");
 
-        when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
         when(authService.loginUser(any(), any()))
                 .thenReturn(new LoginResult("", LoginStatus.INVALID_PASSWORD, null, null));
 
