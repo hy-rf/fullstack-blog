@@ -7,6 +7,7 @@ import com.backend.dto.auth.RefreshResult;
 import com.backend.dto.auth.RefreshStatus;
 import com.backend.dto.auth.RegisterResult;
 import com.backend.dto.auth.RegisterStatus;
+import com.backend.helper.CookieHelper;
 import com.backend.service.AuthService;
 import com.backend.service.LoginRateLimiterService;
 import com.backend.viewmodel.auth.LoginRequest;
@@ -30,6 +31,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AuthControllerTest {
+    @Mock
+    private CookieHelper cookieHelper;
+
     @Mock
     private JwtUtils jwtUtils;
 
@@ -96,7 +100,8 @@ public class AuthControllerTest {
         req.setPassword("pass");
 
         when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
-        when(authService.loginUser(any(), any())).thenReturn(new LoginResult("Success", LoginStatus.SUCCESS, "jwt-token", "refresh-token"));
+        when(authService.loginUser(any(), any()))
+                .thenReturn(new LoginResult("Success", LoginStatus.SUCCESS, "jwt-token", "refresh-token"));
 
         ResponseEntity<String> result = authController.login(req, session, response);
 
@@ -113,7 +118,8 @@ public class AuthControllerTest {
         when(loginRateLimiterService.isAllowed(any())).thenReturn(false);
 
         ResponseEntity<String> result = authController.login(req, session, response);
-        //assertEquals("Too many login attempts. Please try again later.", result);
+        // assertEquals(ResponseEntity.badRequest().body("Too many login attempts.
+        // Please try again later."), result);
     }
 
     @Test
@@ -123,10 +129,11 @@ public class AuthControllerTest {
         req.setPassword("wrong_password");
 
         when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
-        when(authService.loginUser(any(), any())).thenReturn(new LoginResult("", LoginStatus.INVALID_PASSWORD, null, null));
+        when(authService.loginUser(any(), any()))
+                .thenReturn(new LoginResult("", LoginStatus.INVALID_PASSWORD, null, null));
 
         ResponseEntity<String> result = authController.login(req, session, response);
-        assertEquals(ResponseEntity.badRequest().body("F"), result);
+        assertEquals(ResponseEntity.badRequest().body(""), result);
     }
 
     @Test
@@ -134,8 +141,7 @@ public class AuthControllerTest {
         when(jwtUtils.resolveToken(any())).thenReturn("token");
         when(jwtUtils.resolveRefreshToken(any())).thenReturn("refresh");
         when(authService.refreshToken(any(), any())).thenReturn(
-                new RefreshResult(RefreshStatus.SUCCESS, "newToken", "newRefresh")
-        );
+                new RefreshResult(RefreshStatus.SUCCESS, "newToken", "newRefresh"));
 
         String result = authController.refresh(request, response);
         assertEquals("Token refreshed successfully", result);
@@ -147,8 +153,7 @@ public class AuthControllerTest {
         when(jwtUtils.resolveToken(any())).thenReturn("token");
         when(jwtUtils.resolveRefreshToken(any())).thenReturn("refresh");
         when(authService.refreshToken(any(), any())).thenReturn(
-                new RefreshResult(RefreshStatus.FAIL, null, null)
-        );
+                new RefreshResult(RefreshStatus.FAIL, null, null));
 
         String result = authController.refresh(request, response);
         assertEquals("Fail", result);
@@ -160,4 +165,3 @@ public class AuthControllerTest {
         // assertEquals("User logged out successfully", result);
     }
 }
-
