@@ -18,6 +18,7 @@ import com.backend.dto.auth.LoginResult;
 import com.backend.dto.auth.RefreshResult;
 import com.backend.dto.auth.RefreshStatus;
 import com.backend.dto.auth.RegisterResult;
+import com.backend.helper.CookieHelper;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.AuthService;
 import com.backend.service.LoginRateLimiterService;
@@ -36,6 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class AuthController {
+
+  @Autowired
+  private CookieHelper cookieHelper;
 
   @Autowired
   private JwtUtils jwtUtils;
@@ -73,28 +77,17 @@ public class AuthController {
     return switch (result.getStatus()) {
       case SUCCESS -> {
         String token = result.getToken();
-        Cookie tokenCookie = new Cookie("token", token);
-        tokenCookie.setHttpOnly(true);
-        tokenCookie.setPath("/");
-        tokenCookie.setMaxAge(600);
-        tokenCookie.setAttribute("SameSite", "None");
-        tokenCookie.setSecure(true);
+        Cookie tokenCookie = cookieHelper.createCookie("token", token, 600);
         response.addCookie(tokenCookie);
         String refreshToken = result.getRefresh();
-        Cookie refreshTokenCookie = new Cookie("refresh", refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(3600);
-        refreshTokenCookie.setAttribute("SameSite", "None");
-        refreshTokenCookie.setSecure(true);
+        Cookie refreshTokenCookie = cookieHelper.createCookie("refresh", refreshToken, 3600);
         response.addCookie(refreshTokenCookie);
-
         yield ResponseEntity.ok("Login successful");
       }
-      case USER_NOT_FOUND -> ResponseEntity.badRequest().body("F");
-      case INVALID_PASSWORD -> ResponseEntity.badRequest().body("F");
-      case ERROR -> ResponseEntity.badRequest().body("F");
-      default -> ResponseEntity.badRequest().body("F");
+      case USER_NOT_FOUND -> ResponseEntity.badRequest().body("");
+      case INVALID_PASSWORD -> ResponseEntity.badRequest().body("");
+      case ERROR -> ResponseEntity.badRequest().body("");
+      default -> ResponseEntity.badRequest().body("");
     };
   }
 
@@ -106,40 +99,20 @@ public class AuthController {
     if (result.getRefreshStatus() == RefreshStatus.FAIL) {
       return "Fail";
     }
-    Cookie tokenCookie = new Cookie("token", result.getNewToken());
-    tokenCookie.setHttpOnly(true);
-    tokenCookie.setPath("/");
-    tokenCookie.setMaxAge(600);
-    // Uncomment if using HTTPS
-    tokenCookie.setSecure(true);
+    Cookie tokenCookie = cookieHelper.createCookie("token", result.getNewToken(), 600);
     response.addCookie(tokenCookie);
-    Cookie refreshTokenCookie = new Cookie("refresh", result.getNewFreshToken());
-    refreshTokenCookie.setHttpOnly(true);
-    refreshTokenCookie.setPath("/");
-    refreshTokenCookie.setMaxAge(60000);
-    // Uncomment if using HTTPS
-    refreshTokenCookie.setSecure(true);
+    Cookie refreshTokenCookie = cookieHelper.createCookie("refresh", result.getNewFreshToken(), 60000);
     response.addCookie(refreshTokenCookie);
-
     return "Token refreshed successfully";
   }
 
   @GetMapping("/leave")
   @PreAuthorize("isAuthenticated()")
   public String logout(HttpServletResponse response) {
-    Cookie tokenCookie = new Cookie("token", null);
-    tokenCookie.setPath("/");
-    tokenCookie.setHttpOnly(true);
-    tokenCookie.setMaxAge(0); // delete immediately
+    Cookie tokenCookie = cookieHelper.createCookie("token", null, 0);
     response.addCookie(tokenCookie);
-
-    // Clear refresh cookie
-    Cookie refreshCookie = new Cookie("refresh", null);
-    refreshCookie.setPath("/");
-    refreshCookie.setHttpOnly(true);
-    refreshCookie.setMaxAge(0);
+    Cookie refreshCookie = cookieHelper.createCookie("refresh", null, 0);
     response.addCookie(refreshCookie);
-
     return "User logged out successfully";
   }
 
@@ -156,5 +129,4 @@ public class AuthController {
         .toList();
     return new CurrentUserResponse(userId, username, roles);
   }
-
 }
