@@ -86,39 +86,32 @@ public class PostService {
 
   @Transactional
   public String createReply(Long userId, String content, Optional<Long> postId, Optional<Long> parentReplyId) {
-    if (postId.isPresent()) {
-      Optional<Post> postOpt = postRepository.findById(postId.get());
-      if (!postOpt.isPresent()) {
-        throw new IllegalArgumentException("Post not found with id: " + postId);
-      }
-      Post post = postOpt.get();
-      Reply reply = new Reply();
-      reply.setContent(content);
-      reply.setPost(post);
-      reply.setAuthor(userRepository.findById(userId)
-          .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
-      post.getReplies().add(reply);
-      postRepository.save(post);
-      return "Reply created successfully on post with id: " + postId;
+    if (!postId.isPresent())
+      throw new IllegalArgumentException("No post id!");
+    Optional<Post> postOpt = postRepository.findById(postId.get());
+    if (!postOpt.isPresent()) {
+      throw new IllegalArgumentException("Post not found with id: " + postId);
     }
-
+    Post post = postOpt.get();
+    Reply reply = new Reply();
+    reply.setContent(content);
+    reply.setPost(post); // Set parent post
+    reply.setAuthor(userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
+    post.getReplies().add(reply);
     if (parentReplyId.isPresent()) {
       Optional<Reply> parentReplyOpt = replyRepository.findById(parentReplyId);
       if (!parentReplyOpt.isPresent()) {
         throw new IllegalArgumentException("Parent reply not found with id: " + parentReplyId);
       }
       Reply parentReply = parentReplyOpt.get();
-      Reply reply = new Reply();
-      reply.setContent(content);
       reply.setParentReply(parentReply);
-      reply.setAuthor(userRepository.findById(userId)
-          .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
       parentReply.getReplies().add(reply);
-      replyRepository.save(reply);
       replyRepository.save(parentReply);
-      return "Reply created successfully to parent reply with id: " + parentReplyId;
     }
-    return "No valid target for reply provided. Either postId or parentReplyId must be specified.";
+    replyRepository.save(reply);
+    postRepository.save(post);
+    return "Done.";
   }
 
   public List<Reply> getRepliesByPostId(Long postId) {
