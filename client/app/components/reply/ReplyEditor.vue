@@ -14,6 +14,9 @@ const props = defineProps({
   },
 });
 
+const route = useRoute();
+const postId = route.params.id as string;
+
 const replyContent = ref("");
 const replyMessage = ref("");
 
@@ -24,6 +27,7 @@ const submitReply = async () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        postId: postId,
         parentReplyId: props.replyId,
         content: replyContent.value,
         // parentReplyId can be added here if replying to another reply

@@ -15,7 +15,9 @@ defineProps({
   <article class="post-card">
     <div class="post-main-info">
       <NuxtLink :to="`/post/${post.id}`">
-        <h2>{{ post.title }}</h2>
+        <h2>
+          {{ post.title }}
+        </h2>
       </NuxtLink>
       <!-- <p v.html="post.content" class="post-content"></p> -->
     </div>
@@ -26,7 +28,7 @@ defineProps({
           {{ post.author.username }}
         </NuxtLink>
       </div>
-      <div>
+      <div class="created-at">
         <time :datetime="new Date(post.createdAt).toISOString()">
           {{
             new Date(post.createdAt)
@@ -56,6 +58,7 @@ defineProps({
 }
 .post-main-info {
   gap: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 .post-other-info {
   display: flex;
@@ -64,6 +67,7 @@ defineProps({
   time {
     font-size: smaller;
     color: gray;
+    text-align: end;
   }
 }
 </style>

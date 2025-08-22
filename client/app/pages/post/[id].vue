@@ -7,7 +7,7 @@ definePageMeta({
     return typeof route.params.id === "string" && /^\d+$/.test(route.params.id);
   },
 });
-
+const { locale } = useI18n();
 const { gtag } = useGtag();
 
 onMounted(() => {
@@ -89,8 +89,9 @@ function refreshReplies() {
       <div class="content" v-html="post.content"></div>
 
       <client-only>
-        <p class="meta">
-          Created at: {{ new Date(post.createdAt).toLocaleString() }}
+        <p class="created-at">
+          Created at:
+          {{ new Date(post.createdAt).toLocaleString(locale) }}
         </p>
       </client-only>
 
@@ -102,14 +103,14 @@ function refreshReplies() {
           <li>
             <strong>{{ t("post.username") }}</strong> {{ post.author.username }}
           </li>
-          <li>
+          <!-- <li>
             <strong>Verified:</strong>
             <span
               :class="post.author.emailVerified ? 'verified' : 'unverified'"
             >
               {{ post.author.emailVerified ? "Yes" : "No" }}
             </span>
-          </li>
+          </li> -->
         </ul>
       </div>
       <div class="reply-section">
@@ -176,10 +177,11 @@ function refreshReplies() {
   margin-bottom: 16px;
 }
 
-.meta {
-  font-size: 0.9rem;
+.created-at {
+  font-size: smaller;
   color: #777;
   margin-bottom: 20px;
+  text-align: end;
 }
 
 hr {

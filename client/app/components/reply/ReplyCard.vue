@@ -28,7 +28,9 @@ const showReplyFormWrapper = computed(() => showReplyForm);
         {{ reply.author.username }}
       </NuxtLink>
     </div>
-    <p>{{ reply.content }}</p>
+    <div class="reply-content">
+      <p>{{ reply.content }}</p>
+    </div>
     <span class="text-xs text-gray-500">{{ reply.created.toString() }}</span>
     <button
       v-if="userStore.user.roles.includes('ROLE_user')"
@@ -53,4 +55,10 @@ const showReplyFormWrapper = computed(() => showReplyForm);
   </li>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+.reply-content {
+  padding: 0.5rem;
+  border: 1px solid gray;
+  border-radius: 8px;
+}
+</style>
