@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.backend.dto.post.AuthorDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -84,5 +85,14 @@ public class User {
     @PreUpdate
     public void onUpdate() {
         updatedAt = OffsetDateTime.now();
+    }
+
+    public AuthorDto toAuthorDto() {
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setId(this.getId());
+        authorDto.setUsername(this.getUsername());
+        authorDto.setEmail(this.getEmail());
+        authorDto.setRoles(this.getRoles());
+        return authorDto;
     }
 }

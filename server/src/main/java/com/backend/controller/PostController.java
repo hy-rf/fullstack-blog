@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.dto.PagedResponse;
+import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.UpdatePostDto;
 import com.backend.dto.post.UpdatePostResultDto;
 import com.backend.dto.post.UpdatePostResultStatus;
+import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.model.Reply;
 import com.backend.security.CustomUserDetails;
@@ -36,6 +39,9 @@ import com.backend.viewmodel.post.UpdatePostResponse;
 @Slf4j
 @RestController
 public class PostController {
+
+    @Autowired
+    private PostMapper postMapper;
 
     @Autowired
     private PostService postService;
@@ -77,7 +83,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/search")
-    public Page<Post> getPosts(
+    public PagedResponse<PostDTO> getPosts(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String authorName,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
@@ -85,8 +91,24 @@ public class PostController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String order,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order, page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int depth) {
+        Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
+                page, size);
+
+        Page<PostDTO> postDTOPage = postPage.map(post -> {
+            // Explicitly create and return a PostDTO
+            return postMapper.toPostDTO(post, depth); // Use the PostMapper to handle the mapping
+        });
+
+        // Create PagedResponse
+        return new PagedResponse<PostDTO>(
+                postDTOPage.getContent(),
+                postDTOPage.getNumber(),
+                postDTOPage.getSize(),
+                postDTOPage.getTotalElements(),
+                postDTOPage.getTotalPages(),
+                postDTOPage.isLast());
     }
 
     @PostMapping("reply")
@@ -121,11 +143,12 @@ public class PostController {
 
     @PutMapping("/post")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UpdatePostResponse> updatePost(@Valid @RequestBody UpdatePostRequest updatePostRequest){
+    public ResponseEntity<UpdatePostResponse> updatePost(@Valid @RequestBody UpdatePostRequest updatePostRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
-        UpdatePostDto updatePostDto = new UpdatePostDto(updatePostRequest.getPostId(), userId, updatePostRequest.getTitle(), updatePostRequest.getContent());
+        UpdatePostDto updatePostDto = new UpdatePostDto(updatePostRequest.getPostId(), userId,
+                updatePostRequest.getTitle(), updatePostRequest.getContent());
         UpdatePostResultDto updatePostResultDto = postService.UpdatePost(updatePostDto);
         if (updatePostResultDto.getUpdatePostResultStatus().equals(UpdatePostResultStatus.POST_NOT_FOUND)) {
             return ResponseEntity.badRequest().body(new UpdatePostResponse(false, "error"));
