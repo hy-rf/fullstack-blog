@@ -1,8 +1,8 @@
 package com.backend.viewmodel.user;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class UpdateUserRequest {
 
   private Long id;

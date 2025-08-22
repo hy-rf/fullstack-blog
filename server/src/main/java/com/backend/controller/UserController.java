@@ -78,9 +78,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
-        if (!userId.equals(updateUserRequest.getId())) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(400));
-        }
+        updateUserRequest.setId(userId);
         UpdateUserResult result = userService.updateUser(updateUserRequest);
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
