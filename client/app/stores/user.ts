@@ -8,7 +8,7 @@ export const useUserStore = defineStore("user", {
   }),
   actions: {
     async fetchUser() {
-      const res = await fetch("/api/me", { credentials: "include" });
+      const res = await fetch("/api/me");
       if (!res.ok) {
         this.user = this.getInitialUser();
         this.loaded = true;
@@ -27,7 +27,7 @@ export const useUserStore = defineStore("user", {
       this.loaded = true;
     },
     async logout() {
-      await fetch("/api/leave", { method: "get", credentials: "include" });
+      await fetch("/api/leave");
       this.user = this.getInitialUser();
     },
     getInitialUser() {
