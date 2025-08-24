@@ -1,20 +1,22 @@
 services:
   nginx:
-    image: nginx:alpine
+    image: nginx
     container_name: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/home/user/ssl:ro
+      # - ./nginx/ssl:/home/user/ssl:ro
       - ./nginx/validation:/home/user/validation:ro
     restart: always
+    platform: linux/amd64
 
   frontend:
     build:
       context: ./client
     restart: always
+    platform: linux/amd64
 
   backend:
     build:
@@ -22,6 +24,7 @@ services:
     depends_on:
       - postgres
     restart: always
+    platform: linux/amd64
 
   postgres:
     image: postgres:17
@@ -33,6 +36,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+    platform: linux/amd64
 
 volumes:
   pgdata:
