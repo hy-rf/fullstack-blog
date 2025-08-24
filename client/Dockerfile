@@ -10,4 +10,4 @@ COPY . .
 
 RUN npm run build-sandbox
 
-CMD ["npm", "run", "start"]
+CMD ["node", ".output/server/index.mjs"]
