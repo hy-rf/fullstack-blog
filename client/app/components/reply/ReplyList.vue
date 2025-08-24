@@ -1,4 +1,3 @@
-// ...existing code...
 <script setup lang="ts">
 import type Reply from "~/types/Reply";
 import ReplyCard from "./ReplyCard.vue";
