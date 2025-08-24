@@ -21,7 +21,7 @@ public class PostMapper {
         postDTO.setCreatedAt(post.getCreatedAt());
         postDTO.setUpdatedAt(post.getUpdatedAt());
         if (depth > 0) {
-            postDTO.setReplies(post.getReplies().stream()
+            postDTO.setReplies(post.getReplies().stream().filter(p -> p.getParentReply() == null)
                     .map(reply -> toReplyDTO(reply, depth - 1))
                     .collect(Collectors.toList()));
         }
@@ -33,6 +33,7 @@ public class PostMapper {
         replyDTO.setId(reply.getId());
         replyDTO.setContent(reply.getContent());
         replyDTO.setCreated(reply.getCreated());
+        replyDTO.setAuthor(reply.getAuthor().toAuthorDto());
         replyDTO.setUpdatedAt(reply.getUpdatedAt());
         if (depth > 0 && reply.getReplies() != null) {
             replyDTO.setReplies(reply.getReplies().stream()

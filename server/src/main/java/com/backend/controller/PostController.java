@@ -73,8 +73,8 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public Post getPostById(@PathVariable Long id, HttpServletResponse response) {
-        Post post = postService.getPostById(id);
+    public PostDTO getPostById(@PathVariable Long id, HttpServletResponse response) {
+        PostDTO post = postService.getPostById(id);
         if (post == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null; // or throw an exception

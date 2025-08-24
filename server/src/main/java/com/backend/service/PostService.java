@@ -1,8 +1,10 @@
 package com.backend.service;
 
+import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.UpdatePostDto;
 import com.backend.dto.post.UpdatePostResultDto;
 import com.backend.dto.post.UpdatePostResultStatus;
+import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.model.Reply;
 import com.backend.model.User;
@@ -26,6 +28,9 @@ import org.springframework.data.domain.Pageable;
 
 @Service
 public class PostService {
+
+  @Autowired
+  private PostMapper postMapper;
 
   @Autowired
   private PostRepository postRepository;
@@ -60,9 +65,15 @@ public class PostService {
     return posts.get();
   }
 
-  public Post getPostById(Long id) {
-    return postRepository.findById(id)
-        .orElse(null); // or throw an exception if preferred
+  public PostDTO getPostById(Long id) {
+    Optional<Post> postOpt = postRepository.findById(id);
+    if (postOpt.isEmpty()) {
+      throw new Error();
+    }
+    Post post = postOpt.get();
+    PostDTO postDTO = postMapper.toPostDTO(post, 99);
+
+    return postDTO;
   }
 
   public Page<Post> getPosts(
