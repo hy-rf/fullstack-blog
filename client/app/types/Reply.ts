@@ -7,4 +7,5 @@ export default interface Reply {
   author: Author;
   created: string;
   post: Post;
+  parentReply: Reply;
 }
