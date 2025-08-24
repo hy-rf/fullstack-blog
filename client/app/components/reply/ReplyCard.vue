@@ -50,9 +50,10 @@ const showReplyFormWrapper = computed(() => showReplyForm);
       {{ showReplies ? "hide" : "show" }}
     </button>
     <ReplyList
-      v-if="showReplies"
+      v-if="showReplies && reply.replies"
       :key="refreshKey"
       :reply-id="reply.id.toString()"
+      :replies="reply.replies"
     ></ReplyList>
   </li>
 </template>

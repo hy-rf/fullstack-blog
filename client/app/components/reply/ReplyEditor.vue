@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const router = useRouter();
 const postId = route.params.id as string;
 
 const replyContent = ref("");
@@ -34,11 +35,11 @@ const submitReply = async () => {
       }),
     });
     if (res.ok) {
-      alert("Reply submitted!");
+      console.log("Reply submitted!");
       replyContent.value = "";
       props.showReplyForm.value = false;
-      props.refreshReplies(); // Trigger a refresh of replies
-      // Optionally, reload replies here
+      props.refreshReplies();
+      router.replace(route.fullPath);
     } else {
       replyMessage.value = await res.text();
     }

@@ -115,7 +115,7 @@ function refreshReplies() {
       </div>
       <div class="reply-section">
         <h3 class="subtitle">{{ t("post.replies") }}</h3>
-        <ReplyList :key="refreshKey" :postId="postId" />
+        <ReplyList :key="refreshKey" :replies="post.replies" />
       </div>
     </div>
 

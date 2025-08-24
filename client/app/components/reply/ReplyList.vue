@@ -2,28 +2,14 @@
 import type Reply from "~/types/Reply";
 import ReplyCard from "./ReplyCard.vue";
 
-const props = defineProps<{ postId?: string; replyId?: string }>();
-
-const replies = ref<Reply[]>([]);
-
-async function load() {
-  if (props.postId) {
-    replies.value = await $fetch<Reply[]>(`/api/post/${props.postId}/replies`);
-  }
-  if (props.replyId) {
-    replies.value = await $fetch<Reply[]>(
-      `/api/reply/${props.replyId}/replies`
-    );
-  }
-}
-
-onMounted(load);
-watch(() => props.postId, load);
+const props = defineProps<{
+  replies: Reply[];
+}>();
 </script>
 
 <template>
   <ul>
-    <ReplyCard v-for="r in replies" :key="r.id" :reply="r" />
+    <ReplyCard v-for="r in props.replies" :key="r.id" :reply="r" />
     <!-- Display when No child replies for post -->
     <li v-if="!replies.length">No replies yet.</li>
   </ul>

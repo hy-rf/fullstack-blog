@@ -6,6 +6,5 @@ export default interface Reply {
   content: string;
   author: Author;
   created: string;
-  post: Post;
-  parentReply: Reply;
+  replies: Reply[];
 }
