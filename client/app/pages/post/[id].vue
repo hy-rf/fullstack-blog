@@ -254,34 +254,21 @@ hr {
 }
 
 .reply-textarea {
-  width: 100%;
+  width: 50%;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #d0d5dd;
   font-size: 1rem;
   background: #fff;
-  resize: vertical;
+  resize: none;
 }
 
 .reply-btn {
   align-self: flex-end;
-  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
-  color: #fff;
   border: none;
   border-radius: 8px;
   padding: 8px 24px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-.reply-btn:hover {
-  background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
-}
-
-.reply-message {
-  margin-top: 8px;
-  color: #6366f1;
-  font-size: 0.9rem;
 }
 </style>
