@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type Reply from "~/types/Reply";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 import { useUserStore } from "~/stores/user";
 const userStore = useUserStore();
 const props = defineProps({
@@ -30,8 +30,10 @@ const showReplyFormWrapper = computed(() => showReplyForm);
     </div>
     <div class="reply-content">
       <p>{{ reply.content }}</p>
+      <p class="created-time">
+        <time>{{ new Date(reply.created).toLocaleString(locale) }}</time>
+      </p>
     </div>
-    <span class="text-xs text-gray-500">{{ reply.created.toString() }}</span>
     <button
       v-if="userStore.user.roles.includes('ROLE_user')"
       @click="showReplyForm = !showReplyForm"
@@ -60,5 +62,12 @@ const showReplyFormWrapper = computed(() => showReplyForm);
   padding: 0.5rem;
   border: 1px solid gray;
   border-radius: 8px;
+}
+.created-time {
+  text-align: end;
+}
+time {
+  font-size: smaller;
+  color: gray;
 }
 </style>
