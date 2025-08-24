@@ -10,4 +10,6 @@ COPY . .
 
 RUN npm run build-sandbox
 
+RUN rm -rf node_modules .nuxt
+
 CMD ["node", ".output/server/index.mjs"]
