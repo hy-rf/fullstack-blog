@@ -1,40 +1,41 @@
 {
-  "welcome": "Welcome",
   "auth": {
     "loading": "Loading",
     "username_guest": "Guest"
   },
   "nav": {
     "home": "Home",
-    "posts": "Posts",
-    "users": "Users",
-    "new": "New",
     "login": "Login",
-    "me": "Me",
     "logout": "Logout",
-    "register": "Register"
-  },
-  "posts": {
-    "title": "Posts",
-    "author": "By ",
-    "created_at": "Created at",
-    "search": "Search Posts",
-    "filter": {
-      "title_content": "Title or Content",
-      "author": "Author",
-      "created_at_start":"Created start",
-      "created_at_end":"Created end",
-      "updated_at": "Updated at"
-    },
-    "page_size": "Page Size"
+    "me": "Me",
+    "new": "New",
+    "posts": "Posts",
+    "register": "Register",
+    "users": "Users"
   },
   "post": {
     "author": "By ",
     "author_info": "Author Info",
-    "username": "User name: ",
-    "replies": "Replies"
+    "replies": "Replies",
+    "username": "User name: "
+  },
+  "posts": {
+    "author": "By ",
+    "created_at": "Created at",
+    "filter": {
+      "author": "Author",
+      "created_at_end": "Created end",
+      "created_at_start": "Created start",
+      "title_content": "Title or Content",
+      "updated_at": "Updated at"
+    },
+    "page_size": "Page Size",
+    "reply_count": "Reply Count: ",
+    "search": "Search Posts",
+    "title": "Posts"
   },
   "reply": {
     "author": "Author"
-  }
+  },
+  "welcome": "Welcome"
 }
