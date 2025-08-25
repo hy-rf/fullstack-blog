@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.backend.common.PasswordUtils;
@@ -16,7 +14,6 @@ import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -25,20 +22,24 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MigrationService {
 
-  @Autowired
-  private PostDataProvider postDataProvider;
+  private final PostDataProvider postDataProvider;
+  private final UserDataProvider userDataProvider;
+  private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
+  private final PostRepository postRepository;
 
-  @Autowired
-  private UserDataProvider userDataProvider;
-
-  @Autowired
-  private UserRepository userRepository;
-
-  @Autowired
-  private RoleRepository roleRepository;
-
-  @Autowired
-  private PostRepository postRepository;
+  public MigrationService(
+      PostDataProvider postDataProvider,
+      UserDataProvider userDataProvider,
+      UserRepository userRepository,
+      RoleRepository roleRepository,
+      PostRepository postRepository) {
+    this.postDataProvider = postDataProvider;
+    this.userDataProvider = userDataProvider;
+    this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
+    this.postRepository = postRepository;
+  }
 
   @Transactional
   public String checkAndAddDataIfUserExists() {

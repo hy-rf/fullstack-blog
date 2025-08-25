@@ -8,7 +8,6 @@ import com.backend.viewmodel.user.UpdateUserFieldResult;
 import com.backend.viewmodel.user.UpdateUserRequest;
 import com.backend.viewmodel.user.UpdateUserResult;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +25,13 @@ import com.backend.model.User;
 @Slf4j
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
 
     // Implement methods for user management, such as creating, updating, and
     // deleting users.

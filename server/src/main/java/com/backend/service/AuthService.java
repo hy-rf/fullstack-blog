@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +25,21 @@ import com.backend.model.User;
 @Service
 public class AuthService {
 
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final JwtUtils jwtUtils;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     @Value("${jwt.secret.refresh}")
     private String jwtSecretRefresh;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private JwtUtils jwtUtils;
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository, JwtUtils jwtUtils) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.jwtUtils = jwtUtils;
+    }
 
     public RegisterResult registerUser(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {

@@ -31,15 +31,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    public AuthorizationFilter(JwtUtils jwtUtils, CustomUserDetailsService customUserDetailsService) {
+        this.jwtUtils = jwtUtils;
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain)
+            @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         String token = jwtUtils.resolveToken(request);
         JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);

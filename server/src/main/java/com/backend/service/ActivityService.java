@@ -3,7 +3,6 @@ package com.backend.service;
 import com.backend.model.Activity;
 import com.backend.model.User;
 import com.backend.repository.ActivityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -11,9 +10,11 @@ import java.util.List;
 
 @Service
 public class ActivityService {
+    private final ActivityRepository activityRepository;
 
-    @Autowired
-    private ActivityRepository activityRepository;
+    public ActivityService(ActivityRepository activityRepository) {
+        this.activityRepository = activityRepository;
+    }
 
     public void logActivity(User user, String activityType, String description, String ipAddress, String metadata) {
         Activity activity = new Activity();

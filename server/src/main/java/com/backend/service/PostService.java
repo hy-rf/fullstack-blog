@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,17 +28,18 @@ import org.springframework.data.domain.Pageable;
 @Service
 public class PostService {
 
-  @Autowired
-  private PostMapper postMapper;
+  private final PostMapper postMapper;
+  private final PostRepository postRepository;
+  private final ReplyRepository replyRepository;
+  private final UserRepository userRepository;
 
-  @Autowired
-  private PostRepository postRepository;
-
-  @Autowired
-  private ReplyRepository replyRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+  public PostService(PostMapper postMapper, PostRepository postRepository, ReplyRepository replyRepository,
+      UserRepository userRepository) {
+    this.postMapper = postMapper;
+    this.postRepository = postRepository;
+    this.replyRepository = replyRepository;
+    this.userRepository = userRepository;
+  }
 
   public List<Post> getAllPosts() {
     return postRepository.findAll();
