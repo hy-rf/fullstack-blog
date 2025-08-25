@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -42,8 +41,7 @@ public class JwtUtils {
             Claims claims = jws.getBody();
             Long userId = claims.get("userId", Number.class).longValue();
             List<Long> roleIds = ((List<?>) claims.get("roleIds")).stream()
-                    .map(val -> ((Number) val).longValue())
-                    .collect(Collectors.toList());
+                    .map(val -> ((Number) val).longValue()).toList();
 
             return new JwtData(userId, roleIds);
         } catch (JwtException | IllegalArgumentException e) {
