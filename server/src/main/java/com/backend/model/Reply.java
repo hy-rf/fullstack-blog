@@ -9,7 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -34,10 +34,10 @@ public class Reply {
     private User author;
 
     @Column(nullable = false)
-    private LocalDateTime created = LocalDateTime.now();
+    private OffsetDateTime created = OffsetDateTime.now();
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
@@ -46,7 +46,7 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "reply_id")
-    //@JsonBackReference
+    // @JsonBackReference
     private Reply parentReply;
 
     @JsonIgnore
