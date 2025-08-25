@@ -122,7 +122,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #dcfcda;
+  background: #c6f7ff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   height: 70px;
 }
@@ -224,7 +224,7 @@ nav {
 
 .user-info {
   font-size: 1rem;
-  color: #ffd803;
+  color: #ff0000;
   margin-left: 0.5rem;
   flex-direction: row;
   display: flex;
