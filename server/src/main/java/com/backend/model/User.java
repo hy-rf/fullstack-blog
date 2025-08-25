@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.backend.dto.post.AuthorDto;
+import com.backend.viewmodel.post.AuthorViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -94,5 +95,14 @@ public class User {
         authorDto.setEmail(this.getEmail());
         authorDto.setRoles(this.getRoles());
         return authorDto;
+    }
+
+    public AuthorViewModel toAuthorViewModel() {
+        AuthorViewModel authorViewModel = new AuthorViewModel();
+        authorViewModel.setId(this.getId());
+        authorViewModel.setUsername(this.getUsername());
+        authorViewModel.setEmail(this.getEmail());
+        authorViewModel.setRoles(this.getRoles());
+        return authorViewModel;
     }
 }

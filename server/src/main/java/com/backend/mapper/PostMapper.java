@@ -8,9 +8,22 @@ import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.ReplyDTO;
 import com.backend.model.Post;
 import com.backend.model.Reply;
+import com.backend.viewmodel.post.PostListViewModel;
 
 @Component
 public class PostMapper {
+
+    public PostListViewModel toPostListViewModel(Post post) {
+        PostListViewModel postListViewModel = new PostListViewModel();
+        postListViewModel.setId(post.getId());
+        postListViewModel.setTitle(post.getTitle());
+        postListViewModel.setContent(post.getContent());
+        postListViewModel.setAuthor(post.getAuthor().toAuthorViewModel());
+        postListViewModel.setCreatedAt(post.getCreatedAt());
+        postListViewModel.setUpdatedAt(post.getUpdatedAt());
+        postListViewModel.setReplyCount(post.getReplies().size());
+        return postListViewModel;
+    }
 
     public PostDTO toPostDTO(Post post, int depth) {
         PostDTO postDTO = new PostDTO();

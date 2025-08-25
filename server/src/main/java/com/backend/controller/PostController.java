@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.dto.PagedResponse;
 import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.UpdatePostDto;
 import com.backend.dto.post.UpdatePostResultDto;
@@ -33,6 +32,7 @@ import com.backend.model.Post;
 import com.backend.model.Reply;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
+import com.backend.viewmodel.post.PostListViewModel;
 import com.backend.viewmodel.post.UpdatePostRequest;
 import com.backend.viewmodel.post.UpdatePostResponse;
 
@@ -83,7 +83,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/search")
-    public PagedResponse<PostDTO> getPosts(
+    public Page<PostListViewModel> getPosts(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String authorName,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
@@ -95,20 +95,8 @@ public class PostController {
             @RequestParam(defaultValue = "1") int depth) {
         Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
                 page, size);
-
-        Page<PostDTO> postDTOPage = postPage.map(post -> {
-            // Explicitly create and return a PostDTO
-            return postMapper.toPostDTO(post, depth); // Use the PostMapper to handle the mapping
-        });
-
-        // Create PagedResponse
-        return new PagedResponse<PostDTO>(
-                postDTOPage.getContent(),
-                postDTOPage.getNumber(),
-                postDTOPage.getSize(),
-                postDTOPage.getTotalElements(),
-                postDTOPage.getTotalPages(),
-                postDTOPage.isLast());
+        Page<PostListViewModel> postListPage = postPage.map(p -> postMapper.toPostListViewModel(p));
+        return postListPage;
     }
 
     @PostMapping("reply")
