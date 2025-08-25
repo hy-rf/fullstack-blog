@@ -28,6 +28,10 @@ defineProps({
           {{ post.author.username }}
         </NuxtLink>
       </div>
+      <div class="reply-count">
+        <span>{{ t("posts.reply_count") }}</span>
+        {{ post.replyCount }}
+      </div>
       <div class="created-at">
         <time :datetime="new Date(post.createdAt).toISOString()">
           {{
@@ -69,5 +73,11 @@ defineProps({
     color: gray;
     text-align: end;
   }
+}
+.reply-count {
+  margin-left: auto;
+  margin-right: 1rem;
+  font-size: small;
+  padding-top: 4px;
 }
 </style>

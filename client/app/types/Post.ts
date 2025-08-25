@@ -9,4 +9,5 @@ export default interface Post {
   updatedAt: string;
   author: Author;
   replies: Reply[];
+  replyCount: number;
 }
