@@ -2,8 +2,6 @@ package com.backend.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -37,14 +35,15 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AuthController {
 
-  @Autowired
-  private CookieHelper cookieHelper;
+  private final CookieHelper cookieHelper;
+  private final JwtUtils jwtUtils;
+  private final AuthService authService;
 
-  @Autowired
-  private JwtUtils jwtUtils;
-
-  @Autowired
-  private AuthService authService;
+  public AuthController(CookieHelper cookieHelper, JwtUtils jwtUtils, AuthService authService) {
+    this.cookieHelper = cookieHelper;
+    this.jwtUtils = jwtUtils;
+    this.authService = authService;
+  }
 
   @PostMapping("/register")
   @Operation(summary = "Register")

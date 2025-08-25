@@ -49,7 +49,6 @@ public class Reply {
     // @JsonBackReference
     private Reply parentReply;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "parentReply")
     @JsonManagedReference
     private List<Reply> replies;

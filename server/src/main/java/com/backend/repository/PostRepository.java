@@ -21,8 +21,13 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
   Optional<List<Post>> findByAuthorId(Long userId);
 
   @Override
-  @EntityGraph(attributePaths = { "author" })
   @NonNull
+  @EntityGraph(attributePaths = { "author", "replies", "replies" }) // Eagerly fetch replies
+  Optional<Post> findById(@NonNull Long id);
+
+  @Override
+  @NonNull
+  @EntityGraph(attributePaths = { "author", "replies" })
   Page<Post> findAll(@Nullable Specification<Post> spec, @NonNull Pageable pageable);
 
 }

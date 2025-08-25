@@ -1,6 +1,5 @@
 package com.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +10,15 @@ import com.backend.service.migration.MigrationService;
 @RequestMapping("/admin")
 public class AdminController {
 
-  @Autowired
-  private MigrationService migrationService;
+  private final MigrationService migrationService;
+
+  public AdminController(MigrationService migrationService) {
+    this.migrationService = migrationService;
+  }
 
   @GetMapping("/seed-posts")
-  public String seedPosts(){
+  public String seedPosts() {
     return migrationService.seedPosts();
   }
-  
+
 }

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -40,11 +39,13 @@ import com.backend.viewmodel.post.UpdatePostResponse;
 @RestController
 public class PostController {
 
-    @Autowired
-    private PostMapper postMapper;
+    private final PostMapper postMapper;
+    private final PostService postService;
 
-    @Autowired
-    private PostService postService;
+    public PostController(PostMapper postMapper, PostService postService) {
+        this.postMapper = postMapper;
+        this.postService = postService;
+    }
 
     @GetMapping("/posts")
     // @PreAuthorize("isAuthenticated()")
@@ -91,8 +92,7 @@ public class PostController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String order,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "1") int depth) {
+            @RequestParam(defaultValue = "10") int size) {
         Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
                 page, size);
         Page<PostListViewModel> postListPage = postPage.map(p -> postMapper.toPostListViewModel(p));
@@ -149,4 +149,8 @@ public class PostController {
         }
         return ResponseEntity.ok().body(new UpdatePostResponse(true, updatePostResultDto.getMessage()));
     }
+
+    /**
+     * Better getting post by id
+     */
 }

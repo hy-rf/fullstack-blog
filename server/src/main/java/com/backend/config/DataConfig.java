@@ -6,16 +6,17 @@ import com.backend.service.migration.MigrationService;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 public class DataConfig {
 
-  @Autowired
-  private MigrationService migrationService;
+  private final MigrationService migrationService;
+
+  public DataConfig(MigrationService migrationService) {
+    this.migrationService = migrationService;
+  }
 
   @EventListener(ApplicationReadyEvent.class)
   public void onApplicationReady() {
