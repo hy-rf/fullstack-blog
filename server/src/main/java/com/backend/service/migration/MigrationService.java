@@ -1,11 +1,8 @@
 package com.backend.service.migration;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +16,6 @@ import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
@@ -31,11 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MigrationService {
 
-  @Value("${admin.username}")
-  private String ADMIN_USERNAME;
+  @Autowired
+  private PostDataProvider postDataProvider;
 
-  @Value("${admin.password}")
-  private String ADMIN_PASSWORD;
+  @Autowired
+  private UserDataProvider userDataProvider;
 
   @Autowired
   private UserRepository userRepository;
@@ -54,13 +48,13 @@ public class MigrationService {
     }
     log.warn("User with ID 1 does not exist.");
 
-    // Create a new user
+    UserData userData = userDataProvider.provideAdminUserData();
+
     User newUser = new User();
-    newUser.setUsername(ADMIN_USERNAME);
-    String hashedPassword = PasswordUtils.hashPassword(ADMIN_PASSWORD);
+    newUser.setUsername(userData.getUsername());
+    String hashedPassword = PasswordUtils.hashPassword(userData.getPassword());
     newUser.setPasswordHash(hashedPassword);
 
-    // Create roles
     Role userRole = roleRepository.findByName("user").orElseGet(() -> {
       Role role = new Role();
       role.setName("user");
@@ -73,36 +67,31 @@ public class MigrationService {
       return roleRepository.save(role);
     });
 
-    // Assign roles to the user
     List<Role> roles = new ArrayList<>();
     roles.add(userRole);
     roles.add(adminRole);
     newUser.setRoles(roles);
 
-    // Save the user
-    User user = userRepository.save(newUser);
-
-    Post post = new Post();
-    post.setTitle("title");
-    post.setContent("content");
-    post.setAuthor(user);
-
-    postRepository.save(post);
+    userRepository.save(newUser);
 
     return "User with ID 1 does not exist.";
   }
 
   @Transactional
   public String seedUsers() {
-    ObjectMapper mapper = new ObjectMapper();
-    ClassPathResource resource = new ClassPathResource("users.json");
+    List<UserData> userData = userDataProvider.provide();
+    userData.forEach(data -> {
+      User user = new User();
+      user.setUsername(data.getUsername());
+      user.setPasswordHash(PasswordUtils.hashPassword(data.getPassword()));
+      userRepository.save(user);
+    });
     return "done";
   }
 
   @Transactional
   public String seedPosts() {
-    PostDataFactory factory = new PostDataFactory();
-    List<PostData> posts = factory.posts();
+    List<PostData> posts = postDataProvider.provide();
     // Random random = new Random();
     for (PostData pd : posts) {
       long authorId = pd.getAuthorId();

@@ -6,11 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PostDataFactory {
-  public List<PostData> posts() {
+public class PostDataProvider implements DataProvider<PostData> {
+
+  @Override
+  public List<PostData> provide() {
     List<PostData> ret = new ArrayList<>();
-    PostData newPost1 = new PostData(1L, "title", "content");
-    ret.add(newPost1);
+    ret.add(new PostData(1L, "title", "content"));
     return ret;
   }
 }
