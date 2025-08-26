@@ -94,6 +94,8 @@ public class PostController {
             @RequestParam(defaultValue = "desc") String order,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
+        if (size > 50)
+            size = 50;
         Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
                 page, size);
         Page<PostListViewModel> postListPage = postPage.map(p -> postMapper.toPostListViewModel(p));
