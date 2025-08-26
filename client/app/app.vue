@@ -247,7 +247,7 @@ nav {
   cursor: pointer;
   color: black;
   font-size: 16px;
-  font-family: "Hiragino Kaku Gothic ProN";
+  font-family: "Hiragino Kaku Gothic ProN, sans-serif";
 
   &:hover {
     text-decoration: underline;
