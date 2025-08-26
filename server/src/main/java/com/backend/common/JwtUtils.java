@@ -9,8 +9,11 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -18,18 +21,19 @@ import org.springframework.stereotype.Component;
 public class JwtUtils {
 
     // Generate a JWT token with userId and roleIds
-    public String generateToken(Long userId, List<Long> roleIds, String secretKey, long expirationMillis) {
+    public String generateToken(Long userId, List<String> roleNames, String secretKey, long expirationMillis,
+            String name) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder()
                 .claim("userId", userId)
-                .claim("roleIds", roleIds)
+                .claim("roleNames", roleNames)
+                .claim("username", key)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Verify JWT and extract JwtData (userId and roleIds)
     public JwtData verifyToken(String token, String secretKey) {
         try {
             Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
@@ -39,14 +43,50 @@ public class JwtUtils {
                     .parseClaimsJws(token);
 
             Claims claims = jws.getBody();
-            Long userId = claims.get("userId", Number.class).longValue();
-            List<Long> roleIds = ((List<?>) claims.get("roleIds")).stream()
-                    .map(val -> ((Number) val).longValue()).toList();
+            Long userId = null;
+            Object userIdObj = claims.get("userId");
+            if (userIdObj instanceof Number) {
+                userId = ((Number) userIdObj).longValue();
+            }
 
-            return new JwtData(userId, roleIds);
+            // be permissive about username type to avoid RequiredTypeException
+            Object usernameObj = claims.get("username");
+            String userName = usernameObj == null ? null : usernameObj.toString();
+
+            Object roleIdsObj = claims.get("roleIds");
+            List<Long> roleIds = Collections.emptyList();
+            if (roleIdsObj instanceof List) {
+                roleIds = ((List<?>) roleIdsObj).stream()
+                        .filter(Objects::nonNull)
+                        .map(val -> {
+                            if (val instanceof Number) {
+                                return ((Number) val).longValue();
+                            } else {
+                                try {
+                                    return Long.parseLong(val.toString());
+                                } catch (Exception e) {
+                                    return null;
+                                }
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+            }
+
+            Object roleNamesObj = claims.get("roleNames");
+            List<String> roleNames = Collections.emptyList();
+            if (roleNamesObj instanceof List) {
+                roleNames = ((List<?>) roleNamesObj).stream()
+                        .filter(Objects::nonNull)
+                        .map(Object::toString)
+                        .collect(Collectors.toList());
+            }
+
+            return new JwtData(userId, userName, roleIds, roleNames);
         } catch (JwtException | IllegalArgumentException e) {
             return null;
         }
+
     }
 
     public String resolveToken(HttpServletRequest request) {

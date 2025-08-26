@@ -44,7 +44,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         String token = jwtUtils.resolveToken(request);
-        JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+        JwtData jwtData = null;
+        jwtData = jwtUtils.verifyToken(token, jwtSecret);
         // Handle the case where JWT data have values which means user is logged in
         if (jwtData == null) {
             log.info("JWT Data is null, user is not logged in.");

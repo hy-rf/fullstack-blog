@@ -8,6 +8,22 @@ const { gtag } = useGtag();
 const { t } = useI18n();
 const headers = useRequestHeaders(["cookie"]);
 
+const username = computed(() => {
+  return (
+    (userStore.user && userStore.user.username) ||
+    t("auth.username_guest") ||
+    "Guest"
+  );
+});
+
+function hasRole(role: string) {
+  return !!(
+    userStore.user &&
+    Array.isArray(userStore.user.roles) &&
+    userStore.user.roles.includes(role)
+  );
+}
+
 const { data: user } = await useAsyncData<User>("user", async () => {
   try {
     return await $fetch<User>(
@@ -26,6 +42,7 @@ const { data: user } = await useAsyncData<User>("user", async () => {
 });
 
 userStore.init(user.value!);
+console.log(user.value);
 
 watch(
   () => userStore.loaded,
@@ -48,24 +65,16 @@ const runtimeConfig = useRuntimeConfig();
           <li>
             <NuxtLink to="/">{{ t("nav.home") }}</NuxtLink>
           </li>
-          <!-- <li>
-            <NuxtLink
-              :class="{
-                'router-link-exact-active': $route.path.startsWith('/post'),
-              }"
-              to="/post"
-              >{{ "Post search/filter/sort with pinia" }}</NuxtLink
-            >
-          </li> -->
+          <!-- ...existing code... -->
 
-          <li v-if="userStore.user.roles.includes('ROLE_admin')">
+          <li v-if="hasRole('ROLE_admin')">
             <NuxtLink to="/admin/users">{{ t("nav.users") }}</NuxtLink>
           </li>
-          <li v-if="userStore.user.roles.includes('ROLE_user')">
+          <li v-if="hasRole('ROLE_user')">
             <NuxtLink to="/new">{{ t("nav.new") }}</NuxtLink>
           </li>
 
-          <li v-if="userStore.user.roles.includes('ROLE_user')">
+          <li v-if="hasRole('ROLE_user')">
             <NuxtLink to="/me">{{ t("nav.me") }}</NuxtLink>
           </li>
         </ul>
@@ -86,13 +95,10 @@ const runtimeConfig = useRuntimeConfig();
         </div>
         <div class="user-info">
           <div class="user-avatar">
-            <span>👤 {{ userStore.user.username }}</span>
+            <span>👤 {{ username }}</span>
           </div>
           <div class="auth-links">
-            <ul
-              v-if="userStore.user.username == 'Guest'"
-              class="login-and-register"
-            >
+            <ul v-if="username == 'Guest'" class="login-and-register">
               <li>
                 <NuxtLink to="/login">{{ t("nav.login") }}</NuxtLink>
               </li>

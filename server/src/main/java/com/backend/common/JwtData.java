@@ -2,28 +2,16 @@ package com.backend.common;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class JwtData {
     private Long userId;
+    private String userName;
     private List<Long> roleIds;
-
-    public JwtData(Long userId, List<Long> roleIds) {
-        this.userId = userId;
-        this.roleIds = roleIds;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public List<Long> getRoleIds() {
-        return roleIds;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setRoleIds(List<Long> roleIds) {
-        this.roleIds = roleIds;
-    }
+    private List<String> roleNames;
 }

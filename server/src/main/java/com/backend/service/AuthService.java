@@ -86,14 +86,14 @@ public class AuthService {
         Stream<Role> roleStream = roles.stream();
 
         // 8.2 Map each Role object to its ID
-        Stream<Long> roleIdStream = roleStream.map(Role::getId);
+        Stream<String> roleNameStream = roleStream.map(Role::getName);
 
         // 8.3 Collect the IDs into a List
-        List<Long> roleIds = roleIdStream.toList();
-        String token = jwtUtils.generateToken(userId, roleIds,
-                jwtSecret, 600000L);
-        String refreshToken = jwtUtils.generateToken(userId, roleIds,
-                jwtSecretRefresh, 3600000L);
+        List<String> roleNames = roleNameStream.toList();
+        String token = jwtUtils.generateToken(userId, roleNames,
+                jwtSecret, 600000L, username);
+        String refreshToken = jwtUtils.generateToken(userId, roleNames,
+                jwtSecretRefresh, 3600000L, username);
         // TODO add token to redis
         return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
     }
@@ -104,7 +104,8 @@ public class AuthService {
 
     public RefreshResult refreshToken(String token, String refreshToken) {
         JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
-        String newToken = jwtUtils.generateToken(refreshData.getUserId(), refreshData.getRoleIds(), jwtSecret, 60000L);
+        String newToken = jwtUtils.generateToken(refreshData.getUserId(), refreshData.getRoleNames(), jwtSecret,
+                60000L, refreshData.getUserName());
         return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
     }
 }

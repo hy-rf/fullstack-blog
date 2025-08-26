@@ -1,16 +1,13 @@
 package com.backend.security;
 
 import com.backend.model.User;
+import com.backend.common.JwtData;
 import com.backend.model.Role;
 import com.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,28 +18,27 @@ public class CustomUserDetailsService implements UserDetailsService {
                 this.userRepository = userRepository;
         }
 
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userRepository.findByUsername(username)
-                                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-
-                return org.springframework.security.core.userdetails.User.builder()
-                                .username(user.getUsername())
-                                .password(user.getPasswordHash())
-                                .authorities(
-                                                user.getRoles().stream()
-                                                                .map(Role::getName)
-                                                                .map(roleName -> new SimpleGrantedAuthority(
-                                                                                "ROLE_" + roleName))
-                                                                .collect(Collectors.toList()))
-                                .accountLocked(Boolean.FALSE.equals(user.getIsActive()))
-                                .disabled(Boolean.FALSE.equals(user.getIsActive()))
-                                .build();
-        }
-
         public UserDetails loadUserById(Long id) {
                 User user = userRepository.findById(id)
                                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + id));
                 return new CustomUserDetails(user);
+        }
+
+        public UserDetails loadUserFromToken(JwtData data) {
+                User user = new User();
+                user.setId(data.getUserId());
+                user.setRoles(data.getRoleNames().stream().map((e) -> {
+                        Role role = new Role();
+                        role.setName(e);
+                        return role;
+                }).toList());
+                user.setUsername(data.getUserName());
+                return new CustomUserDetails(user);
+        }
+
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
         }
 }

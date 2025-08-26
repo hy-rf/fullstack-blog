@@ -14,11 +14,19 @@ async function handleLogout() {
     router.push("/");
   }
 }
+
+function hasRole(role: string) {
+  return !!(
+    userStore.user &&
+    Array.isArray(userStore.user.roles) &&
+    userStore.user.roles.includes(role)
+  );
+}
 </script>
 
 <template>
   <button
-    v-if="userStore.user.roles.includes('ROLE_user')"
+    v-if="hasRole('ROLE_user')"
     class="logout-button"
     @click="handleLogout"
   >
