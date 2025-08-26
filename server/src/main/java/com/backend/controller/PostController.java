@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dto.post.PostDTO;
+import com.backend.dto.post.PostListViewModel;
 import com.backend.dto.post.UpdatePostDto;
+import com.backend.dto.post.UpdatePostRequest;
+import com.backend.dto.post.UpdatePostResponse;
 import com.backend.dto.post.UpdatePostResultDto;
 import com.backend.dto.post.UpdatePostResultStatus;
 import com.backend.mapper.PostMapper;
@@ -31,9 +34,6 @@ import com.backend.model.Post;
 import com.backend.model.Reply;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
-import com.backend.viewmodel.post.PostListViewModel;
-import com.backend.viewmodel.post.UpdatePostRequest;
-import com.backend.viewmodel.post.UpdatePostResponse;
 
 @Slf4j
 @RestController
@@ -83,6 +83,7 @@ public class PostController {
         return post;
     }
 
+    // 3 db queries
     @GetMapping("/posts/search")
     public Page<PostListViewModel> getPosts(
             @RequestParam(required = false) String keyword,
@@ -153,4 +154,8 @@ public class PostController {
     /**
      * Better getting post by id
      */
+    // @GetMapping("/article/{id}")
+    // public ResponseEntity<> getPostById() {
+
+    // }
 }

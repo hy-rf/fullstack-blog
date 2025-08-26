@@ -1,4 +1,4 @@
-package com.backend.viewmodel.user;
+package com.backend.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.backend.viewmodel.auth;
+package com.backend.dto.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

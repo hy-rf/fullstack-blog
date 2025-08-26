@@ -1,4 +1,4 @@
-package com.backend.viewmodel.chat;
+package com.backend.dto.chat;
 
 import lombok.Data;
 

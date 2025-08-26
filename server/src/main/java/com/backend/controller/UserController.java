@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.dto.auth.LoginRequest;
+import com.backend.dto.user.CreateUserRequest;
+import com.backend.dto.user.CreateUserResult;
+import com.backend.dto.user.CreateUserStatus;
+import com.backend.dto.user.UpdateUserRequest;
+import com.backend.dto.user.UpdateUserResult;
 import com.backend.model.User;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UserService;
-import com.backend.viewmodel.auth.LoginRequest;
-import com.backend.viewmodel.user.CreateUserRequest;
-import com.backend.viewmodel.user.CreateUserResult;
-import com.backend.viewmodel.user.CreateUserStatus;
-import com.backend.viewmodel.user.UpdateUserRequest;
-import com.backend.viewmodel.user.UpdateUserResult;
 
 import jakarta.validation.Valid;
 

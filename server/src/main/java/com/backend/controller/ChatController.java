@@ -1,7 +1,5 @@
 package com.backend.controller;
 
-import com.backend.viewmodel.chat.ChatMessage;
-
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
@@ -10,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import com.backend.dto.chat.ChatMessage;
 
 @Slf4j
 @Controller

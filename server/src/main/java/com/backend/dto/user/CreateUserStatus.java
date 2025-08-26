@@ -1,4 +1,4 @@
-package com.backend.viewmodel.user;
+package com.backend.dto.user;
 
 public enum CreateUserStatus {
   SUCCESS,

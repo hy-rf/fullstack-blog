@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.repository.RoleRepository;
-import com.backend.viewmodel.user.UpdateUserFieldResult;
-import com.backend.viewmodel.user.UpdateUserRequest;
-import com.backend.viewmodel.user.UpdateUserResult;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +16,9 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import com.backend.common.PasswordUtils;
+import com.backend.dto.user.UpdateUserFieldResult;
+import com.backend.dto.user.UpdateUserRequest;
+import com.backend.dto.user.UpdateUserResult;
 import com.backend.model.User;
 
 @Service

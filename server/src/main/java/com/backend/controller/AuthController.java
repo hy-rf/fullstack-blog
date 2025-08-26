@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.common.JwtUtils;
+import com.backend.dto.auth.CurrentUserResponse;
+import com.backend.dto.auth.LoginRequest;
 import com.backend.dto.auth.LoginResult;
 import com.backend.dto.auth.RefreshResult;
 import com.backend.dto.auth.RefreshStatus;
+import com.backend.dto.auth.RegisterRequest;
 import com.backend.dto.auth.RegisterResult;
 import com.backend.helper.CookieHelper;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.AuthService;
-import com.backend.viewmodel.auth.CurrentUserResponse;
-import com.backend.viewmodel.auth.LoginRequest;
-import com.backend.viewmodel.auth.RegisterRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;

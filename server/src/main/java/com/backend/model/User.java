@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.backend.dto.post.AuthorDto;
-import com.backend.viewmodel.post.AuthorViewModel;
+import com.backend.dto.post.AuthorViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

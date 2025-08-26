@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.backend.dto.post.PostDTO;
+import com.backend.dto.post.PostListViewModel;
 import com.backend.dto.post.ReplyDTO;
 import com.backend.model.Post;
 import com.backend.model.Reply;
-import com.backend.viewmodel.post.PostListViewModel;
 
 @Component
 public class PostMapper {
