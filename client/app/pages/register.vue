@@ -7,6 +7,8 @@ const password = ref("");
 const message = ref("");
 const router = useRouter();
 
+const userStore = useUserStore();
+
 const register = async () => {
   message.value = "";
   try {
@@ -20,7 +22,16 @@ const register = async () => {
     });
     const text = await res.text();
     if (res.ok) {
-      message.value = text;
+      await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value,
+        }),
+      });
+      await userStore.fetchUser();
+      router.push("/");
     } else {
       message.value = text;
     }
