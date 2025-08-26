@@ -2,35 +2,36 @@
 import { ref } from "vue";
 const username = ref("");
 const password = ref("");
-const error = ref("");
+const { t } = useI18n();
 
 const userStore = useUserStore();
 const router = useRouter();
 
+function routeAfterLoginSuccess() {
+  if (router.options.history.state.back == "/register") {
+    router.push("/");
+  } else {
+    router.go(-1);
+  }
+}
+
 async function login() {
-  error.value = "";
-  try {
-    const res = await fetch(`/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value,
-      }),
-      credentials: "include",
-    });
-    if (res.ok) {
-      const data = await res.text();
-      console.log("Login response:", data);
-      userStore.fetchUser();
-      error.value = "Login successful!";
-      router.push("/");
-      // TODO: Set user in user store
-    } else {
-      error.value = "Invalid credentials";
-    }
-  } catch {
-    error.value = "Login failed";
+  const res = await fetch(`/api/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value,
+    }),
+  });
+  if (res.ok) {
+    await userStore.fetchUser();
+    alert(t("auth.login_success"));
+    routeAfterLoginSuccess();
+  } else {
+    alert("Invalid credentials");
+    username.value = "";
+    password.value = "";
   }
 }
 </script>

@@ -35,7 +35,14 @@ export default defineEventHandler(async (event) => {
     options.body = JSON.stringify(body);
   }
 
-  const res = await fetch(backendUrl.toString(), options);
-
-  return res;
+  try {
+    const res = await fetch(backendUrl.toString(), options);
+    return res;
+  } catch {
+    return createError({
+      statusCode: 502,
+      statusMessage: "Bad Gateway",
+      data: { success: false, message: "Upstream service unreachable" },
+    });
+  }
 });

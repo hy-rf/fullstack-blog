@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
+import LogoutButton from "./components/auth/LogoutButton.vue";
 import type { User } from "./types/User";
 const { locales, setLocale } = useI18n();
 const userStore = useUserStore();
@@ -99,13 +100,7 @@ const runtimeConfig = useRuntimeConfig();
                 <NuxtLink to="/register">{{ t("nav.register") }}</NuxtLink>
               </li>
             </ul>
-            <button
-              v-if="userStore.user.roles.includes('ROLE_user')"
-              class="logout-button"
-              @click="userStore.logout"
-            >
-              {{ t("nav.logout") }}
-            </button>
+            <LogoutButton />
           </div>
         </div>
       </div>
@@ -237,21 +232,6 @@ nav {
 .loading {
   color: #aaa;
   font-size: 0.95rem;
-}
-
-.logout-button {
-  /* height: 25px; */
-  padding: 0 0.5rem;
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
-  color: black;
-  font-size: 16px;
-  font-family: "Hiragino Kaku Gothic ProN, sans-serif";
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .main-content {

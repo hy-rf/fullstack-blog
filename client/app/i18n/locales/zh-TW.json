@@ -1,7 +1,8 @@
 {
   "auth": {
     "loading": "載入中",
-    "username_guest": "Guest"
+    "username_guest": "訪客",
+    "login_success": "登入成功！"
   },
   "nav": {
     "home": "首頁",

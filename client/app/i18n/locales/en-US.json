@@ -1,7 +1,8 @@
 {
   "auth": {
     "loading": "Loading",
-    "username_guest": "Guest"
+    "username_guest": "Guest",
+    "login_success": "Login Success!"
   },
   "nav": {
     "home": "Home",
