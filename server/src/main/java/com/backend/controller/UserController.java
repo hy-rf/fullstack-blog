@@ -44,14 +44,6 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('admin')")
-    @PostMapping("/test-user")
-    public String saveExampleUser(@RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest);
-        userService.saveExampleUser(loginRequest.getUsername(), loginRequest.getPassword());
-        return "User information retrieved successfully";
-    }
-
-    @PreAuthorize("hasRole('admin')")
     @GetMapping("/users")
     public ResponseEntity<Page<User>> getUsers(@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {

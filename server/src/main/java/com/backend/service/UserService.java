@@ -57,14 +57,6 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public void saveExampleUser(String userName, String password) {
-        String hash = PasswordUtils.hashPassword(password);
-        User exUser = new User();
-        exUser.setUsername(userName);
-        exUser.setPasswordHash(hash);
-        userRepository.save(exUser);
-    }
-
     @Transactional
     public UpdateUserResult updateUser(UpdateUserRequest updateUserRequest) {
         Optional<User> userOpt = userRepository.findById(updateUserRequest.getId());
@@ -105,5 +97,4 @@ public class UserService {
         return updateUserResult;
     }
 
-    // Additional methods can be added here for user-related operations.
 }

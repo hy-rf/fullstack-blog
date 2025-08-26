@@ -74,27 +74,16 @@ public class AuthService {
         if (!PasswordUtils.verifyPassword(password, user.getPasswordHash())) {
             return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD, null, null);
         }
-        // Logic to set user session or token can be added here
-        // For example, you might want to set a session attribute or generate a JWT
-        // token
-        System.out.println("User " + user.getUsername() + " logged in successfully.");
+
         Long userId = user.getId();
         List<Role> roles = user.getRoles();
-        // 8. Extract role IDs from the roles set
-
-        // 8.1 Create a stream from the roles set
         Stream<Role> roleStream = roles.stream();
-
-        // 8.2 Map each Role object to its ID
         Stream<String> roleNameStream = roleStream.map(Role::getName);
-
-        // 8.3 Collect the IDs into a List
         List<String> roleNames = roleNameStream.toList();
         String token = jwtUtils.generateToken(userId, roleNames,
                 jwtSecret, 600000L, username);
         String refreshToken = jwtUtils.generateToken(userId, roleNames,
                 jwtSecretRefresh, 3600000L, username);
-        // TODO add token to redis
         return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
     }
 
