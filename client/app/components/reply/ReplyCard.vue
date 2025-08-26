@@ -21,41 +21,39 @@ const showReplyFormWrapper = computed(() => showReplyForm);
 </script>
 
 <template>
-  <li :key="reply.id" class="reply-card">
-    <div>
-      {{ t("reply.author") }}:
-      <NuxtLink :to="`/user/${reply.author.id}`">
-        {{ reply.author.username }}
-      </NuxtLink>
-    </div>
-    <div class="reply-content">
-      <p>{{ reply.content }}</p>
-      <p class="created-time">
-        <time>{{ new Date(reply.created).toLocaleString(locale) }}</time>
-      </p>
-    </div>
-    <button
-      v-if="userStore.user.roles.includes('ROLE_user')"
-      @click="showReplyForm = !showReplyForm"
-    >
-      Reply
-    </button>
-    <ReplyEditor
-      v-if="showReplyForm"
-      :replyId="reply.id.toString()"
-      :show-reply-form="showReplyFormWrapper"
-      :refresh-replies="refreshReplies"
-    />
-    <button @click="showReplies = !showReplies">
-      {{ showReplies ? "hide" : "show" }}
-    </button>
-    <ReplyList
-      v-if="showReplies && reply.replies"
-      :key="refreshKey"
-      :reply-id="reply.id.toString()"
-      :replies="reply.replies"
-    ></ReplyList>
-  </li>
+  <div class="reply-card">
+    {{ t("reply.author") }}:
+    <NuxtLink :to="`/user/${reply.author.id}`">
+      {{ reply.author.username }}
+    </NuxtLink>
+  </div>
+  <div class="reply-content">
+    <p>{{ reply.content }}</p>
+    <p class="created-time">
+      <time>{{ new Date(reply.created).toLocaleString(locale) }}</time>
+    </p>
+  </div>
+  <button
+    v-if="userStore.user.roles.includes('ROLE_user')"
+    @click="showReplyForm = !showReplyForm"
+  >
+    Reply
+  </button>
+  <ReplyEditor
+    v-if="showReplyForm"
+    :replyId="reply.id.toString()"
+    :show-reply-form="showReplyFormWrapper"
+    :refresh-replies="refreshReplies"
+  />
+  <button @click="showReplies = !showReplies">
+    {{ showReplies ? "hide" : "show" }}
+  </button>
+  <ReplyList
+    v-if="showReplies && reply.replies"
+    :key="refreshKey"
+    :reply-id="reply.id.toString()"
+    :replies="reply.replies"
+  ></ReplyList>
 </template>
 
 <style lang="css" scoped>
