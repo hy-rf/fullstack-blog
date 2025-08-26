@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -33,11 +35,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private String jwtSecret;
 
     private final JwtUtils jwtUtils;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthorizationFilter(JwtUtils jwtUtils, CustomUserDetailsService customUserDetailsService) {
+    public AuthorizationFilter(JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
         this.jwtUtils = jwtUtils;
-        this.customUserDetailsService = customUserDetailsService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -45,16 +47,15 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         String token = jwtUtils.resolveToken(request);
-        JwtData jwtData = null;
-        jwtData = jwtUtils.verifyToken(token, jwtSecret);
-        // Handle the case where JWT data have values which means user is logged in
-        if (jwtData == null) {
-            log.info("JWT Data is null, user is not logged in.");
-        } else {
-            UserDetails userDetails = customUserDetailsService.loadUserFromToken(jwtData);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                    null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null) {
+            try {
+                Authentication authRequest = new JwtAuthenticationToken(token);
+                Authentication authResult = authenticationManager.authenticate(authRequest);
+                SecurityContextHolder.getContext().setAuthentication(authResult);
+            } catch (AuthenticationException ex) {
+                SecurityContextHolder.clearContext();
+                log.warn("JWT authentication failed: {}", ex.getMessage());
+            }
         }
         filterChain.doFilter(request, response);
     }
