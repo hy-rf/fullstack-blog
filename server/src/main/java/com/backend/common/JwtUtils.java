@@ -27,7 +27,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .claim("userId", userId)
                 .claim("roleNames", roleNames)
-                .claim("username", key)
+                .claim("username", name)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -51,7 +51,7 @@ public class JwtUtils {
 
             // be permissive about username type to avoid RequiredTypeException
             Object usernameObj = claims.get("username");
-            String userName = usernameObj == null ? null : usernameObj.toString();
+            String userName = usernameObj instanceof String ? (String) usernameObj : "";
 
             Object roleIdsObj = claims.get("roleIds");
             List<Long> roleIds = Collections.emptyList();

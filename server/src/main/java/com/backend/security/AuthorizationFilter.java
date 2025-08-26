@@ -50,7 +50,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (jwtData == null) {
             log.info("JWT Data is null, user is not logged in.");
         } else {
-            UserDetails userDetails = customUserDetailsService.loadUserById(jwtData.getUserId());
+            UserDetails userDetails = customUserDetailsService.loadUserFromToken(jwtData);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                     null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
