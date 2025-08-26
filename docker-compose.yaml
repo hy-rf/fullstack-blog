@@ -10,14 +10,12 @@ services:
       - ./nginx/ssl:/home/user/ssl:ro
       - ./nginx/validation:/home/user/validation:ro
     restart: always
-    platform: linux/amd64
 
   frontend:
     image: forum-frontend
     build:
       context: ./client
     restart: always
-    platform: linux/amd64
 
   backend:
     image: forum-backend
@@ -26,7 +24,6 @@ services:
     depends_on:
       - postgres
     restart: always
-    platform: linux/amd64
 
   postgres:
     image: postgres:17
@@ -38,7 +35,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
-    platform: linux/amd64
 
 volumes:
   pgdata:
