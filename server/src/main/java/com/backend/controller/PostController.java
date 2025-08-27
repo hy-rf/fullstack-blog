@@ -98,7 +98,7 @@ public class PostController {
             size = 50;
         Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
                 page, size);
-        Page<PostListViewModel> postListPage = postPage.map(p -> postMapper.toPostListViewModel(p));
+        Page<PostListViewModel> postListPage = postPage.map(postMapper::toPostListViewModel);
         return postListPage;
     }
 
