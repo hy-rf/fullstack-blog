@@ -6,6 +6,10 @@ export const useUserStore = defineStore("user", {
     user: {} as User,
     loaded: false,
   }),
+  getters: {
+    isUser: (state) => state.user.roles.includes("ROLE_user"),
+    isAdmin: (state) => state.user.roles.includes("ROLE_admin"),
+  },
   actions: {
     async fetchUser() {
       const res = await fetch("/api/me");
@@ -16,6 +20,7 @@ export const useUserStore = defineStore("user", {
       }
       const data = await res.json();
       const user: User = {
+        id: data.id,
         username: data.username,
         roles: data.roles,
       };
