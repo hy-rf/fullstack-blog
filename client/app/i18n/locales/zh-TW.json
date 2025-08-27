@@ -18,7 +18,8 @@
     "author": "作者",
     "author_info": "作者資訊",
     "replies": "回覆",
-    "username": "使用者名稱："
+    "username": "使用者名稱：",
+    "edit_button": "Edit"
   },
   "posts": {
     "author": "作者",
