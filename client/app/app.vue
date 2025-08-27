@@ -68,14 +68,14 @@ const runtimeConfig = useRuntimeConfig();
           </li>
           <!-- ...existing code... -->
 
-          <li v-if="hasRole('ROLE_admin')">
+          <li v-if="userStore.isAdmin">
             <NuxtLink to="/admin/users">{{ t("nav.users") }}</NuxtLink>
           </li>
-          <li v-if="hasRole('ROLE_user')">
+          <li v-if="userStore.isUser">
             <NuxtLink to="/new">{{ t("nav.new") }}</NuxtLink>
           </li>
 
-          <li v-if="hasRole('ROLE_user')">
+          <li v-if="userStore.isUser">
             <NuxtLink to="/me">{{ t("nav.me") }}</NuxtLink>
           </li>
         </ul>
@@ -99,7 +99,7 @@ const runtimeConfig = useRuntimeConfig();
             <span>👤 {{ username }}</span>
           </div>
           <div class="auth-links">
-            <ul v-if="username == 'Guest'" class="login-and-register">
+            <ul v-if="!userStore.isUser" class="login-and-register">
               <li>
                 <NuxtLink to="/login">{{ t("nav.login") }}</NuxtLink>
               </li>
@@ -282,5 +282,9 @@ h1 {
 }
 h2 {
   font-size: larger;
+}
+button {
+  padding-block: 0.4rem;
+  padding-inline: 0.8rem;
 }
 </style>
