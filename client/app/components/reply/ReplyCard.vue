@@ -33,19 +33,22 @@ const showReplyFormWrapper = computed(() => showReplyForm);
       <time>{{ new Date(reply.created).toLocaleString(locale) }}</time>
     </p>
   </div>
-  <button
-    v-if="userStore.user.roles.includes('ROLE_user')"
-    @click="showReplyForm = !showReplyForm"
-  >
-    Reply
-  </button>
-  <ReplyEditor
-    v-if="showReplyForm"
-    :replyId="reply.id.toString()"
-    :show-reply-form="showReplyFormWrapper"
-    :refresh-replies="refreshReplies"
-  />
-  <button @click="showReplies = !showReplies">
+  <div class="create-reply">
+    <button
+      class="toggle-reply-form-button"
+      v-if="userStore.isUser"
+      @click="showReplyForm = !showReplyForm"
+    >
+      Reply
+    </button>
+    <ReplyEditor
+      v-if="showReplyForm"
+      :replyId="reply.id.toString()"
+      :show-reply-form="showReplyFormWrapper"
+      :refresh-replies="refreshReplies"
+    />
+  </div>
+  <button class="toggle-reply-list-button" @click="showReplies = !showReplies">
     {{ showReplies ? "hide" : "show" }}
   </button>
   <ReplyList
@@ -59,8 +62,11 @@ const showReplyFormWrapper = computed(() => showReplyForm);
 <style lang="css" scoped>
 .reply-content {
   padding: 0.5rem;
-  border: 1px solid gray;
-  border-radius: 8px;
+  border: 1px solid #c8c8c8;
+  border-radius: 0.5rem;
+}
+.reply-content:hover {
+  border: 1px solid #808080;
 }
 .created-time {
   text-align: end;
@@ -68,5 +74,10 @@ const showReplyFormWrapper = computed(() => showReplyForm);
 time {
   font-size: smaller;
   color: gray;
+}
+.create-reply {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 </style>

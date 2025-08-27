@@ -35,6 +35,13 @@ const { t } = useI18n();
 const replyContent = ref("");
 const replyMessage = ref("");
 
+const isPostEditable = computed(() => {
+  const currentUser = userStore.user;
+  const currentPost = post.value;
+  if (!currentUser || !currentPost) return false;
+  return Number(currentUser.id) === Number(currentPost.author?.id);
+});
+
 useSeoMeta({
   title: () => (post.value ? post.value.title : "Post"),
   description: () =>
@@ -49,6 +56,11 @@ useSeoMeta({
   twitterDescription: () =>
     post.value ? post.value.content?.slice(0, 160) : "View post details",
 });
+
+const showEditPostForm = async () => {
+  console.log(userStore.isUser, userStore.user.id, post.value?.author.id);
+  console.log(userStore.isUser && userStore.user.id == post.value?.author.id);
+};
 
 const submitReply = async () => {
   replyMessage.value = "";
@@ -84,37 +96,33 @@ function refreshReplies() {
 <template>
   <div class="container">
     <div v-if="post" class="card">
-      <h1 class="title">{{ post.title }}</h1>
-
-      <div class="content" v-html="post.content"></div>
-
-      <client-only>
-        <p class="created-at">
-          Created at:
-          {{ new Date(post.createdAt).toLocaleString(locale) }}
-        </p>
-      </client-only>
+      <div class="post-main">
+        <strong class="title">{{ post.title }}</strong>
+        <div class="content" v-html="post.content"></div>
+      </div>
+      <div class="post-misc">
+        <div class="post-created-at">
+          <NuxtTime
+            :datetime="post.createdAt"
+            :relative="true"
+            :locale="locale"
+          />
+        </div>
+        <button v-if="isPostEditable" @click="showEditPostForm">
+          {{ t("post.edit_button") }}
+        </button>
+      </div>
 
       <hr />
 
       <div class="author-section">
-        <h3 class="subtitle">{{ t("post.author_info") }}</h3>
-        <ul class="author-list">
-          <li>
-            <strong>{{ t("post.username") }}</strong> {{ post.author.username }}
-          </li>
-          <!-- <li>
-            <strong>Verified:</strong>
-            <span
-              :class="post.author.emailVerified ? 'verified' : 'unverified'"
-            >
-              {{ post.author.emailVerified ? "Yes" : "No" }}
-            </span>
-          </li> -->
-        </ul>
+        <div class="author-info">
+          <NuxtLink :to="`/user/${post.author.id}`">
+            {{ post.author.username }}
+          </NuxtLink>
+        </div>
       </div>
       <div class="reply-section">
-        <h3 class="subtitle">{{ t("post.replies") }}</h3>
         <ReplyList :key="refreshKey" :replies="post.replies" />
       </div>
     </div>
@@ -127,7 +135,7 @@ function refreshReplies() {
       <p>Loading...</p>
     </div>
 
-    <div v-if="userStore.loaded">
+    <div v-if="userStore.isUser">
       <form class="reply-form" @submit.prevent="submitReply">
         <label for="reply-content" class="reply-label">Add a reply:</label>
         <textarea
@@ -161,7 +169,7 @@ function refreshReplies() {
 }
 
 .title {
-  font-size: 2rem;
+  font-size: x-large;
   margin-bottom: 20px;
   color: #222;
 }
@@ -200,24 +208,10 @@ hr {
   color: #444;
 }
 
-.author-list {
+.author-info {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.author-list li {
-  margin-bottom: 6px;
-}
-
-.verified {
-  color: green;
-  font-weight: bold;
-}
-
-.unverified {
-  color: red;
-  font-weight: bold;
 }
 
 .error {
@@ -270,5 +264,14 @@ hr {
   padding: 8px 24px;
   font-weight: 600;
   cursor: pointer;
+}
+.post-created-at {
+  margin-left: auto;
+  text-align: start;
+  line-height: 34px;
+  padding-right: 1rem;
+}
+.post-misc {
+  display: flex;
 }
 </style>

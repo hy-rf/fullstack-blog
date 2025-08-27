@@ -51,7 +51,6 @@ const submitReply = async () => {
 
 <template>
   <form class="reply-form" @submit.prevent="submitReply">
-    <label for="reply-content" class="reply-label">Add a reply:</label>
     <textarea
       id="reply-content"
       v-model="replyContent"
@@ -64,4 +63,25 @@ const submitReply = async () => {
   </form>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+.reply-form {
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+}
+#reply-content {
+  resize: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c8c8c8;
+  transition: border 0.3s ease;
+}
+#reply-content:focus {
+  border: 1px solid #808080;
+  outline: none;
+}
+button {
+  height: 2rem;
+  padding-inline: 1rem;
+}
+</style>

@@ -18,8 +18,8 @@ const props = defineProps<{
 <style scoped>
 ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
   border-left: 1px solid black;
 }
 li {
