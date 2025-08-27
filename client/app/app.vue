@@ -42,7 +42,8 @@ const { data: user } = await useAsyncData<User>("user", async () => {
 });
 
 userStore.init(user.value!);
-console.log(user.value);
+console.log("Client user initialized!");
+console.table(user.value);
 
 watch(
   () => userStore.loaded,
