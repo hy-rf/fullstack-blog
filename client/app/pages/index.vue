@@ -78,13 +78,13 @@ const {
   () => fetchPosts(route.query)
 );
 
+console.table(posts.value?.content);
+
 // Watch route query → update store (and form)
 watch(
   () => route.query,
   (q) => {
     searchStore.setFromRoute(q);
-    console.log("l");
-
     Object.assign(form, {
       keyword: searchStore.keyword,
       authorName: searchStore.authorName,

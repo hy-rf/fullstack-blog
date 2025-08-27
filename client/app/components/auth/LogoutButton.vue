@@ -9,7 +9,6 @@ async function handleLogout() {
   // TODO: check permission if user current is in
   const needToRedirect = route.path.startsWith("/admin");
   await userStore.logout();
-  alert("ok");
   if (needToRedirect) {
     router.push("/");
   }
