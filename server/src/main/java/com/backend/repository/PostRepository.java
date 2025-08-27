@@ -22,7 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
   @Override
   @NonNull
-  @EntityGraph(attributePaths = { "author", "replies", "replies" }) // Eagerly fetch replies
+  @EntityGraph(attributePaths = { "author", "replies", "replies" })
   Optional<Post> findById(@NonNull Long id);
 
   @Override
