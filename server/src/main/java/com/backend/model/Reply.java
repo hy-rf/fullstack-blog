@@ -34,7 +34,7 @@ public class Reply {
     private User author;
 
     @Column(nullable = false)
-    private OffsetDateTime created = OffsetDateTime.now();
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @Column(nullable = false)
     private OffsetDateTime updatedAt = OffsetDateTime.now();

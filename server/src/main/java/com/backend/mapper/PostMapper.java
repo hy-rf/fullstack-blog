@@ -45,7 +45,7 @@ public class PostMapper {
         ReplyDTO replyDTO = new ReplyDTO();
         replyDTO.setId(reply.getId());
         replyDTO.setContent(reply.getContent());
-        replyDTO.setCreated(reply.getCreated());
+        replyDTO.setCreated(reply.getCreatedAt());
         replyDTO.setAuthor(reply.getAuthor().toAuthorDto());
         replyDTO.setUpdatedAt(reply.getUpdatedAt());
         if (depth > 0 && reply.getReplies() != null) {

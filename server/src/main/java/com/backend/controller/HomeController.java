@@ -18,7 +18,6 @@ public class HomeController {
     @GetMapping("/home")
     @PreAuthorize("permitAll()")
     public String home(HttpServletResponse response) {
-        log.info("Home endpoint accessed");
         return title;
     }
 
