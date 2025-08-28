@@ -292,4 +292,8 @@ button {
   padding-block: 0.4rem;
   padding-inline: 0.8rem;
 }
+
+textarea {
+  resize: none;
+}
 </style>
