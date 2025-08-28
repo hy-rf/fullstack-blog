@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.PostListViewModel;
+import com.backend.dto.post.PostWithNumbersOfRepliesDTO;
 import com.backend.dto.post.UpdatePostDto;
 import com.backend.dto.post.UpdatePostRequest;
 import com.backend.dto.post.UpdatePostResponse;
@@ -55,12 +56,15 @@ public class PostController {
 
     @PostMapping("/post")
     @PreAuthorize("isAuthenticated()")
-    public String home(@RequestBody CreatePostRequest createPostRequest, HttpServletResponse response) {
+    public String home(@RequestBody CreatePostRequest createPostRequest,
+            HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval logic
-        postService.createPost(createPostRequest.getTitle(), createPostRequest.getContent(), userId);
+        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval
+                                           // logic
+        postService.createPost(createPostRequest.getTitle(), createPostRequest.getContent(),
+                userId);
         return "Successfully created post with title: " + createPostRequest.getTitle();
     }
 
@@ -69,7 +73,8 @@ public class PostController {
     public List<Post> getPostsByUser(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval logic
+        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval
+                                           // logic
         return postService.getPostsByUser(userId);
     }
 
@@ -85,19 +90,20 @@ public class PostController {
 
     // 3 db queries
     @GetMapping("/posts/search")
-    public Page<PostListViewModel> getPosts(
-            @RequestParam(required = false) String keyword,
+    public Page<PostListViewModel> getPosts(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String authorName,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore,
+            @RequestParam(required = false) @DateTimeFormat(
+                    iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
+            @RequestParam(required = false) @DateTimeFormat(
+                    iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String order,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         if (size > 50)
             size = 50;
-        Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order,
-                page, size);
+        Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore,
+                sortBy, order, page, size);
         Page<PostListViewModel> postListPage = postPage.map(postMapper::toPostListViewModel);
         return postListPage;
     }
@@ -127,37 +133,43 @@ public class PostController {
     }
 
     @GetMapping("/reply/{id}/replies")
-    public List<Reply> getRepliesByParentReplyId(@PathVariable Long id, HttpServletResponse response) {
+    public List<Reply> getRepliesByParentReplyId(@PathVariable Long id,
+            HttpServletResponse response) {
         List<Reply> reply = postService.getRepliesByParentReplyId(id);
         return reply;
     }
 
     @PutMapping("/post")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UpdatePostResponse> updatePost(@Valid @RequestBody UpdatePostRequest updatePostRequest) {
+    public ResponseEntity<UpdatePostResponse> updatePost(
+            @Valid @RequestBody UpdatePostRequest updatePostRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
         UpdatePostDto updatePostDto = new UpdatePostDto(updatePostRequest.getPostId(), userId,
                 updatePostRequest.getTitle(), updatePostRequest.getContent());
         UpdatePostResultDto updatePostResultDto = postService.UpdatePost(updatePostDto);
-        if (updatePostResultDto.getUpdatePostResultStatus().equals(UpdatePostResultStatus.POST_NOT_FOUND)) {
+        if (updatePostResultDto.getUpdatePostResultStatus()
+                .equals(UpdatePostResultStatus.POST_NOT_FOUND)) {
             return ResponseEntity.badRequest().body(new UpdatePostResponse(false, "error"));
         }
-        if (updatePostResultDto.getUpdatePostResultStatus().equals(UpdatePostResultStatus.AUTHOR_UNMATCHED)) {
+        if (updatePostResultDto.getUpdatePostResultStatus()
+                .equals(UpdatePostResultStatus.AUTHOR_UNMATCHED)) {
             return ResponseEntity.badRequest().body(new UpdatePostResponse(false, "error"));
         }
         if (updatePostResultDto.getUpdatePostResultStatus().equals(UpdatePostResultStatus.ERROR)) {
             return ResponseEntity.badRequest().body(new UpdatePostResponse(false, "error"));
         }
-        return ResponseEntity.ok().body(new UpdatePostResponse(true, updatePostResultDto.getMessage()));
+        return ResponseEntity.ok()
+                .body(new UpdatePostResponse(true, updatePostResultDto.getMessage()));
     }
 
     /**
      * Better getting post by id
      */
-    // @GetMapping("/article/{id}")
-    // public ResponseEntity<> getPostById() {
-
-    // }
+    @GetMapping("/article")
+    public PostWithNumbersOfRepliesDTO getPostById() {
+        PostWithNumbersOfRepliesDTO test = postService.findPostById(1L);
+        return test;
+    }
 }
