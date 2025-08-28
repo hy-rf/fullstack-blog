@@ -60,7 +60,10 @@ useSeoMeta({
 const showEditPostForm = async () => {
   console.log(userStore.isUser, userStore.user.id, post.value?.author.id);
   console.log(userStore.isUser && userStore.user.id == post.value?.author.id);
+  showPostEditor.value = !showPostEditor.value;
 };
+
+const showPostEditor = ref(false);
 
 const submitReply = async () => {
   replyMessage.value = "";
@@ -71,14 +74,12 @@ const submitReply = async () => {
       body: JSON.stringify({
         postId: postId,
         content: replyContent.value,
-        // parentReplyId can be added here if replying to another reply
       }),
     });
     if (res.ok) {
       replyMessage.value = "Reply submitted!";
       replyContent.value = "";
-      refreshReplies(); // Trigger a refresh of replies
-      // Optionally, reload replies here
+      refreshReplies();
     } else {
       replyMessage.value = await res.text();
     }
@@ -113,7 +114,15 @@ function refreshReplies() {
         </button>
       </div>
 
-      <hr />
+      <div>
+        <PostEditor
+          v-if="showPostEditor"
+          :post-to-edit="{
+            title: post.title,
+            content: post.content,
+          }"
+        />
+      </div>
 
       <div class="author-section">
         <div class="author-info">
