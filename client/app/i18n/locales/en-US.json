@@ -25,7 +25,10 @@
     "author_info": "Author Info",
     "replies": "Replies",
     "username": "User name: ",
-    "edit_button": "Edit"
+    "edit_button": "Edit",
+    "edit": {
+      "submit_button": "Submit"
+    }
   },
   "posts": {
     "author": "By ",

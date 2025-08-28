@@ -25,7 +25,10 @@
     "author_info": "投稿者情報",
     "replies": "返信",
     "username": "ユーザー名: ",
-    "edit_button": "Edit"
+    "edit_button": "Edit",
+    "edit": {
+      "submit_button": "Submit"
+    }
   },
   "posts": {
     "author": "投稿者: ",

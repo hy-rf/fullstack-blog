@@ -25,7 +25,10 @@
     "author_info": "作者信息",
     "replies": "回复",
     "username": "用户名：",
-    "edit_button": "Edit"
+    "edit_button": "Edit",
+    "edit": {
+      "submit_button": "Submit"
+    }
   },
   "posts": {
     "author": "作者：",
