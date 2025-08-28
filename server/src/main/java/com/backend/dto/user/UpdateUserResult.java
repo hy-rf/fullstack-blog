@@ -14,6 +14,4 @@ public class UpdateUserResult {
   private UpdateUserFieldResult<String> email;
 
   private UpdateUserFieldResult<String> password;
-
-  private UpdateUserFieldResult<String> fullName;
 }

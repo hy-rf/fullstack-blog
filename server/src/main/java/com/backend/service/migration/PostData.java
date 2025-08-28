@@ -7,6 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class PostData {
   private Long authorId;
-  private String title;
   private String content;
 }

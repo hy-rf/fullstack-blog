@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.dto.auth.LoginRequest;
 import com.backend.dto.user.CreateUserRequest;
 import com.backend.dto.user.CreateUserResult;
 import com.backend.dto.user.CreateUserStatus;
@@ -37,10 +36,11 @@ public class UserController {
 
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/user")
-    public ResponseEntity<CreateUserResult> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+    public ResponseEntity<CreateUserResult> createUser(
+            @RequestBody @Valid CreateUserRequest createUserRequest) {
         // TODO: Call User Service
-        return new ResponseEntity<CreateUserResult>(new CreateUserResult(CreateUserStatus.SUCCESS, null),
-                HttpStatusCode.valueOf(200));
+        return new ResponseEntity<CreateUserResult>(
+                new CreateUserResult(CreateUserStatus.SUCCESS, null), HttpStatusCode.valueOf(200));
     }
 
     @PreAuthorize("hasRole('admin')")
@@ -62,14 +62,15 @@ public class UserController {
     }
 
     /**
-     * Updates a user based on the provided UpdateUserRequest.
-     * Only accessible by users with the same id.
+     * Updates a user based on the provided UpdateUserRequest. Only accessible by users with the
+     * same id.
      *
      * @param updateUserRequest
      * @return
      */
     @PutMapping("/user")
-    public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<UpdateUserResult> updateUser(
+            @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();

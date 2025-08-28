@@ -28,12 +28,8 @@ public class MigrationService {
   private final RoleRepository roleRepository;
   private final PostRepository postRepository;
 
-  public MigrationService(
-      PostDataProvider postDataProvider,
-      UserDataProvider userDataProvider,
-      UserRepository userRepository,
-      RoleRepository roleRepository,
-      PostRepository postRepository) {
+  public MigrationService(PostDataProvider postDataProvider, UserDataProvider userDataProvider,
+      UserRepository userRepository, RoleRepository roleRepository, PostRepository postRepository) {
     this.postDataProvider = postDataProvider;
     this.userDataProvider = userDataProvider;
     this.userRepository = userRepository;
@@ -102,7 +98,6 @@ public class MigrationService {
       }
       User user = userOpt.get();
       Post post = new Post();
-      post.setTitle(pd.getTitle());
       post.setContent(pd.getContent());
       post.setAuthor(user);
       postRepository.save(post);

@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 public class AuthorDto {
   private Long id;
   private String username;
-  private String email;
   private List<Role> roles;
 }

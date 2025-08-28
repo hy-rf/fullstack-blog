@@ -13,18 +13,14 @@ public class CustomUserDetails implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
-    private final boolean isActive;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPasswordHash();
-        this.isActive = Boolean.TRUE.equals(user.getIsActive());
-        this.authorities = user.getRoles().stream()
-                .map(Role::getName)
-                .map(role -> (GrantedAuthority) () -> "ROLE_" + role)
-                .collect(Collectors.toList());
+        this.authorities = user.getRoles().stream().map(Role::getName)
+                .map(role -> (GrantedAuthority) () -> "ROLE_" + role).collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -52,17 +48,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return isActive;
-    }
-
-    @Override
     public boolean isCredentialsNonExpired() {
         return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive;
     }
 }

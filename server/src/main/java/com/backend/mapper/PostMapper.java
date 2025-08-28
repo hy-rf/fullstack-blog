@@ -6,9 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.PostListViewModel;
-import com.backend.dto.post.ReplyDTO;
 import com.backend.model.Post;
-import com.backend.model.Reply;
 
 @Component
 public class PostMapper {
@@ -16,43 +14,23 @@ public class PostMapper {
     public PostListViewModel toPostListViewModel(Post post) {
         PostListViewModel postListViewModel = new PostListViewModel();
         postListViewModel.setId(post.getId());
-        postListViewModel.setTitle(post.getTitle());
         postListViewModel.setContent(post.getContent());
         postListViewModel.setAuthor(post.getAuthor().toAuthorViewModel());
         postListViewModel.setCreatedAt(post.getCreatedAt());
-        postListViewModel.setUpdatedAt(post.getUpdatedAt());
-        postListViewModel.setReplyCount(post.getReplies().size());
+        postListViewModel.setPostCount(post.getPosts().size());
         return postListViewModel;
     }
 
     public PostDTO toPostDTO(Post post, int depth) {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
-        postDTO.setTitle(post.getTitle());
         postDTO.setContent(post.getContent());
         postDTO.setAuthor(post.getAuthor().toAuthorDto());
         postDTO.setCreatedAt(post.getCreatedAt());
-        postDTO.setUpdatedAt(post.getUpdatedAt());
         if (depth > 0) {
-            postDTO.setReplies(post.getReplies().stream().filter(p -> p.getParentReply() == null)
-                    .map(reply -> toReplyDTO(reply, depth - 1))
-                    .collect(Collectors.toList()));
+            postDTO.setPosts(post.getPosts().stream().filter(p -> p.getParentPost() == null)
+                    .map(reply -> toPostDTO(reply, depth - 1)).collect(Collectors.toList()));
         }
         return postDTO;
-    }
-
-    public ReplyDTO toReplyDTO(Reply reply, int depth) {
-        ReplyDTO replyDTO = new ReplyDTO();
-        replyDTO.setId(reply.getId());
-        replyDTO.setContent(reply.getContent());
-        replyDTO.setCreated(reply.getCreatedAt());
-        replyDTO.setAuthor(reply.getAuthor().toAuthorDto());
-        replyDTO.setUpdatedAt(reply.getUpdatedAt());
-        if (depth > 0 && reply.getReplies() != null) {
-            replyDTO.setReplies(reply.getReplies().stream()
-                    .map(r -> toReplyDTO(r, depth - 1))
-                    .collect(Collectors.toList()));
-        }
-        return replyDTO;
     }
 }

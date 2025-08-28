@@ -65,33 +65,25 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
         User user = userOpt.get();
-        UpdateUserResult updateUserResult = new UpdateUserResult(
-                user.getId(), null, null, null, null);
+        UpdateUserResult updateUserResult = new UpdateUserResult(user.getId(), null, null, null);
 
         if (updateUserRequest.getUsername() != null) {
-            updateUserResult.setUsername(
-                    new UpdateUserFieldResult<>("username", user.getUsername(), updateUserRequest.getUsername()));
+            updateUserResult.setUsername(new UpdateUserFieldResult<>("username", user.getUsername(),
+                    updateUserRequest.getUsername()));
             user.setUsername(updateUserRequest.getUsername());
         }
 
         if (updateUserRequest.getEmail() != null) {
-            updateUserResult.setEmail(
-                    new UpdateUserFieldResult<>("email", user.getEmail(), updateUserRequest.getEmail()));
+            updateUserResult.setEmail(new UpdateUserFieldResult<>("email", user.getEmail(),
+                    updateUserRequest.getEmail()));
             user.setEmail(updateUserRequest.getEmail());
         }
 
         if (updateUserRequest.getPassword() != null) {
-            updateUserResult.setPassword(
-                    new UpdateUserFieldResult<>("password", "********", "********") // don’t expose raw password
-            );
+            updateUserResult
+                    .setPassword(new UpdateUserFieldResult<>("password", "********", "********"));
             String hashedPassword = PasswordUtils.hashPassword(updateUserRequest.getPassword());
             user.setPasswordHash(hashedPassword);
-        }
-
-        if (updateUserRequest.getFullName() != null) {
-            updateUserResult.setFullName(
-                    new UpdateUserFieldResult<>("fullName", user.getFullName(), updateUserRequest.getFullName()));
-            user.setFullName(updateUserRequest.getFullName());
         }
         userRepository.save(user);
         return updateUserResult;

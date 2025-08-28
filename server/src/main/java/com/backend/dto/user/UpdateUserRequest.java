@@ -13,6 +13,4 @@ public class UpdateUserRequest {
 
   private String password;
 
-  private String fullName;
-
 }

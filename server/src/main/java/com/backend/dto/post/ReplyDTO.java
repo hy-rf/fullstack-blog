@@ -11,6 +11,5 @@ public class ReplyDTO {
     private String content;
     private AuthorDto author;
     private OffsetDateTime created;
-    private OffsetDateTime updatedAt;
     private List<ReplyDTO> replies;
 }

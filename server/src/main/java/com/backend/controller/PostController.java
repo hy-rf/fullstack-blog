@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.backend.dto.post.CreatePostRequest;
 import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.PostListViewModel;
 import com.backend.dto.post.PostWithNumbersOfRepliesDTO;
@@ -32,7 +31,6 @@ import com.backend.dto.post.UpdatePostResultDto;
 import com.backend.dto.post.UpdatePostResultStatus;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
-import com.backend.model.Reply;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
 
@@ -48,24 +46,17 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("/posts")
-    // @PreAuthorize("isAuthenticated()")
-    public List<Post> gePosts(HttpServletResponse response) {
-        return postService.getAllPosts();
-    }
-
     @PostMapping("/post")
     @PreAuthorize("isAuthenticated()")
-    public String home(@RequestBody CreatePostRequest createPostRequest,
+    public String createPost(@RequestBody CreatePostRequest createPostRequest,
             HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval
-                                           // logic
-        postService.createPost(createPostRequest.getTitle(), createPostRequest.getContent(),
-                userId);
-        return "Successfully created post with title: " + createPostRequest.getTitle();
+        Long userId = userDetails.getId();
+        postService.createPost(createPostRequest.getContent(), userId,
+                createPostRequest.getPostId());
+        return "Successfully created post with title: " + createPostRequest.getContent();
     }
 
     @GetMapping("/my-posts")
@@ -108,37 +99,6 @@ public class PostController {
         return postListPage;
     }
 
-    @PostMapping("reply")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> replyToPost(@Valid @RequestBody CreateReplyRequest replyRequest,
-            HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-        String content = replyRequest.getContent();
-        Optional<Long> postId = replyRequest.getPostId();
-        Optional<Long> parentReplyId = replyRequest.getParentReplyId();
-        String result = postService.createReply(userId, content, postId, parentReplyId);
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/post/{id}/replies")
-    public List<Reply> getRepliesByPostId(@PathVariable Long id, HttpServletResponse response) {
-        List<Reply> replies = postService.getRepliesByPostId(id);
-        if (replies == null || replies.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return null; // or throw an exception
-        }
-        return replies;
-    }
-
-    @GetMapping("/reply/{id}/replies")
-    public List<Reply> getRepliesByParentReplyId(@PathVariable Long id,
-            HttpServletResponse response) {
-        List<Reply> reply = postService.getRepliesByParentReplyId(id);
-        return reply;
-    }
-
     @PutMapping("/post")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UpdatePostResponse> updatePost(
@@ -147,7 +107,7 @@ public class PostController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
         UpdatePostDto updatePostDto = new UpdatePostDto(updatePostRequest.getPostId(), userId,
-                updatePostRequest.getTitle(), updatePostRequest.getContent());
+                updatePostRequest.getContent());
         UpdatePostResultDto updatePostResultDto = postService.UpdatePost(updatePostDto);
         if (updatePostResultDto.getUpdatePostResultStatus()
                 .equals(UpdatePostResultStatus.POST_NOT_FOUND)) {

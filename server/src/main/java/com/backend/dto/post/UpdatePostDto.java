@@ -8,6 +8,5 @@ import lombok.Data;
 public class UpdatePostDto {
   private Long postId;
   private Long authorId;
-  private String title;
   private String content;
 }
