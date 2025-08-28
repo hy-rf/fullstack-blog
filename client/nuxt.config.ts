@@ -22,11 +22,11 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/fonts",
     "@nuxt/eslint",
-    // "@nuxt/ui",
     "@pinia/nuxt",
     "@nuxtjs/i18n",
     "nuxt-tiptap-editor",
     "nuxt-gtag",
+    "@nuxtjs/mdc",
   ],
 
   runtimeConfig: {

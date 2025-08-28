@@ -22,8 +22,7 @@ defineProps({
       <!-- <p v.html="post.content" class="post-content"></p> -->
     </div>
     <div class="post-other-info">
-      <div>
-        {{ t("posts.author") }}:
+      <div class="author-info">
         <NuxtLink :to="`/user/${post.author.id}`">
           {{ post.author.username }}
         </NuxtLink>
@@ -46,6 +45,12 @@ defineProps({
 <style lang="css" scoped>
 .post-card {
   padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  transition: border 0.3s ease;
+  &:hover {
+    border: 1px solid #808080;
+  }
 }
 .post-main-info {
   gap: 0.5rem;
@@ -66,5 +71,9 @@ defineProps({
   margin-right: 1rem;
   font-size: small;
   padding-top: 4px;
+}
+.created-at {
+  width: 6rem;
+  text-align-last: right;
 }
 </style>

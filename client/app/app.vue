@@ -255,6 +255,10 @@ nav {
   display: flex;
   gap: 1rem;
   list-style: none;
+  & > li {
+    width: 4rem;
+    text-align: center;
+  }
 }
 
 @media (min-width: 768px) {

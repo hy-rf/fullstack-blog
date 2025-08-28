@@ -14,6 +14,11 @@
     "register": "登録",
     "users": "ユーザー"
   },
+  "home": {
+    "feed": "フィード",
+    "asc": "古い順",
+    "desc": "新しい順"
+  },
   "post": {
     "author": "投稿者: ",
     "author_info": "投稿者情報",
