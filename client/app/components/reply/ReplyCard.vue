@@ -52,7 +52,7 @@ const showReplyFormWrapper = computed(() => showReplyForm);
     {{ showReplies ? "hide" : "show" }}
   </button>
   <ReplyList
-    v-if="showReplies && reply.replies"
+    v-if="showReplies && reply.replies.length > 0"
     :key="refreshKey"
     :reply-id="reply.id.toString()"
     :replies="reply.replies"
