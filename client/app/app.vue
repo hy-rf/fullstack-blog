@@ -10,7 +10,7 @@ const headers = useRequestHeaders(["cookie"]);
 
 const username = computed(() => {
   return (
-    (userStore.user && userStore.user.username) ||
+    (userStore.isUser && userStore.user.username) ||
     t("auth.username_guest") ||
     "Guest"
   );
@@ -66,8 +66,9 @@ const runtimeConfig = useRuntimeConfig();
           <li>
             <NuxtLink to="/">{{ t("nav.home") }}</NuxtLink>
           </li>
-          <!-- ...existing code... -->
-
+          <li>
+            <NuxtLink to="/post">{{ t("nav.search") }}</NuxtLink>
+          </li>
           <li v-if="userStore.isAdmin">
             <NuxtLink to="/admin/users">{{ t("nav.users") }}</NuxtLink>
           </li>
@@ -232,10 +233,6 @@ nav {
   display: flex;
 }
 
-.user-avatar {
-  padding-right: 2rem;
-}
-
 .loading {
   color: #aaa;
   font-size: 0.95rem;
@@ -259,6 +256,10 @@ nav {
     width: 4rem;
     text-align: center;
   }
+}
+
+.user-avatar {
+  width: 5rem;
 }
 
 @media (min-width: 768px) {
