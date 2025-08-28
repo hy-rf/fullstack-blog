@@ -78,8 +78,6 @@ const {
   () => fetchPosts(route.query)
 );
 
-console.table(posts.value?.content);
-
 // Watch route query → update store (and form)
 watch(
   () => route.query,
