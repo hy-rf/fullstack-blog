@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   },
 
   tiptap: {
-    prefix: "Tiptap", //prefix for Tiptap imports, composables not included
+    prefix: "Tiptap",
   },
 
   gtag: {
