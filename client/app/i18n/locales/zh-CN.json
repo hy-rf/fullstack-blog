@@ -17,7 +17,8 @@
   "home": {
     "feed": "动态",
     "asc": "旧到新",
-    "desc": "新到旧"
+    "desc": "新到旧",
+    "search": "搜索帖子"
   },
   "post": {
     "author": "作者：",

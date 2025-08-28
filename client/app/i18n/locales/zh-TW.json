@@ -12,7 +12,8 @@
     "new": "新增",
     "posts": "文章專區",
     "register": "註冊",
-    "users": "用戶管理"
+    "users": "用戶管理",
+    "search": "搜尋文章"
   },
   "home": {
     "feed": "動態",
