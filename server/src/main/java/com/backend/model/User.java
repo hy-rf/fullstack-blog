@@ -18,9 +18,8 @@ import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.backend.dto.post.AuthorDto;
-import com.backend.dto.post.AuthorViewModel;
+import com.backend.service.dto.post.AuthorDto;
+import com.backend.service.dto.post.AuthorViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

@@ -1,15 +1,15 @@
 package com.backend.service;
 
-import com.backend.dto.post.PostDTO;
-import com.backend.dto.post.UpdatePostDto;
-import com.backend.dto.post.UpdatePostResultDto;
-import com.backend.dto.post.UpdatePostResultStatus;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
+import com.backend.service.dto.post.PostDTO;
+import com.backend.service.dto.post.UpdatePostDto;
+import com.backend.service.dto.post.UpdatePostResultDto;
+import com.backend.service.dto.post.UpdatePostResultStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

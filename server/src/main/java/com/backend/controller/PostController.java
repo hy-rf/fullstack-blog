@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.backend.dto.post.CreatePostRequest;
-import com.backend.dto.post.PostDTO;
-import com.backend.dto.post.PostListViewModel;
-import com.backend.dto.post.UpdatePostDto;
-import com.backend.dto.post.UpdatePostRequest;
-import com.backend.dto.post.UpdatePostResponse;
-import com.backend.dto.post.UpdatePostResultDto;
-import com.backend.dto.post.UpdatePostResultStatus;
+import com.backend.controller.dto.post.CreatePostRequest;
+import com.backend.controller.dto.post.PostListViewModel;
+import com.backend.controller.dto.post.UpdatePostRequest;
+import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
+import com.backend.service.dto.post.PostDTO;
+import com.backend.service.dto.post.UpdatePostDto;
+import com.backend.service.dto.post.UpdatePostResultDto;
+import com.backend.service.dto.post.UpdatePostResultStatus;
 
 @Slf4j
 @RestController

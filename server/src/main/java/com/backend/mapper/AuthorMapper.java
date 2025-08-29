@@ -1,7 +1,7 @@
 package com.backend.mapper;
 
-import com.backend.dto.post.AuthorDto;
 import com.backend.model.User;
+import com.backend.service.dto.post.AuthorDto;
 
 public class AuthorMapper {
   public AuthorDto toAuthorDto(User user) {

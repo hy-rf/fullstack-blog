@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.backend.dto.user.CreateUserRequest;
-import com.backend.dto.user.CreateUserResult;
-import com.backend.dto.user.CreateUserStatus;
-import com.backend.dto.user.UpdateUserRequest;
-import com.backend.dto.user.UpdateUserResult;
+import com.backend.controller.dto.user.CreateUserRequest;
+import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.model.User;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UserService;
-
+import com.backend.service.dto.user.CreateUserResult;
+import com.backend.service.dto.user.CreateUserStatus;
+import com.backend.service.dto.user.UpdateUserCommand;
+import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
 
 @RestController
@@ -75,7 +74,10 @@ public class UserController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
         updateUserRequest.setId(userId);
-        UpdateUserResult result = userService.updateUser(updateUserRequest);
+        UpdateUserCommand updateCommand =
+                new UpdateUserCommand(userId, updateUserRequest.getUsername(),
+                        updateUserRequest.getEmail(), updateUserRequest.getPassword());
+        UpdateUserResult result = userService.updateUser(updateCommand);
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 }

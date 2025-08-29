@@ -9,14 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.backend.repository.UserRepository;
-
+import com.backend.service.dto.user.UpdateUserFieldResult;
+import com.backend.service.dto.user.UpdateUserResult;
+import com.backend.service.dto.user.UpdateUserCommand;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import com.backend.common.PasswordUtils;
-import com.backend.dto.user.UpdateUserFieldResult;
-import com.backend.dto.user.UpdateUserRequest;
-import com.backend.dto.user.UpdateUserResult;
 import com.backend.model.User;
 
 @Service
@@ -56,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public UpdateUserResult updateUser(UpdateUserRequest updateUserRequest) {
+    public UpdateUserResult updateUser(UpdateUserCommand updateUserRequest) {
         Optional<User> userOpt = userRepository.findById(updateUserRequest.getId());
         if (!userOpt.isPresent()) {
             log.error("User with ID {} not found", updateUserRequest.getId());

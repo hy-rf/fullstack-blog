@@ -3,10 +3,9 @@ package com.backend.mapper;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
-
-import com.backend.dto.post.PostDTO;
-import com.backend.dto.post.PostListViewModel;
+import com.backend.controller.dto.post.PostListViewModel;
 import com.backend.model.Post;
+import com.backend.service.dto.post.PostDTO;
 
 @Component
 public class PostMapper {

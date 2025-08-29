@@ -13,8 +13,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-import com.backend.dto.post.PostWithNumbersOfRepliesDTO;
 import com.backend.model.Post;
+import com.backend.service.dto.post.PostWithNumbersOfRepliesDTO;
 
 
 @Repository

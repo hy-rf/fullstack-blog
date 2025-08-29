@@ -1,0 +1,11 @@
+package com.backend.controller.dto.post;
+
+import java.util.Optional;
+import lombok.Data;
+
+@Data
+public class CreatePostRequest {
+  private String content;
+  private Optional<Long> rootPostId = Optional.empty();
+  private Optional<Long> postId = Optional.empty();
+}
