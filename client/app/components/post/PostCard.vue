@@ -73,7 +73,7 @@ defineProps({
   padding-top: 4px;
 }
 .created-at {
-  width: 6rem;
+  width: 7rem;
   text-align-last: right;
 }
 </style>
