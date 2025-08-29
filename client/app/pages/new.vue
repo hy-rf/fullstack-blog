@@ -16,7 +16,7 @@ const submitPost = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: content,
+        content: content.value,
       }),
     });
 
