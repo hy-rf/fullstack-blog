@@ -1,7 +1,7 @@
-import type Post from "./Post";
+import type PostSummary from "./PostSummary";
 
 export default interface PostList {
-  content: Post[];
+  content: PostSummary[];
   totalElements: number;
   totalPages: number;
   last: boolean;
