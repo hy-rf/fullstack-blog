@@ -45,13 +45,3 @@ ALTER TABLE if EXISTS user_roles ADD FOREIGN KEY (user_id) REFERENCES users;
 INSERT INTO roles (name) VALUES ('admin');
 
 INSERT INTO roles (name) VALUES ('user');
-
-INSERT INTO users (username, password_hash, created_at) VALUES (
-    'admin',
-    'BuNwot9AE3U+xKRiBav5VA==:vk2lTIZM9O3HnbL/4KyxOaXcR+cFnd33uIbS6H3bFfI=',
-    '2025-08-27 11:59:34.200467+00'
-);
-
-INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
-
-INSERT INTO user_roles (user_id, role_id) VALUES (1, 2);

@@ -3,8 +3,6 @@ package com.backend.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.backend.repository.RoleRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +24,11 @@ import com.backend.model.User;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordUtils passwordUtils;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, PasswordUtils passwordUtils) {
         this.userRepository = userRepository;
+        this.passwordUtils = passwordUtils;
     }
 
     // Implement methods for user management, such as creating, updating, and
@@ -80,7 +80,7 @@ public class UserService {
         if (updateUserRequest.getPassword() != null) {
             updateUserResult
                     .setPassword(new UpdateUserFieldResult<>("password", "********", "********"));
-            String hashedPassword = PasswordUtils.hashPassword(updateUserRequest.getPassword());
+            String hashedPassword = passwordUtils.hashPassword(updateUserRequest.getPassword());
             user.setPasswordHash(hashedPassword);
         }
         userRepository.save(user);

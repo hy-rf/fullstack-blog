@@ -13,7 +13,6 @@ import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,14 +25,17 @@ public class MigrationService {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PostRepository postRepository;
+  private final PasswordUtils passwordUtils;
 
   public MigrationService(PostDataProvider postDataProvider, UserDataProvider userDataProvider,
-      UserRepository userRepository, RoleRepository roleRepository, PostRepository postRepository) {
+      UserRepository userRepository, RoleRepository roleRepository, PostRepository postRepository,
+      PasswordUtils passwordUtils) {
     this.postDataProvider = postDataProvider;
     this.userDataProvider = userDataProvider;
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
     this.postRepository = postRepository;
+    this.passwordUtils = passwordUtils;
   }
 
   @Transactional
@@ -48,7 +50,7 @@ public class MigrationService {
 
     User newUser = new User();
     newUser.setUsername(userData.getUsername());
-    String hashedPassword = PasswordUtils.hashPassword(userData.getPassword());
+    String hashedPassword = passwordUtils.hashPassword(userData.getPassword());
     newUser.setPasswordHash(hashedPassword);
 
     Role userRole = roleRepository.findByName("user").orElseGet(() -> {
@@ -79,7 +81,7 @@ public class MigrationService {
     userData.forEach(data -> {
       User user = new User();
       user.setUsername(data.getUsername());
-      user.setPasswordHash(PasswordUtils.hashPassword(data.getPassword()));
+      user.setPasswordHash(passwordUtils.hashPassword(data.getPassword()));
       userRepository.save(user);
     });
     return "done";

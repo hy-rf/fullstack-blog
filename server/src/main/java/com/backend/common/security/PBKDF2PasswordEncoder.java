@@ -10,13 +10,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
+
+  private final PasswordUtils passwordUtils;
+
+  public PBKDF2PasswordEncoder(PasswordUtils passwordUtils) {
+    this.passwordUtils = passwordUtils;
+  }
+
   @Override
   public String encode(CharSequence rawPassword) {
-    return PasswordUtils.hashPassword(rawPassword.toString());
+    return passwordUtils.hashPassword(rawPassword.toString());
   }
 
   @Override
   public boolean matches(CharSequence rawPassword, String encodedPassword) {
-    return PasswordUtils.verifyPassword(rawPassword.toString(), encodedPassword);
+    return passwordUtils.verifyPassword(rawPassword.toString(), encodedPassword);
   }
 }

@@ -28,6 +28,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JwtUtils jwtUtils;
+    private final PasswordUtils passwordUtils;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -35,17 +36,19 @@ public class AuthService {
     @Value("${jwt.secret.refresh}")
     private String jwtSecretRefresh;
 
-    public AuthService(UserRepository userRepository, RoleRepository roleRepository, JwtUtils jwtUtils) {
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository,
+            JwtUtils jwtUtils, PasswordUtils passwordUtils) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
+        this.passwordUtils = passwordUtils;
     }
 
     public RegisterResult registerUser(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
             return new RegisterResult(RegisterStatus.USERNAME_TAKEN);
         }
-        String hash = PasswordUtils.hashPassword(password);
+        String hash = passwordUtils.hashPassword(password);
 
         User user = new User();
         user.setUsername(username);
@@ -71,7 +74,7 @@ public class AuthService {
             return new LoginResult("User not found", LoginStatus.USER_NOT_FOUND, null, null);
         }
         User user = userOpt.get();
-        if (!PasswordUtils.verifyPassword(password, user.getPasswordHash())) {
+        if (!passwordUtils.verifyPassword(password, user.getPasswordHash())) {
             return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD, null, null);
         }
 
@@ -80,10 +83,9 @@ public class AuthService {
         Stream<Role> roleStream = roles.stream();
         Stream<String> roleNameStream = roleStream.map(Role::getName);
         List<String> roleNames = roleNameStream.toList();
-        String token = jwtUtils.generateToken(userId, roleNames,
-                jwtSecret, 600000L, username);
-        String refreshToken = jwtUtils.generateToken(userId, roleNames,
-                jwtSecretRefresh, 3600000L, username);
+        String token = jwtUtils.generateToken(userId, roleNames, jwtSecret, 600000L, username);
+        String refreshToken =
+                jwtUtils.generateToken(userId, roleNames, jwtSecretRefresh, 3600000L, username);
         return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
     }
 
@@ -93,8 +95,8 @@ public class AuthService {
 
     public RefreshResult refreshToken(String token, String refreshToken) {
         JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
-        String newToken = jwtUtils.generateToken(refreshData.getUserId(), refreshData.getRoleNames(), jwtSecret,
-                60000L, refreshData.getUserName());
+        String newToken = jwtUtils.generateToken(refreshData.getUserId(),
+                refreshData.getRoleNames(), jwtSecret, 60000L, refreshData.getUserName());
         return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
     }
 }
