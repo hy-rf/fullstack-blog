@@ -30,6 +30,12 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final PasswordUtils passwordUtils;
 
+    @Value("${auth.token.age.days}")
+    private int tokenAgeDays;
+
+    @Value("${auth.refresh.age.days}")
+    private int refreshAgeDays;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -81,9 +87,9 @@ public class AuthService {
         Stream<Role> roleStream = roles.stream();
         Stream<String> roleNameStream = roleStream.map(Role::getName);
         List<String> roleNames = roleNameStream.toList();
-        String token = jwtUtils.generateToken(userId, roleNames, jwtSecret, 600000L, username);
-        String refreshToken =
-                jwtUtils.generateToken(userId, roleNames, jwtSecretRefresh, 3600000L, username);
+        String token = jwtUtils.generateToken(userId, roleNames, jwtSecret, tokenAgeDays, username);
+        String refreshToken = jwtUtils.generateToken(userId, roleNames, jwtSecretRefresh,
+                refreshAgeDays, username);
         return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
     }
 
@@ -94,7 +100,7 @@ public class AuthService {
     public RefreshResult refreshToken(String token, String refreshToken) {
         JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
         String newToken = jwtUtils.generateToken(refreshData.getUserId(),
-                refreshData.getRoleNames(), jwtSecret, 60000L, refreshData.getUserName());
+                refreshData.getRoleNames(), jwtSecret, tokenAgeDays, refreshData.getUserName());
         return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
     }
 }

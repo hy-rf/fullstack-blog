@@ -1,7 +1,7 @@
 package com.backend.controller;
 
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -35,6 +35,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AuthController {
 
+  @Value("${auth.token.age.days}")
+  private int tokenAgeDays;
+
+  @Value("${auth.refresh.age.days}")
+  private int refreshAgeDays;
+
   private final CookieHelper cookieHelper;
   private final JwtUtils jwtUtils;
   private final AuthService authService;
@@ -47,9 +53,10 @@ public class AuthController {
 
   @PostMapping("/register")
   @Operation(summary = "Register")
-  public ResponseEntity<String> signup(@Valid @RequestBody RegisterRequest registerRequest, HttpSession session,
-      HttpServletResponse response) {
-    RegisterResult result = authService.registerUser(registerRequest.username, registerRequest.password);
+  public ResponseEntity<String> signup(@Valid @RequestBody RegisterRequest registerRequest,
+      HttpSession session, HttpServletResponse response) {
+    RegisterResult result =
+        authService.registerUser(registerRequest.username, registerRequest.password);
     return switch (result.getStatus()) {
       case SUCCESS -> ResponseEntity.ok().body("User registered successfully");
       case USERNAME_TAKEN -> ResponseEntity.badRequest().body("Username is already taken");
@@ -63,14 +70,16 @@ public class AuthController {
   @Operation(summary = "Login as user")
   public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session,
       HttpServletResponse response) {
-    LoginResult result = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
+    LoginResult result =
+        authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
     return switch (result.getStatus()) {
       case SUCCESS -> {
         String token = result.getToken();
-        Cookie tokenCookie = cookieHelper.createCookie("token", token, 600);
+        Cookie tokenCookie = cookieHelper.createCookie("token", token, tokenAgeDays);
         response.addCookie(tokenCookie);
         String refreshToken = result.getRefresh();
-        Cookie refreshTokenCookie = cookieHelper.createCookie("refresh", refreshToken, 3600);
+        Cookie refreshTokenCookie =
+            cookieHelper.createCookie("refresh", refreshToken, refreshAgeDays);
         response.addCookie(refreshTokenCookie);
         yield ResponseEntity.ok("Login successful");
       }
@@ -89,9 +98,10 @@ public class AuthController {
     if (result.getRefreshStatus() == RefreshStatus.FAIL) {
       return "Fail";
     }
-    Cookie tokenCookie = cookieHelper.createCookie("token", result.getNewToken(), 600);
+    Cookie tokenCookie = cookieHelper.createCookie("token", result.getNewToken(), tokenAgeDays);
     response.addCookie(tokenCookie);
-    Cookie refreshTokenCookie = cookieHelper.createCookie("refresh", result.getNewFreshToken(), 60000);
+    Cookie refreshTokenCookie =
+        cookieHelper.createCookie("refresh", result.getNewFreshToken(), refreshAgeDays);
     response.addCookie(refreshTokenCookie);
     return "Token refreshed successfully";
   }
@@ -113,10 +123,8 @@ public class AuthController {
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     Long userId = userDetails.getId().longValue();
     String username = authentication.getName();
-    List<String> roles = authentication.getAuthorities()
-        .stream()
-        .map(auth -> auth.getAuthority())
-        .toList();
+    List<String> roles =
+        authentication.getAuthorities().stream().map(auth -> auth.getAuthority()).toList();
     return new CurrentUserResponse(userId, username, roles);
   }
 }

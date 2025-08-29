@@ -14,17 +14,17 @@ public class CookieHelper {
         this.environment = environment;
     }
 
-    public Cookie createCookie(String name, String value, int maxAge) {
+    public Cookie createCookie(String name, String value, int maxAgeInDays) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Cookie name must not be null or empty.");
         }
-        if (maxAge < 0) {
+        if (maxAgeInDays < 0) {
             throw new IllegalArgumentException("Cookie maxAge must not be negative.");
         }
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setMaxAge(maxAge);
+        cookie.setMaxAge(maxAgeInDays * 24 * 60 * 60);
         if (isProduction()) {
             cookie.setSecure(true);
             cookie.setAttribute("SameSite", "None");
