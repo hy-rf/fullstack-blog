@@ -2,7 +2,6 @@
 import { useUserStore } from "./stores/user";
 import LogoutButton from "./components/auth/LogoutButton.vue";
 import type { User } from "./types/User";
-const { locales, setLocale } = useI18n();
 const userStore = useUserStore();
 const { gtag } = useGtag();
 const { t } = useI18n();
