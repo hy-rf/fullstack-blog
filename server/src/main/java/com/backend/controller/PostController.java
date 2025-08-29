@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -121,14 +120,5 @@ public class PostController {
         }
         return ResponseEntity.ok()
                 .body(new UpdatePostResponse(true, updatePostResultDto.getMessage()));
-    }
-
-    /**
-     * Better getting post by id
-     */
-    @GetMapping("/article")
-    public PostWithNumbersOfRepliesDTO getPostById() {
-        PostWithNumbersOfRepliesDTO test = postService.findPostById(1L);
-        return test;
     }
 }

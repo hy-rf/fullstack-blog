@@ -26,11 +26,9 @@ import com.backend.model.User;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     // Implement methods for user management, such as creating, updating, and
