@@ -7,14 +7,14 @@ definePageMeta({
     return typeof route.params.id === "string" && /^\d+$/.test(route.params.id);
   },
 });
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 const { gtag } = useGtag();
 
 onMounted(() => {
   if (post.value) {
     gtag("event", "open_post", {
       post_id: post.value.id,
-      post_title: post.value.title,
+      post_title: post.value.content.substring(0, 10),
       author_id: post.value.author.id,
     });
   }
@@ -23,17 +23,11 @@ onMounted(() => {
 const route = useRoute();
 const postId = route.params.id as string;
 
-// fetch not working when ssr
 const { data: post, error } = await useAsyncData<Post>("post", () =>
   $fetch(`/api/post/${route.params.id}`)
 );
 
 const userStore = useUserStore();
-
-const { t } = useI18n();
-
-const replyContent = ref("");
-const replyMessage = ref("");
 
 const isPostEditable = computed(() => {
   const currentUser = userStore.user;
@@ -43,16 +37,17 @@ const isPostEditable = computed(() => {
 });
 
 useSeoMeta({
-  title: () => (post.value ? post.value.title : "Post"),
+  title: () => (post.value ? post.value.content.substring(0, 10) : "Post"),
   description: () =>
     post.value ? post.value.content?.slice(0, 160) : "View post details",
-  ogTitle: () => (post.value ? post.value.title : "Post"),
+  ogTitle: () => (post.value ? post.value.content.substring(0, 10) : "Post"),
   ogDescription: () =>
     post.value ? post.value.content?.slice(0, 160) : "View post details",
   ogType: "article",
   ogUrl: `https://udevkit.lol/post/${postId}`,
   twitterCard: "summary",
-  twitterTitle: () => (post.value ? post.value.title : "Post"),
+  twitterTitle: () =>
+    post.value ? post.value.content.substring(0, 10) : "Post",
   twitterDescription: () =>
     post.value ? post.value.content?.slice(0, 160) : "View post details",
 });
@@ -65,29 +60,6 @@ const showEditPostForm = async () => {
 
 const showPostEditor = ref(false);
 
-const submitReply = async () => {
-  replyMessage.value = "";
-  try {
-    const res = await fetch("/api/reply", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        postId: postId,
-        content: replyContent.value,
-      }),
-    });
-    if (res.ok) {
-      replyMessage.value = "Reply submitted!";
-      replyContent.value = "";
-      refreshReplies();
-    } else {
-      replyMessage.value = await res.text();
-    }
-  } catch (e) {
-    replyMessage.value = "Network error";
-  }
-};
-
 const refreshKey = ref(0);
 function refreshReplies() {
   refreshKey.value++;
@@ -98,7 +70,6 @@ function refreshReplies() {
   <div class="container">
     <div v-if="post" class="card">
       <div class="post-main">
-        <strong class="title">{{ post.title }}</strong>
         <div class="content" v-html="post.content"></div>
       </div>
       <div class="post-misc">
@@ -118,7 +89,6 @@ function refreshReplies() {
         <PostEditor
           v-if="showPostEditor"
           :post-to-edit="{
-            title: post.title,
             content: post.content,
           }"
         />
@@ -132,7 +102,7 @@ function refreshReplies() {
         </div>
       </div>
       <div class="reply-section">
-        <ReplyList :key="refreshKey" :replies="post.replies" />
+        <ReplyList :key="refreshKey" :replies="post.posts" />
       </div>
     </div>
 
@@ -144,20 +114,7 @@ function refreshReplies() {
       <p>Loading...</p>
     </div>
 
-    <div v-if="userStore.isUser">
-      <form class="reply-form" @submit.prevent="submitReply">
-        <label for="reply-content" class="reply-label">Add a reply:</label>
-        <textarea
-          id="reply-content"
-          v-model="replyContent"
-          class="reply-textarea"
-          rows="3"
-          required
-        ></textarea>
-        <button type="submit" class="reply-btn">Reply</button>
-        <div v-if="replyMessage" class="reply-message">{{ replyMessage }}</div>
-      </form>
-    </div>
+    <div v-if="userStore.isUser">a form to add a child a post</div>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 import type Post from "./Post";
 
-export default interface PostListViewModel {
+export default interface PostList {
   content: Post[];
   totalElements: number;
   totalPages: number;

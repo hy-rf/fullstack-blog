@@ -1,7 +1,7 @@
-import type PostListViewModel from "~/types/PostListViewModel";
+import type PostList from "~/types/PostList";
 
 export async function fetchPosts(params: Record<string, any>) {
-  return await $fetch<PostListViewModel>(`/api/posts/search`, {
+  return await $fetch<PostList>(`/api/posts/search`, {
     query: params,
     credentials: "include",
   });

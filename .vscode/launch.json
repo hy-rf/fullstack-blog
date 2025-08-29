@@ -4,17 +4,21 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Client",
+      "name": "Client",
       "cwd": "${workspaceFolder}/client",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**"]
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/client/node_modules/**",
+        "${workspaceFolder}/client/.nuxt/**"
+      ]
     },
     {
       "type": "java",
-      "name": "Debug Server",
+      "name": "Server",
       "request": "launch",
       "cwd": "${workspaceFolder}/server",
       "console": "integratedTerminal",
@@ -28,44 +32,12 @@
       "env": {
         "SPRING_PROFILES_ACTIVE": "dev"
       }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Local Debug Client",
-      "cwd": "${workspaceFolder}/client",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "local"],
-      "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**"]
-    },
-    {
-      "type": "java",
-      "name": "Local Debug Server",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/server",
-      "console": "integratedTerminal",
-      "mainClass": "com.backend.Application",
-      "args": [
-        "-Dspring-boot.run.fork=false",
-        "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080",
-        "-Duser.timezone=UTC",
-        "spring-boot:run"
-      ],
-      "env": {
-        "SPRING_PROFILES_ACTIVE": "local"
-      }
     }
   ],
   "compounds": [
     {
       "name": "Debug",
-      "configurations": ["Debug Server", "Debug Client"]
-    },
-    {
-      "name": "Local Debug",
-      "configurations": ["Local Debug Server", "Local Debug Client"]
+      "configurations": ["Server", "Client"]
     }
   ]
 }

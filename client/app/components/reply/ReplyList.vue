@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type Reply from "~/types/Reply";
 import ReplyCard from "./ReplyCard.vue";
+import type Post from "~/types/Post";
 
 const props = defineProps<{
-  replies: Reply[];
+  replies: Post[];
 }>();
 </script>
 

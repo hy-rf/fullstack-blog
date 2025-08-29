@@ -38,16 +38,20 @@ public class Post {
   private OffsetDateTime createdAt;
 
   @ManyToOne
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
+  private User author;
+
+  @ManyToOne
+  @JoinColumn(name = "root_post_id")
+  private Post rootPost;
+
+  @ManyToOne
   @JoinColumn(name = "post_id")
   private Post parentPost;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "parentPost", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "rootPost", cascade = CascadeType.PERSIST)
   private List<Post> posts = new ArrayList<>();
-
-  @ManyToOne
-  @JoinColumn(name = "author_id", referencedColumnName = "id")
-  private User author;
 
   @PrePersist
   public void onCreate() {

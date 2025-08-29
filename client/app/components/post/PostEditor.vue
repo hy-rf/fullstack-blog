@@ -16,7 +16,6 @@ onMounted(() => {
 });
 
 const postEditing = reactive({
-  title: props.postToEdit.title,
   content: props.postToEdit.content,
 });
 
@@ -27,7 +26,6 @@ const submitEditPost = async () => {
 
 <template>
   <form ref="formRef" @submit.prevent="submitEditPost">
-    <input type="text" :value="postEditing.title" />
     <textarea name="" id="" :value="postEditing.content"></textarea>
     <button type="submit">{{ t("post.edit.submit_button") }}</button>
   </form>

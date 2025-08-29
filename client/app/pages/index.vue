@@ -2,7 +2,7 @@
 import { useHomePostStore } from "~/stores/home_post_sort";
 import { fetchPosts } from "~/services/posts_service";
 import PostCard from "~/components/post/PostCard.vue";
-import type PostListViewModel from "~/types/PostListViewModel";
+import type PostList from "~/types/PostList";
 
 const { t, locale } = useI18n();
 const route = useRoute();
@@ -27,7 +27,7 @@ const {
   pending,
   refresh,
   error,
-} = await useAsyncData<PostListViewModel>(
+} = await useAsyncData<PostList>(
   () => `postsSearch-${JSON.stringify(route.query)}`,
   () => fetchPosts(route.query)
 );
@@ -42,37 +42,42 @@ watch(
 
 <template>
   <h1>{{ t("home.feed") }}</h1>
-  <div class="toolbox">
-    <div class="sort-options">
-      <select
-        v-model="homePostStore.sortBy"
-        @change="
-          router.push({
-            query: homePostStore.queryParams,
-          })
-        "
-      >
-        <option value="createdAt">Created At</option>
-        <option value="updatedAt">Updated At</option>
-      </select>
-      <button
-        @click="toggleSortOrder"
-        :style="{
-          lineHeight: locale.startsWith('zh') ? '16px' : '',
-          fontSize: locale.startsWith('zh') ? '14px' : '',
-        }"
-      >
-        {{ homePostStore.order == "desc" ? t("home.desc") : t("home.asc") }}
-      </button>
-    </div>
+  <div v-if="posts">
+    <section class="toolbox">
+      <div class="sort-options">
+        <select
+          v-model="homePostStore.sortBy"
+          @change="
+            router.push({
+              query: homePostStore.queryParams,
+            })
+          "
+        >
+          <option value="createdAt">Created At</option>
+          <option value="updatedAt">Updated At</option>
+        </select>
+        <button
+          @click="toggleSortOrder"
+          :style="{
+            lineHeight: locale.startsWith('zh') ? '16px' : '',
+            fontSize: locale.startsWith('zh') ? '14px' : '',
+          }"
+        >
+          {{ homePostStore.order == "desc" ? t("home.desc") : t("home.asc") }}
+        </button>
+      </div>
+    </section>
+    <section class="post-list" aria-label="Posts list">
+      <PostCard
+        v-for="post in posts?.content"
+        :key="post.id"
+        :post="post"
+      ></PostCard>
+    </section>
   </div>
-  <section class="post-list" aria-label="Posts list">
-    <PostCard
-      v-for="post in posts?.content"
-      :key="post.id"
-      :post="post"
-    ></PostCard>
-  </section>
+  <div v-if="pending">
+    <p>Loading...</p>
+  </div>
 </template>
 
 <style scoped>

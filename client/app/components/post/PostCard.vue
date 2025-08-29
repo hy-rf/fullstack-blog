@@ -16,7 +16,7 @@ defineProps({
     <div class="post-main-info">
       <NuxtLink :to="`/post/${post.id}`">
         <h2>
-          {{ post.title }}
+          {{ post.content.substring(0, 50) }}
         </h2>
       </NuxtLink>
       <!-- <p v.html="post.content" class="post-content"></p> -->

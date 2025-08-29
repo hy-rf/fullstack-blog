@@ -29,7 +29,7 @@ public class PostMapper {
         postDTO.setCreatedAt(post.getCreatedAt());
         if (depth > 0) {
             postDTO.setPosts(post.getPosts().stream().filter(p -> p.getParentPost() == null)
-                    .map(reply -> toPostDTO(reply, depth - 1)).collect(Collectors.toList()));
+                    .map(reply -> toPostDTO(reply, depth)).collect(Collectors.toList()));
         }
         return postDTO;
     }

@@ -13,6 +13,10 @@ import jakarta.persistence.criteria.Predicate;
 
 public class PostSpecification {
 
+    public static Specification<Post> parentPostIsNull() {
+        return (root, query, cb) -> cb.isNull(root.get("parentPost"));
+    }
+
     public static Specification<Post> hasTitleOrContentLike(String keyword) {
         return (root, query, cb) -> {
             if (keyword == null || keyword.isEmpty())

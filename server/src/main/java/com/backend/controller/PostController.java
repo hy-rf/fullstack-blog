@@ -59,13 +59,12 @@ public class PostController {
         return "Successfully created post with title: " + createPostRequest.getContent();
     }
 
-    @GetMapping("/my-posts")
+    @GetMapping("/me/posts")
     @PreAuthorize("isAuthenticated()")
     public List<Post> getPostsByUser(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval
-                                           // logic
+        Long userId = userDetails.getId();
         return postService.getPostsByUser(userId);
     }
 

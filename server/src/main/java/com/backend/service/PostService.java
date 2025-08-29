@@ -83,10 +83,11 @@ public class PostService {
 
   public Page<Post> getPosts(String keyword, String authorName, LocalDateTime createdAfter,
       LocalDateTime createdBefore, String sortBy, String order, int page, int size) {
-    Specification<Post> spec = PostSpecification.hasTitleOrContentLike(keyword)
-        .and(PostSpecification.hasAuthorNameLike(authorName))
-        .and(PostSpecification.createdAfter(createdAfter))
-        .and(PostSpecification.createdBefore(createdBefore));
+    Specification<Post> spec =
+        PostSpecification.hasTitleOrContentLike(keyword).and(PostSpecification.parentPostIsNull())
+            .and(PostSpecification.hasAuthorNameLike(authorName))
+            .and(PostSpecification.createdAfter(createdAfter))
+            .and(PostSpecification.createdBefore(createdBefore));
 
     Sort.Direction direction =
         order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
