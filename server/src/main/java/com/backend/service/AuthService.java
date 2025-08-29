@@ -54,7 +54,7 @@ public class AuthService {
         user.setUsername(username);
         user.setPasswordHash(hash);
 
-        Optional<Role> userRoleOpt = roleRepository.findById(1L);
+        Optional<Role> userRoleOpt = roleRepository.findByName("user");
         if (userRoleOpt.isEmpty()) {
             return new RegisterResult(RegisterStatus.ERROR);
         }
@@ -63,8 +63,6 @@ public class AuthService {
         roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
-        // If I want to do more about the new user, I can get it here
-        // User newUser = userRepository.save(user);
         return new RegisterResult(RegisterStatus.SUCCESS);
     }
 
