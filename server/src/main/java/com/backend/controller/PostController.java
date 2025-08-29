@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.dto.post.CreatePostRequest;
 import com.backend.dto.post.PostDTO;
 import com.backend.dto.post.PostListViewModel;
-import com.backend.dto.post.PostWithNumbersOfRepliesDTO;
 import com.backend.dto.post.UpdatePostDto;
 import com.backend.dto.post.UpdatePostRequest;
 import com.backend.dto.post.UpdatePostResponse;
