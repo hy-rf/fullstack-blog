@@ -67,9 +67,11 @@ const runtimeConfig = useRuntimeConfig();
 
 <style scoped>
 main {
+  margin-inline: auto;
   max-width: 768px;
-  padding: 0;
-  background: #f4f6fb;
+  padding-block: 1rem 0;
+  padding-inline: 1rem;
+  background: #eeeeee;
   min-height: calc(100dvh - 50px);
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(35, 41, 70, 0.07);
@@ -88,7 +90,7 @@ textarea {
   resize: none;
 }
 html {
-  background-color: #f4f6fb;
+  background-color: #ffffff;
 }
 h1 {
   margin-top: 0;
