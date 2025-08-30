@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                 this.userRepository = userRepository;
         }
 
-        public UserDetails loadUserById(Long id) {
-                User user = userRepository.findById(id)
-                                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + id));
+        public UserDetails loadUserById(Integer id) {
+                User user = userRepository.findById(id).orElseThrow(
+                                () -> new UsernameNotFoundException("User not found: " + id));
                 return new CustomUserDetails(user);
         }
 
@@ -39,6 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
+                throw new UnsupportedOperationException(
+                                "Unimplemented method 'loadUserByUsername'");
         }
 }

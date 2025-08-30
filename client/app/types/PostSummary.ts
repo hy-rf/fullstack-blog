@@ -4,6 +4,6 @@ export default interface PostSummary {
   id: number;
   content: string;
   createdAt: string;
-  author: Author;
+  authorName: string;
   postCount: number;
 }

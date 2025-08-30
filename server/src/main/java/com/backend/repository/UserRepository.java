@@ -11,17 +11,17 @@ import org.springframework.stereotype.Repository;
 import com.backend.model.User;
 
 @Repository
-public interface UserRepository extends BaseRepository<User, Long> {
+public interface UserRepository extends BaseRepository<User, Integer> {
 
   @Override
   @NonNull
-  Optional<User> findById(@NonNull Long id);
+  Optional<User> findById(@NonNull Integer id);
 
   // @EntityGraph(attributePaths = "roles")
   Optional<User> findByUsername(String username);
 
   @Override
-  @EntityGraph(attributePaths = { "roles" }) // Solves n+1 query
+  @EntityGraph(attributePaths = {"roles"}) // Solves n+1 query
   @NonNull
   Page<User> findAll(@NonNull Pageable pageable);
 

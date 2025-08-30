@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostSummary {
-  private Long id;
+  private Integer id;
   private String content;
   private Instant createdAt;
   private String authorName;
-  private Long postCount;
+  private Integer postCount;
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class CurrentUserResponse {
-    private Long id;
+    private Integer id;
     private String username;
     private List<String> roles;
 }

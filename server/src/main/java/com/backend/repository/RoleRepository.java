@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.backend.model.Role;
 
 @Repository
-public interface RoleRepository extends BaseRepository<Role, Long> {
+public interface RoleRepository extends BaseRepository<Role, Integer> {
 
   Optional<Role> findByName(String string);
 

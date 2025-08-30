@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class JwtData {
-    private Long userId;
+    private Integer userId;
     private String userName;
-    private List<Long> roleIds;
+    private List<Integer> roleIds;
     private List<String> roleNames;
 }

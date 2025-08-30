@@ -19,14 +19,15 @@ import com.backend.service.dto.post.PostWithNumbersOfRepliesDTO;
 
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
+public interface PostRepository
+        extends JpaRepository<Post, Integer>, JpaSpecificationExecutor<Post> {
 
-    Optional<List<Post>> findByAuthorId(Long userId);
+    Optional<List<Post>> findByAuthorId(Integer userId);
 
     @Override
     @NonNull
     @EntityGraph(attributePaths = {"author"})
-    Optional<Post> findById(@NonNull Long id);
+    Optional<Post> findById(@NonNull Integer id);
 
     @Override
     @NonNull

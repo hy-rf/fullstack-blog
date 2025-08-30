@@ -1,43 +1,11 @@
 <script setup lang="ts">
-import { useHomePostStore } from "~/stores/home_post_sort";
-import { fetchPosts } from "~/services/posts_service";
 import PostCard from "~/components/post/PostCard.vue";
-import type PostList from "~/types/PostList";
 
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const homePostStore = useHomePostStore();
 
-homePostStore.setFromRoute(route.query);
-
-function toggleSortOrder() {
-  if (homePostStore.order == "desc") {
-    homePostStore.order = "asc";
-  } else {
-    homePostStore.order = "desc";
-  }
-  router.push({
-    query: homePostStore.queryParams,
-  });
-}
-
-const {
-  data: posts,
-  pending,
-  refresh,
-  error,
-} = await useAsyncData<PostList>(
-  () => `postsSearch-${JSON.stringify(route.query)}`,
-  () => fetchPosts(route.query)
-);
-
-watch(
-  () => route.query,
-  (q) => {
-    homePostStore.setFromRoute(q);
-  }
-);
+const posts: any[] = [];
 </script>
 
 <template>

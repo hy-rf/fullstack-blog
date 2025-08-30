@@ -120,7 +120,7 @@ public class AuthController {
   public CurrentUserResponse getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    Long userId = userDetails.getId().longValue();
+    Integer userId = userDetails.getId().intValue();
     String username = authentication.getName();
     List<String> roles =
         authentication.getAuthorities().stream().map(auth -> auth.getAuthority()).toList();

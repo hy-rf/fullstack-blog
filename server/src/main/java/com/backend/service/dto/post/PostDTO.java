@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class PostDTO {
-    private Long id;
+    private Integer id;
     private String content;
     private AuthorDto author;
     private OffsetDateTime createdAt;

@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UpdateUserCommand {
 
-  private Long id;
+  private Integer id;
 
   private String username;
 

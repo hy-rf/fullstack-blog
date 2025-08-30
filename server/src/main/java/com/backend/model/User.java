@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(unique = true, length = 50)
     private String username;

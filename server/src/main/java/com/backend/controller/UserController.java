@@ -57,7 +57,7 @@ public class UserController {
     public User getUserById(@PathVariable Integer id) {
         // Logic to retrieve user by ID
 
-        return userService.getUserById(id.longValue());
+        return userService.getUserById(id);
     }
 
     /**
@@ -72,7 +72,7 @@ public class UserController {
             @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Integer userId = userDetails.getId();
         updateUserRequest.setId(userId);
         UpdateUserCommand updateCommand =
                 new UpdateUserCommand(userId, updateUserRequest.getUsername(),

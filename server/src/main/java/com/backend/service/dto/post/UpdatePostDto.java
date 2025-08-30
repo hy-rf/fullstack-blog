@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UpdatePostDto {
-  private Long postId;
-  private Long authorId;
+  private Integer postId;
+  private Integer authorId;
   private String content;
 }

@@ -59,7 +59,7 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        Long userId = userDetails.getId();
+        Integer userId = userDetails.getId();
         postService.createPost(createPostRequest.getContent(), userId,
                 createPostRequest.getPostId());
         return ResponseEntity.ok()
@@ -71,13 +71,13 @@ public class PostController {
     public ResponseEntity<List<Post>> getPostsByUser(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Integer userId = userDetails.getId();
         List<Post> posts = postService.getPostsByUser(userId);
         return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id,
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Integer id,
             HttpServletResponse response) {
         PostDTO post = postService.getPostById(new GetPostByIdCommand(id));
         if (post == null) {
@@ -113,7 +113,7 @@ public class PostController {
             @Valid @RequestBody UpdatePostRequest updatePostRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Integer userId = userDetails.getId();
         UpdatePostDto updatePostDto = new UpdatePostDto(updatePostRequest.getPostId(), userId,
                 updatePostRequest.getContent());
         UpdatePostResultDto updatePostResultDto = postService.UpdatePost(updatePostDto);

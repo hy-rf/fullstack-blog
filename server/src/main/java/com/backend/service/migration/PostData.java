@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PostData {
-  private Long authorId;
+  private Integer authorId;
   private String content;
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UpdateUserResult {
 
-  private Long id;
+  private Integer id;
 
   private UpdateUserFieldResult<String> username;
 

@@ -42,7 +42,7 @@ public class PostService {
     return p;
   }
 
-  public Post createPost(String content, Long userId, Optional<Long> postId) {
+  public Post createPost(String content, Integer userId, Optional<Integer> postId) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (!userOpt.isPresent()) {
       throw new IllegalArgumentException("User not found with id: " + userId);
@@ -60,7 +60,7 @@ public class PostService {
     return postRepository.save(post);
   }
 
-  public List<Post> getPostsByUser(Long userId) {
+  public List<Post> getPostsByUser(Integer userId) {
     Optional<List<Post>> posts = postRepository.findByAuthorId(userId);
     if (posts.isEmpty() || posts.get().isEmpty()) {
       throw new IllegalArgumentException("No posts found for user with id: " + userId);
@@ -105,7 +105,7 @@ public class PostService {
     return new UpdatePostResultDto(UpdatePostResultStatus.SUCCESS, "success");
   }
 
-  // public PostWithNumbersOfRepliesDTO findPostById(Long postId) {
+  // public PostWithNumbersOfRepliesDTO findPostById(Integer postId) {
   // String sql =
   // """
   // SELECT
@@ -126,10 +126,10 @@ public class PostService {
   // """;
 
   // return jdbcTemplate.queryForObject(sql, new Object[] {postId},
-  // (rs, rowNum) -> new PostWithNumbersOfRepliesDTO(rs.getLong("id"), rs.getString("content"),
+  // (rs, rowNum) -> new PostWithNumbersOfRepliesDTO(rs.getInteger("id"), rs.getString("content"),
   // rs.getTimestamp("created_at").toInstant().atOffset(ZoneOffset.UTC),
-  // rs.getLong("authorId"), rs.getString("username"), rs.getString("user_role_name_list"),
-  // rs.getLong("number_of_replies")));
+  // rs.getInteger("authorId"), rs.getString("username"), rs.getString("user_role_name_list"),
+  // rs.getInteger("number_of_replies")));
   // }
 
 }

@@ -40,7 +40,7 @@ public class MigrationService {
 
   @Transactional
   public String checkAndAddDataIfUserExists() {
-    Optional<User> userOpt = userRepository.findById(1L);
+    Optional<User> userOpt = userRepository.findById(1);
     if (userOpt.isPresent()) {
       return "User with ID 1 exists. No need to migrate data.";
     }
@@ -92,7 +92,7 @@ public class MigrationService {
     List<PostData> posts = postDataProvider.provide();
     // Random random = new Random();
     for (PostData pd : posts) {
-      long authorId = pd.getAuthorId();
+      Integer authorId = pd.getAuthorId();
       Optional<User> userOpt = userRepository.findById(authorId);
       if (userOpt.isEmpty()) {
         continue;

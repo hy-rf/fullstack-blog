@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final Long id;
+    private final Integer id;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails {
                 .map(role -> (GrantedAuthority) () -> "ROLE_" + role).collect(Collectors.toList());
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

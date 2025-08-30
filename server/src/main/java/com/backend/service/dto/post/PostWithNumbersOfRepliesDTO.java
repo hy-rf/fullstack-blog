@@ -8,24 +8,24 @@ import jakarta.persistence.SqlResultSetMapping;
 
 @SqlResultSetMapping(name = "PostWithNumbersOfRepliesMapping",
     classes = @ConstructorResult(targetClass = PostWithNumbersOfRepliesDTO.class,
-        columns = {@ColumnResult(name = "id", type = Long.class),
+        columns = {@ColumnResult(name = "id", type = Integer.class),
             @ColumnResult(name = "content", type = String.class),
             @ColumnResult(name = "createdAt", type = OffsetDateTime.class),
-            @ColumnResult(name = "authorId", type = Long.class),
+            @ColumnResult(name = "authorId", type = Integer.class),
             @ColumnResult(name = "username", type = String.class),
             @ColumnResult(name = "userRoleNameList", type = String.class),
-            @ColumnResult(name = "numberOfReplies", type = Long.class)}))
+            @ColumnResult(name = "numberOfReplies", type = Integer.class)}))
 public class PostWithNumbersOfRepliesDTO {
-  private Long id;
+  private Integer id;
   private String content;
   private OffsetDateTime createdAt;
-  private Long authorId;
+  private Integer authorId;
   private String username;
   private String userRoleNameList;
-  private Long numberOfReplies;
+  private Integer numberOfReplies;
 
-  public PostWithNumbersOfRepliesDTO(Long id, String content, OffsetDateTime createdAt,
-      Long authorId, String username, String userRoleNameList, Long numberOfReplies) {
+  public PostWithNumbersOfRepliesDTO(Integer id, String content, OffsetDateTime createdAt,
+      Integer authorId, String username, String userRoleNameList, Integer numberOfReplies) {
     this.id = id;
     this.content = content;
     this.createdAt = createdAt;
@@ -36,11 +36,11 @@ public class PostWithNumbersOfRepliesDTO {
   }
 
   // getters & setters
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -60,11 +60,11 @@ public class PostWithNumbersOfRepliesDTO {
     this.createdAt = createdAt;
   }
 
-  public Long getAuthorId() {
+  public Integer getAuthorId() {
     return authorId;
   }
 
-  public void setAuthorId(Long authorId) {
+  public void setAuthorId(Integer authorId) {
     this.authorId = authorId;
   }
 
@@ -84,11 +84,11 @@ public class PostWithNumbersOfRepliesDTO {
     this.userRoleNameList = userRoleNameList;
   }
 
-  public Long getNumberOfReplies() {
+  public Integer getNumberOfReplies() {
     return numberOfReplies;
   }
 
-  public void setNumberOfReplies(Long numberOfReplies) {
+  public void setNumberOfReplies(Integer numberOfReplies) {
     this.numberOfReplies = numberOfReplies;
   }
 }

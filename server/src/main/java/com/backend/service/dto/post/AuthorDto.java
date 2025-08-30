@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorDto {
-  private Long id;
+  private Integer id;
   private String username;
   private List<Role> roles;
 }

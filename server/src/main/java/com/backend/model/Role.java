@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Column(unique = true, length = 50, nullable = false)
   private String name;

@@ -82,7 +82,7 @@ public class AuthService {
             return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD, null, null);
         }
 
-        Long userId = user.getId();
+        Integer userId = user.getId();
         List<Role> roles = user.getRoles();
         Stream<Role> roleStream = roles.stream();
         Stream<String> roleNameStream = roleStream.map(Role::getName);

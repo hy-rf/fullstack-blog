@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class AuthorViewModel {
-  private Long id;
+  private Integer id;
   private String username;
   private List<Role> roles;
 }

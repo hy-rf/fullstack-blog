@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class ReplyDTO {
-    private Long id;
+    private Integer id;
     private String content;
     private AuthorDto author;
     private OffsetDateTime created;

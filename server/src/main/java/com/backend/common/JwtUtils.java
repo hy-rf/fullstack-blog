@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 public class JwtUtils {
 
     // Generate a JWT token with userId and roleIds
-    public String generateToken(Long userId, List<String> roleNames, String secretKey,
-            long expirationDays, String name) {
+    public String generateToken(Integer userId, List<String> roleNames, String secretKey,
+            Integer expirationDays, String name) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder().claim("userId", userId).claim("roleNames", roleNames)
                 .claim("username", name).setIssuedAt(new Date())
@@ -37,10 +37,10 @@ public class JwtUtils {
             Jws<Claims> jws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 
             Claims claims = jws.getBody();
-            Long userId = null;
+            Integer userId = null;
             Object userIdObj = claims.get("userId");
             if (userIdObj instanceof Number) {
-                userId = ((Number) userIdObj).longValue();
+                userId = ((Number) userIdObj).intValue();
             }
 
             // be permissive about username type to avoid RequiredTypeException
@@ -48,14 +48,14 @@ public class JwtUtils {
             String userName = usernameObj instanceof String ? (String) usernameObj : "";
 
             Object roleIdsObj = claims.get("roleIds");
-            List<Long> roleIds = Collections.emptyList();
+            List<Integer> roleIds = Collections.emptyList();
             if (roleIdsObj instanceof List) {
                 roleIds = ((List<?>) roleIdsObj).stream().filter(Objects::nonNull).map(val -> {
                     if (val instanceof Number) {
-                        return ((Number) val).longValue();
+                        return ((Number) val).intValue();
                     } else {
                         try {
-                            return Long.parseLong(val.toString());
+                            return Integer.parseInt(val.toString());
                         } catch (Exception e) {
                             return null;
                         }

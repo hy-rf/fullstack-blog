@@ -11,7 +11,7 @@ public class PostDataProvider implements DataProvider<PostData> {
   @Override
   public List<PostData> provide() {
     List<PostData> ret = new ArrayList<>();
-    ret.add(new PostData(1L, "content"));
+    ret.add(new PostData(1, "content"));
     return ret;
   }
 }
