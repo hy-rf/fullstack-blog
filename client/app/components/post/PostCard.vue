@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type Post from "~/types/Post";
+import type PostSummary from "~/types/PostSummary";
 
 const { t, locale } = useI18n();
 
 defineProps({
   post: {
-    type: Object as () => Post,
+    type: Object as () => PostSummary,
     required: true,
   },
 });
@@ -23,13 +23,13 @@ defineProps({
     </div>
     <div class="post-other-info">
       <div class="author-info">
-        <NuxtLink :to="`/user/${post.author.id}`">
-          {{ post.author.username }}
+        <NuxtLink :to="`/user/${post.authorName}`">
+          {{ post.authorName }}
         </NuxtLink>
       </div>
       <div class="reply-count">
         <span>{{ t("posts.reply_count") }}</span>
-        {{ post.replyCount }}
+        {{ post.postCount }}
       </div>
       <div class="created-at">
         <NuxtTime

@@ -23,7 +23,7 @@ onMounted(() => {
 const route = useRoute();
 const postId = route.params.id as string;
 
-const { data: post, error } = await useAsyncData<Post>("post", () =>
+const { data: post, error } = await useAsyncData<Post>(`post-${postId}`, () =>
   $fetch(`/api/post/${route.params.id}`)
 );
 

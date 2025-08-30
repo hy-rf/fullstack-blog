@@ -1,46 +1,26 @@
 <script setup lang="ts">
 import PostCard from "~/components/post/PostCard.vue";
+import type PostSummary from "~/types/PostSummary";
 
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const posts: any[] = [];
+const homePostStore = useHomePostStore();
+
+homePostStore.setFromRoute(route.query);
+
+const { data: posts, pending } = useAsyncData<Array<PostSummary>>("post", () =>
+  $fetch(`/api/post?page_token=1`)
+);
 </script>
 
 <template>
   <h1>{{ t("home.feed") }}</h1>
   <div v-if="posts">
-    <section class="toolbox">
-      <div class="sort-options">
-        <select
-          v-model="homePostStore.sortBy"
-          @change="
-            router.push({
-              query: homePostStore.queryParams,
-            })
-          "
-        >
-          <option value="createdAt">Created At</option>
-          <option value="updatedAt">Updated At</option>
-        </select>
-        <button
-          @click="toggleSortOrder"
-          :style="{
-            lineHeight: locale.startsWith('zh') ? '16px' : '',
-            fontSize: locale.startsWith('zh') ? '14px' : '',
-          }"
-        >
-          {{ homePostStore.order == "desc" ? t("home.desc") : t("home.asc") }}
-        </button>
-      </div>
-    </section>
+    <section class="toolbox"></section>
     <section class="post-list" aria-label="Posts list">
-      <PostCard
-        v-for="post in posts?.content"
-        :key="post.id"
-        :post="post"
-      ></PostCard>
+      <PostCard v-for="post in posts" :key="post.id" :post="post"></PostCard>
     </section>
   </div>
   <div v-if="pending">

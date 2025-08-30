@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
-import LogoutButton from "./components/auth/LogoutButton.vue";
 import type { User } from "./types/User";
 const userStore = useUserStore();
 const { gtag } = useGtag();
