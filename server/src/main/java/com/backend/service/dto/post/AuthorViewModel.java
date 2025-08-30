@@ -10,6 +10,5 @@ import lombok.Data;
 public class AuthorViewModel {
   private Long id;
   private String username;
-  private String email;
   private List<Role> roles;
 }

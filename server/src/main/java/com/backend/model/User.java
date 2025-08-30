@@ -70,7 +70,6 @@ public class User {
         AuthorViewModel authorViewModel = new AuthorViewModel();
         authorViewModel.setId(this.getId());
         authorViewModel.setUsername(this.getUsername());
-        authorViewModel.setEmail(this.getEmail());
         authorViewModel.setRoles(this.getRoles());
         return authorViewModel;
     }

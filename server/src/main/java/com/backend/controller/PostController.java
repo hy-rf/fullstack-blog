@@ -27,6 +27,7 @@ import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
+import com.backend.service.dto.post.GetPostByIdCommand;
 import com.backend.service.dto.post.PostDTO;
 import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
@@ -44,9 +45,16 @@ public class PostController {
         this.postService = postService;
     }
 
+    @GetMapping("/post")
+    public ResponseEntity<List<PostSummary>> getFeed(@RequestParam String sort_by,
+            @RequestParam String page_token) {
+        List<PostSummary> posts = postService.getPosts(sort_by);
+        return ResponseEntity.ok().body(posts);
+    }
+
     @PostMapping("/post")
     @PreAuthorize("isAuthenticated()")
-    public String createPost(@RequestBody CreatePostRequest createPostRequest,
+    public ResponseEntity<String> createPost(@RequestBody CreatePostRequest createPostRequest,
             HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -54,26 +62,29 @@ public class PostController {
         Long userId = userDetails.getId();
         postService.createPost(createPostRequest.getContent(), userId,
                 createPostRequest.getPostId());
-        return "Successfully created post with title: " + createPostRequest.getContent();
+        return ResponseEntity.ok()
+                .body("Successfully created post with title: " + createPostRequest.getContent());
     }
 
     @GetMapping("/me/posts")
     @PreAuthorize("isAuthenticated()")
-    public List<Post> getPostsByUser(HttpServletResponse response) {
+    public ResponseEntity<List<Post>> getPostsByUser(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
-        return postService.getPostsByUser(userId);
+        List<Post> posts = postService.getPostsByUser(userId);
+        return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/post/{id}")
-    public PostDTO getPostById(@PathVariable Long id, HttpServletResponse response) {
-        PostDTO post = postService.getPostById(id);
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id,
+            HttpServletResponse response) {
+        PostDTO post = postService.getPostById(new GetPostByIdCommand(id));
         if (post == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return null; // or throw an exception
+            return null;
         }
-        return post;
+        return ResponseEntity.ok().body(post);
     }
 
     // 3 db queries

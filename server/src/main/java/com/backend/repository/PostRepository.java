@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.service.dto.post.PostWithNumbersOfRepliesDTO;
 
@@ -39,7 +40,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
                 p.content,
                 p.created_at,
                 u.id AS authorId,
-                u.username,
+                u.username AS author_name,
                 STRING_AGG(r.name, ', ') AS user_role_name_list,
                 COUNT(rep.id) AS number_of_replies
             FROM
@@ -63,5 +64,21 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
                       """, nativeQuery = true)
 
     PostWithNumbersOfRepliesDTO find();
+
+    @Query(value = """
+                    SELECT
+            p.id,
+            p.content,
+            p.created_at,
+            u.username,
+            COUNT(pc.id) AS post_count
+            FROM posts p
+            LEFT JOIN posts pc ON p.id = pc.root_post_id
+            LEFT JOIN users u ON u.id = p.author_id
+            WHERE p.root_post_id IS NULL
+            GROUP BY p.id, p.content, p.created_at, u.username
+            ORDER BY p.created_at DESC;
+                    """, nativeQuery = true)
+    List<PostSummary> findAllByRootPostIsNullOrderByCreatedAtDesc();
 
 }

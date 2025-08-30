@@ -1,11 +1,13 @@
 package com.backend.service;
 
+import com.backend.controller.dto.post.PostSummary;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
+import com.backend.service.dto.post.GetPostByIdCommand;
 import com.backend.service.dto.post.PostDTO;
 import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
@@ -35,6 +37,11 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
+  public List<PostSummary> getPosts(String sortOption) {
+    List<PostSummary> p = postRepository.findAllByRootPostIsNullOrderByCreatedAtDesc();
+    return p;
+  }
+
   public Post createPost(String content, Long userId, Optional<Long> postId) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (!userOpt.isPresent()) {
@@ -61,8 +68,8 @@ public class PostService {
     return posts.get();
   }
 
-  public PostDTO getPostById(Long id) {
-    Optional<Post> postOpt = postRepository.findById(id);
+  public PostDTO getPostById(GetPostByIdCommand getPostByIdCommand) {
+    Optional<Post> postOpt = postRepository.findById(getPostByIdCommand.getId());
     if (postOpt.isEmpty()) {
       throw new Error();
     }

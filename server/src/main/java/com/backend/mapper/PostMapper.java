@@ -14,9 +14,7 @@ public class PostMapper {
         PostSummary postListViewModel = new PostSummary();
         postListViewModel.setId(post.getId());
         postListViewModel.setContent(post.getContent());
-        postListViewModel.setAuthor(post.getAuthor().toAuthorViewModel());
-        postListViewModel.setCreatedAt(post.getCreatedAt());
-        postListViewModel.setPostCount(post.getPosts().size());
+        // postListViewModel.setCreatedAt(post.getCreatedAt());
         return postListViewModel;
     }
 

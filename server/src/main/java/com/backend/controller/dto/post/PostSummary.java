@@ -1,14 +1,20 @@
 package com.backend.controller.dto.post;
 
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import com.backend.service.dto.post.AuthorViewModel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostSummary {
   private Long id;
   private String content;
-  private AuthorViewModel author;
-  private OffsetDateTime createdAt;
-  private int postCount;
+  private Instant createdAt;
+  private String authorName;
+  private Long postCount;
 }
