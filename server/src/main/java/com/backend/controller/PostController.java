@@ -45,12 +45,25 @@ public class PostController {
         this.postService = postService;
     }
 
+    /**
+     * This is for getting feeds on home page and it gets different posts if page_token exists.
+     * 
+     * @param page_token
+     * @return
+     */
     @GetMapping("/post")
     public ResponseEntity<List<PostSummary>> getFeed(@RequestParam String page_token) {
         List<PostSummary> posts = postService.getPosts();
         return ResponseEntity.ok().body(posts);
     }
 
+    /**
+     * Simple create post endpoint.
+     * 
+     * @param createPostRequest
+     * @param response
+     * @return
+     */
     @PostMapping("/post")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> createPost(@RequestBody CreatePostRequest createPostRequest,

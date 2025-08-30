@@ -47,6 +47,14 @@ public class PostService {
     return p;
   }
 
+  /**
+   * TODO: add rootPostId param and add relation to root post.
+   * 
+   * @param content
+   * @param userId
+   * @param postId
+   * @return
+   */
   public Post createPost(String content, Integer userId, Optional<Integer> postId) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (!userOpt.isPresent()) {
@@ -73,6 +81,13 @@ public class PostService {
     return posts.get();
   }
 
+  /**
+   * This is getting child posts of current post so no need to get post content of current post.
+   * TODO: filter child posts
+   * 
+   * @param getPostByIdCommand
+   * @return
+   */
   public PostDTO getPostById(GetPostByIdCommand getPostByIdCommand) {
     Optional<Post> postOpt = postRepository.findById(getPostByIdCommand.getId());
     if (postOpt.isEmpty()) {
