@@ -46,9 +46,8 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    public ResponseEntity<List<PostSummary>> getFeed(@RequestParam String sort_by,
-            @RequestParam String page_token) {
-        List<PostSummary> posts = postService.getPosts(sort_by);
+    public ResponseEntity<List<PostSummary>> getFeed(@RequestParam String page_token) {
+        List<PostSummary> posts = postService.getPosts();
         return ResponseEntity.ok().body(posts);
     }
 
@@ -79,6 +78,7 @@ public class PostController {
     @GetMapping("/post/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable Integer id,
             HttpServletResponse response) {
+        // TODO: Get a post with some child posts
         PostDTO post = postService.getPostById(new GetPostByIdCommand(id));
         if (post == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

@@ -37,7 +37,12 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
-  public List<PostSummary> getPosts(String sortOption) {
+  /**
+   * Provide feed posts
+   * 
+   * @return
+   */
+  public List<PostSummary> getPosts() {
     List<PostSummary> p = postRepository.findAllByRootPostIsNullOrderByCreatedAtDesc();
     return p;
   }
