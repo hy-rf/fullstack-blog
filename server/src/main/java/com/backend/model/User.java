@@ -41,7 +41,7 @@ public class User {
     private String email;
 
     @JsonIgnore
-    @Column(name = "password_hash", length = 255)
+    @Column(name = "password_hash", columnDefinition = "bpchar(60)")
     private String passwordHash;
 
     @Column(name = "created_at")
