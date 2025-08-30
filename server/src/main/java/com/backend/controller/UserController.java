@@ -45,9 +45,9 @@ public class UserController {
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/users")
     public ResponseEntity<Page<User>> getUsers(@RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "100") int size) {
         page = Math.max(1, page);
-        size = Math.max(1, Math.min(size, 30));
+        size = Math.max(1, Math.min(size, 1000));
         Page<User> user = userService.getUsers(page, size);
         return ResponseEntity.ok().body(user);
     }
@@ -61,7 +61,8 @@ public class UserController {
     }
 
     /**
-     * Updates a user based on the provided UpdateUserRequest. Only accessible by users with the
+     * Updates a user based on the provided UpdateUserRequest. Only accessible by
+     * users with the
      * same id.
      *
      * @param updateUserRequest
@@ -74,9 +75,8 @@ public class UserController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Integer userId = userDetails.getId();
         updateUserRequest.setId(userId);
-        UpdateUserCommand updateCommand =
-                new UpdateUserCommand(userId, updateUserRequest.getUsername(),
-                        updateUserRequest.getEmail(), updateUserRequest.getPassword());
+        UpdateUserCommand updateCommand = new UpdateUserCommand(userId, updateUserRequest.getUsername(),
+                updateUserRequest.getEmail(), updateUserRequest.getPassword());
         UpdateUserResult result = userService.updateUser(updateCommand);
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
