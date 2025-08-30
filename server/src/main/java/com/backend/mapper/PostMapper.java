@@ -3,15 +3,15 @@ package com.backend.mapper;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
-import com.backend.controller.dto.post.PostListViewModel;
+import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.service.dto.post.PostDTO;
 
 @Component
 public class PostMapper {
 
-    public PostListViewModel toPostListViewModel(Post post) {
-        PostListViewModel postListViewModel = new PostListViewModel();
+    public PostSummary toPostSummary(Post post) {
+        PostSummary postListViewModel = new PostSummary();
         postListViewModel.setId(post.getId());
         postListViewModel.setContent(post.getContent());
         postListViewModel.setAuthor(post.getAuthor().toAuthorViewModel());

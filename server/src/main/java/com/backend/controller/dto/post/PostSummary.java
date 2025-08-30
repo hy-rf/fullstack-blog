@@ -5,7 +5,7 @@ import com.backend.service.dto.post.AuthorViewModel;
 import lombok.Data;
 
 @Data
-public class PostListViewModel {
+public class PostSummary {
   private Long id;
   private String content;
   private AuthorViewModel author;

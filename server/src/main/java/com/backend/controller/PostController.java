@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.backend.controller.dto.post.CreatePostRequest;
-import com.backend.controller.dto.post.PostListViewModel;
+import com.backend.controller.dto.post.PostSummary;
 import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.mapper.PostMapper;
@@ -78,7 +78,7 @@ public class PostController {
 
     // 3 db queries
     @GetMapping("/posts/search")
-    public Page<PostListViewModel> getPosts(@RequestParam(required = false) String keyword,
+    public Page<PostSummary> getPosts(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String authorName,
             @RequestParam(required = false) @DateTimeFormat(
                     iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
@@ -92,7 +92,7 @@ public class PostController {
             size = 50;
         Page<Post> postPage = postService.getPosts(keyword, authorName, createdAfter, createdBefore,
                 sortBy, order, page, size);
-        Page<PostListViewModel> postListPage = postPage.map(postMapper::toPostListViewModel);
+        Page<PostSummary> postListPage = postPage.map(postMapper::toPostSummary);
         return postListPage;
     }
 
