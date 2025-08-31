@@ -1,7 +1,6 @@
 package com.backend.service;
 
 import com.backend.controller.dto.post.PostSummary;
-import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
