@@ -41,7 +41,7 @@ const route = useRoute();
 <style lang="css" scoped>
 header {
   position: fixed;
-  bottom: 0;
+  bottom: 0 !important;
   height: 50px;
   width: 100vw;
   padding-inline: 0;

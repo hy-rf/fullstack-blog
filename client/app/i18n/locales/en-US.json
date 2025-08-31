@@ -4,6 +4,12 @@
     "username_guest": "Guest",
     "login_success": "Login Success!"
   },
+  "follow": {
+    "title": "Follows"
+  },
+  "me": {
+    "title": "Profile"
+  },
   "nav": {
     "home": "Home",
     "login": "Login",
@@ -14,6 +20,9 @@
     "register": "Register",
     "users": "Users",
     "search": "Search Posts"
+  },
+  "new": {
+    "title": "New post"
   },
   "home": {
     "feed": "Feed",

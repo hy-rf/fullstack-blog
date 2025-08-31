@@ -89,6 +89,8 @@ textarea {
 }
 html {
   background-color: #ffffff;
+  /* This prevent horizontal scrolling on iOS */
+  overflow-x: hidden;
 }
 h1 {
   margin-top: 0;

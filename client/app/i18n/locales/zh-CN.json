@@ -4,6 +4,12 @@
     "username_guest": "游客",
     "login_success": "登录成功！"
   },
+  "follow": {
+    "title": "关注"
+  },
+  "me": {
+    "title": "个人中心"
+  },
   "nav": {
     "home": "首页",
     "login": "登录",
@@ -14,6 +20,9 @@
     "register": "注册",
     "users": "用户",
     "search": "搜索帖子"
+  },
+  "new": {
+    "title": "新帖子"
   },
   "home": {
     "feed": "动态",

@@ -2,6 +2,18 @@ import { defineNuxtRouteMiddleware, useRequestHeaders, useCookie } from "#app";
 import type { User } from "~/types/User";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  if (import.meta.client) {
+    const userStore = useUserStore();
+    if (
+      to.path.startsWith("/me") ||
+      to.path.startsWith("/new") ||
+      to.path.startsWith("/follow")
+    ) {
+      if (!userStore.isUser) {
+        return navigateTo("/login");
+      }
+    }
+  }
   if (import.meta.server) {
     const headers = useRequestHeaders([
       "x-forwarded-for",
@@ -16,6 +28,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       "0.0.0.0";
 
     console.log("Client IP:", ip);
+
+    if (
+      to.path.startsWith("/me") ||
+      to.path.startsWith("/new") ||
+      to.path.startsWith("/follow")
+    ) {
+      const token = useCookie("token").value;
+      if (!token) {
+        return navigateTo("/login");
+      }
+    }
 
     if (to.path.startsWith("/admin")) {
       const token = useCookie("token").value;

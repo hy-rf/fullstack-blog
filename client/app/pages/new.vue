@@ -1,5 +1,6 @@
 <script setup>
 const router = useRouter();
+const { t } = useI18n();
 
 const content = ref("");
 
@@ -35,6 +36,7 @@ const submitPost = async () => {
 </script>
 
 <template>
+  <h1>{{ t("new.title") }}</h1>
   <div>
     <input
       v-model="content"

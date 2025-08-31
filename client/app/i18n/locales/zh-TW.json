@@ -4,6 +4,12 @@
     "username_guest": "訪客",
     "login_success": "登入成功！"
   },
+  "follow": {
+    "title": "追蹤"
+  },
+  "me": {
+    "title": "會員中心"
+  },
   "nav": {
     "home": "首頁",
     "login": "登入",
@@ -14,6 +20,9 @@
     "register": "註冊",
     "users": "用戶管理",
     "search": "搜尋文章"
+  },
+  "new": {
+    "title": "新文章"
   },
   "home": {
     "feed": "動態",

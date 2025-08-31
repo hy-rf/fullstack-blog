@@ -45,12 +45,7 @@ defineProps({
 <style lang="css" scoped>
 .post-card {
   padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 0.5rem;
-  transition: border 0.3s ease;
-  &:hover {
-    border: 1px solid #808080;
-  }
+  border-bottom: 1px solid #666666;
 }
 .post-main-info {
   gap: 0.5rem;

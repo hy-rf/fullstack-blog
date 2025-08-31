@@ -6,10 +6,11 @@ const router = useRouter();
 const route = useRoute();
 
 async function handleLogout() {
-  // TODO: check permission if user current is in
-  const needToRedirect = route.path.startsWith("/admin");
   await userStore.logout();
-  if (needToRedirect) {
+  if (route.path.startsWith("/me")) {
+    router.push("/");
+  }
+  if (route.path.startsWith("/admin")) {
     router.push("/");
   }
 }

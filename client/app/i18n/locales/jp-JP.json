@@ -4,6 +4,12 @@
     "username_guest": "ゲスト",
     "login_success": "ログイン成功！"
   },
+  "follow": {
+    "title": "フォロー"
+  },
+  "me": {
+    "title": "プロフィール"
+  },
   "nav": {
     "home": "ホーム",
     "login": "ログイン",
@@ -14,6 +20,9 @@
     "register": "登録",
     "users": "ユーザー",
     "search": "投稿を検索"
+  },
+  "new": {
+    "title": "新規投稿"
   },
   "home": {
     "feed": "フィード",

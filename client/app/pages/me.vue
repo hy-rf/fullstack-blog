@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-async function refresh() {
-  await fetch("/api/refresh", { method: "get", credentials: "include" });
-}
+import LogoutButton from "~/components/auth/LogoutButton.vue";
+const { t } = useI18n();
 
 const newUserName = ref("");
 const newPassword = ref("");
@@ -30,9 +28,7 @@ async function updateMyProfile() {
 </script>
 
 <template>
-  <div>
-    <button @click="refresh">Refresh</button>
-  </div>
+  <h1>{{ t("me.title") }}</h1>
   <form @submit.prevent="updateMyProfile">
     <input
       v-model="newUserName"
@@ -48,6 +44,7 @@ async function updateMyProfile() {
     />
     <button type="submit">Update Profile</button>
   </form>
+  <LogoutButton />
 </template>
 
 <style lang="css" scoped></style>
