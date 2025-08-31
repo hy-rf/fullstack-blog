@@ -23,7 +23,7 @@ defineProps({
     </div>
     <div class="post-other-info">
       <div class="author-info">
-        <NuxtLink :to="`/user/${post.authorName}`">
+        <NuxtLink :to="`/user/${post.authorId}`">
           {{ post.authorName }}
         </NuxtLink>
       </div>

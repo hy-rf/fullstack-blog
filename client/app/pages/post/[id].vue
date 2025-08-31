@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Post from "~/types/Post";
+import type PostPage from "~/types/PostPage";
 
 definePageMeta({
   validate: async (route) => {
@@ -10,20 +10,22 @@ definePageMeta({
 const { t, locale } = useI18n();
 const { gtag } = useGtag();
 
+const route = useRoute();
+const postId = route.params.id as string;
+
 onMounted(() => {
-  if (post.value) {
+  if (posts.value) {
     gtag("event", "open_post", {
-      post_id: post.value.id,
-      post_title: post.value.content.substring(0, 10),
-      author_id: post.value.author.id,
+      post_id: postId,
     });
   }
 });
 
-const route = useRoute();
-const postId = route.params.id as string;
-
-const { data: post, error } = await useAsyncData<Post>(`post-${postId}`, () =>
+const {
+  data: posts,
+  status,
+  error,
+} = await useAsyncData<Array<PostPage>>(`post-${postId}`, () =>
   $fetch(`/api/post/${route.params.id}`)
 );
 
@@ -31,44 +33,19 @@ const userStore = useUserStore();
 
 const isPostEditable = computed(() => {
   const currentUser = userStore.user;
-  const currentPost = post.value;
+  const currentPost = posts.value?.findLast(
+    (post) => String(post.id) === postId
+  );
   if (!currentUser || !currentPost) return false;
-  return Number(currentUser.id) === Number(currentPost.author?.id);
+  return Number(currentUser.id) === Number(currentPost.authorId);
 });
-
-useSeoMeta({
-  title: () => (post.value ? post.value.content.substring(0, 10) : "Post"),
-  description: () =>
-    post.value ? post.value.content?.slice(0, 160) : "View post details",
-  ogTitle: () => (post.value ? post.value.content.substring(0, 10) : "Post"),
-  ogDescription: () =>
-    post.value ? post.value.content?.slice(0, 160) : "View post details",
-  ogType: "article",
-  ogUrl: `https://udevkit.lol/post/${postId}`,
-  twitterCard: "summary",
-  twitterTitle: () =>
-    post.value ? post.value.content.substring(0, 10) : "Post",
-  twitterDescription: () =>
-    post.value ? post.value.content?.slice(0, 160) : "View post details",
-});
-
-const showEditPostForm = async () => {
-  console.log(userStore.isUser, userStore.user.id, post.value?.author.id);
-  console.log(userStore.isUser && userStore.user.id == post.value?.author.id);
-  showPostEditor.value = !showPostEditor.value;
-};
 
 const showPostEditor = ref(false);
-
-const refreshKey = ref(0);
-function refreshReplies() {
-  refreshKey.value++;
-}
 </script>
 
 <template>
   <div class="container">
-    <div v-if="post" class="card">
+    <div v-for="post in posts" class="card">
       <div class="post-main">
         <div class="content" v-html="post.content"></div>
       </div>
@@ -80,7 +57,7 @@ function refreshReplies() {
             :locale="locale"
           />
         </div>
-        <button v-if="isPostEditable" @click="showEditPostForm">
+        <button v-if="isPostEditable" @click="showPostEditor = !showPostEditor">
           {{ t("post.edit_button") }}
         </button>
       </div>
@@ -96,25 +73,15 @@ function refreshReplies() {
 
       <div class="author-section">
         <div class="author-info">
-          <NuxtLink :to="`/user/${post.author.id}`">
-            {{ post.author.username }}
+          <NuxtLink :to="`/user/${post.authorId}`">
+            {{ post.authorName }}
           </NuxtLink>
         </div>
       </div>
-      <div class="reply-section">
-        <ReplyList :key="refreshKey" :replies="post.posts" />
-      </div>
     </div>
-
-    <div v-else-if="error" class="error">
-      <p>Error loading post: {{ error.message }}</p>
+    <div v-if="userStore.isUser">
+      You ar logged in user there will be a form to add a child a post
     </div>
-
-    <div v-else class="loading">
-      <p>Loading...</p>
-    </div>
-
-    <div v-if="userStore.isUser">a form to add a child a post</div>
   </div>
 </template>
 
