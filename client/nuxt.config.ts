@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     URL: process.env.URL,
     public: {
       VERSION: process.env.VERSION,
+      isDev: process.env.NODE_ENV !== "production",
     },
   },
 
