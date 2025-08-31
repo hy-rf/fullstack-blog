@@ -99,7 +99,7 @@ public interface PostRepository
             LEFT JOIN users u ON u.id = p.author_id
             WHERE p.root_post_id = :id OR p.id = :id
             GROUP BY p.id, p.content, p.created_at, u.username
-            ORDER BY p.created_at DESC;
+            ORDER BY p.id ASC, p.created_at DESC;
                     """, nativeQuery = true)
     List<PostPage> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
 
