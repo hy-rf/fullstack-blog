@@ -7,11 +7,13 @@ import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
+import com.backend.service.dto.post.CreatePostCommand;
+import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
-import com.backend.service.dto.post.PostDTO;
 import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
 import com.backend.service.dto.post.UpdatePostResultStatus;
+import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +23,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
+@Slf4j
 @Service
 public class PostService {
 
@@ -55,22 +59,26 @@ public class PostService {
    * @param postId
    * @return
    */
-  public Post createPost(String content, Integer userId, Optional<Integer> postId) {
-    Optional<User> userOpt = userRepository.findById(userId);
-    if (!userOpt.isPresent()) {
-      throw new IllegalArgumentException("User not found with id: " + userId);
-    }
+  @Transactional
+  public CreatePostCommandResult createPost(CreatePostCommand createPostCommand) {
+    String content = createPostCommand.getContent();
+    Integer userId = createPostCommand.getAuthorId();
+    Optional<Integer> rootPostId = createPostCommand.getRootPostId();
+    Optional<Integer> parentPostId = createPostCommand.getParentPostId();
+    User author = userRepository.getReferenceById(userId);
     Post post = new Post();
     post.setContent(content);
-    post.setAuthor(userOpt.get());
-    if (postId.isPresent()) {
-      Optional<Post> parentPost = postRepository.findById(postId.get());
-      if (!parentPost.isPresent()) {
-        throw new IllegalArgumentException("Post not found with id: " + postId);
-      }
-      post.setParentPost(parentPost.get());
+    post.setAuthor(author);
+    if (rootPostId.isPresent()) {
+      Post rootPost = postRepository.getReferenceById(rootPostId.get());
+      post.setRootPost(rootPost);
     }
-    return postRepository.save(post);
+    if (parentPostId.isPresent()) {
+      Post parentPost = postRepository.getReferenceById(parentPostId.get());
+      post.setParentPost(parentPost);
+    }
+    Post newPost = postRepository.save(post);
+    return new CreatePostCommandResult(true);
   }
 
   public List<Post> getPostsByUser(Integer userId) {
@@ -88,14 +96,10 @@ public class PostService {
    * @param getPostByIdCommand
    * @return
    */
-  public PostDTO getPostById(GetPostByIdCommand getPostByIdCommand) {
-    Optional<Post> postOpt = postRepository.findById(getPostByIdCommand.getId());
-    if (postOpt.isEmpty()) {
-      throw new Error();
-    }
-    Post post = postOpt.get();
-    PostDTO postDTO = postMapper.toPostDTO(post, 99);
-    return postDTO;
+  public List<PostSummary> getPostAndChildPostsByRootPostId(GetPostByIdCommand getPostByIdCommand) {
+    List<PostSummary> posts =
+        postRepository.findAllByRootPostIdOrderByCreatedAtDesc(getPostByIdCommand.getId());
+    return posts;
   }
 
   public Page<Post> getPosts(String keyword, String authorName, LocalDateTime createdAfter,

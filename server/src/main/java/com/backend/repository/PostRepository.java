@@ -82,4 +82,20 @@ public interface PostRepository
                     """, nativeQuery = true)
     List<PostSummary> findAllByRootPostIsNullOrderByCreatedAtDesc();
 
+    @Query(value = """
+                    SELECT
+            p.id,
+            p.content,
+            p.created_at,
+            u.username,
+            COUNT(pc.id) AS post_count
+            FROM posts p
+            LEFT JOIN posts pc ON p.id = pc.root_post_id
+            LEFT JOIN users u ON u.id = p.author_id
+            WHERE p.root_post_id = :id OR p.id = :id
+            GROUP BY p.id, p.content, p.created_at, u.username
+            ORDER BY p.created_at DESC;
+                    """, nativeQuery = true)
+    List<PostSummary> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
+
 }

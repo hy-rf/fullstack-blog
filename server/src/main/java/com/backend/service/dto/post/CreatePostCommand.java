@@ -13,6 +13,8 @@ import lombok.Getter;
  * </p>
  * 
  * @see com.backend.service.PostService#createPost(CreatePostCommand)
+ * 
+ * @see com.backend.service.dto.post.CreatePostCommandResult
  */
 @Getter
 public class CreatePostCommand {
@@ -31,11 +33,11 @@ public class CreatePostCommand {
    * @param parentPostId the ID of the direct parent post if this is a child post, otherwise
    *        {@code null}
    */
-  public CreatePostCommand(String content, Integer authorId, Integer rootPostId,
-      Integer parentPostId) {
+  public CreatePostCommand(String content, Integer authorId, Optional<Integer> rootPostId,
+      Optional<Integer> parentPostId) {
     this.content = content;
     this.authorId = authorId;
-    this.rootPostId = Optional.ofNullable(rootPostId);
-    this.parentPostId = Optional.ofNullable(parentPostId);
+    this.rootPostId = rootPostId;
+    this.parentPostId = parentPostId;
   }
 }
