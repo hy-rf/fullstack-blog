@@ -69,10 +69,10 @@ main {
   max-width: 768px;
   padding-block: 1rem 0;
   padding-inline: 1rem;
-  background: #eeeeee;
-  min-height: calc(100dvh - 50px);
-  border-radius: 12px;
+  min-height: calc(100dvh);
   box-shadow: 0 2px 16px rgba(35, 41, 70, 0.07);
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
 }
 </style>
 
@@ -91,6 +91,8 @@ html {
   background-color: #ffffff;
   /* This prevent horizontal scrolling on iOS */
   overflow-x: hidden;
+
+  background: #eeeeee;
 }
 h1 {
   margin-top: 0;

@@ -37,8 +37,8 @@ async function login() {
 </script>
 
 <template>
+  <h1>Login</h1>
   <div class="login-container">
-    <h1>Login</h1>
     <form @submit.prevent="login">
       <label>
         Username:
