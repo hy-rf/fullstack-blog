@@ -14,8 +14,8 @@ const route = useRoute();
           <Icon name="mdi-light:home" size="36" />
         </HeaderLink>
       </li>
-      <li :class="{ active: route.path == '/post' }">
-        <HeaderLink link="/post">
+      <li :class="{ active: route.path == '/search' }">
+        <HeaderLink link="/search">
           <Icon name="mdi-light:magnify" size="36" />
         </HeaderLink>
       </li>
