@@ -15,6 +15,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
+import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.PostWithNumbersOfRepliesDTO;
 
 
@@ -87,7 +88,10 @@ public interface PostRepository
             p.id,
             p.content,
             p.created_at,
+            p.author_id,
             u.username,
+            p.root_post_id,
+            p.post_id AS parent_post_id,
             COUNT(pc.id) AS post_count
             FROM posts p
             LEFT JOIN posts pc ON p.id = pc.root_post_id
@@ -96,6 +100,6 @@ public interface PostRepository
             GROUP BY p.id, p.content, p.created_at, u.username
             ORDER BY p.created_at DESC;
                     """, nativeQuery = true)
-    List<PostSummary> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
+    List<PostPage> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
 
 }

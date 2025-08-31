@@ -25,6 +25,7 @@ import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
+import com.backend.repository.dto.PostPage;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
 import com.backend.service.dto.post.CreatePostCommand;
@@ -86,9 +87,9 @@ public class PostController {
         }
 
         @GetMapping("/post/{id}")
-        public ResponseEntity<List<PostSummary>> getPostById(@PathVariable Integer id,
+        public ResponseEntity<List<PostPage>> getPostById(@PathVariable Integer id,
                         HttpServletResponse response) {
-                List<PostSummary> posts = postService
+                List<PostPage> posts = postService
                                 .getPostAndChildPostsByRootPostId(new GetPostByIdCommand(id));
                 return ResponseEntity.ok().body(posts);
         }

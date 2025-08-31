@@ -7,6 +7,7 @@ import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
+import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
@@ -30,13 +31,10 @@ import org.springframework.data.domain.Pageable;
 @Service
 public class PostService {
 
-  private final PostMapper postMapper;
   private final PostRepository postRepository;
   private final UserRepository userRepository;
 
-  public PostService(PostMapper postMapper, PostRepository postRepository,
-      UserRepository userRepository) {
-    this.postMapper = postMapper;
+  public PostService(PostRepository postRepository, UserRepository userRepository) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
   }
@@ -52,7 +50,8 @@ public class PostService {
   }
 
   /**
-   * TODO: add rootPostId param and add relation to root post.
+   * Create post sql: insert into posts (author_id, content, created_at, post_id, root_post_id)
+   * values (?, ?, ?, ?, ?)
    * 
    * @param content
    * @param userId
@@ -77,7 +76,7 @@ public class PostService {
       Post parentPost = postRepository.getReferenceById(parentPostId.get());
       post.setParentPost(parentPost);
     }
-    Post newPost = postRepository.save(post);
+    postRepository.save(post);
     return new CreatePostCommandResult(true);
   }
 
@@ -96,8 +95,8 @@ public class PostService {
    * @param getPostByIdCommand
    * @return
    */
-  public List<PostSummary> getPostAndChildPostsByRootPostId(GetPostByIdCommand getPostByIdCommand) {
-    List<PostSummary> posts =
+  public List<PostPage> getPostAndChildPostsByRootPostId(GetPostByIdCommand getPostByIdCommand) {
+    List<PostPage> posts =
         postRepository.findAllByRootPostIdOrderByCreatedAtDesc(getPostByIdCommand.getId());
     return posts;
   }
