@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type PostPage from "~/types/PostPage";
-
+// TODO: recursively render child posts
 definePageMeta({
   validate: async (route) => {
     // Check if the id is made up of digits
