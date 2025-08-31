@@ -12,6 +12,7 @@ public class PostSummary {
   private Integer id;
   private String content;
   private Instant createdAt;
+  private Integer authorId;
   private String authorName;
   private Long postCount;
 }

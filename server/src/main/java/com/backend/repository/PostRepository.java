@@ -72,6 +72,7 @@ public interface PostRepository
             p.id,
             p.content,
             p.created_at,
+            p.author_id,
             u.username,
             COUNT(pc.id) AS post_count
             FROM posts p
