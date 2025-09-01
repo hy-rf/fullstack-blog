@@ -1,4 +1,4 @@
-import { defineNuxtRouteMiddleware, useRequestHeaders, useCookie } from "#app";
+import { defineNuxtRouteMiddleware, useCookie } from "#app";
 import type { User } from "~/types/User";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -15,20 +15,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   }
   if (import.meta.server) {
-    const headers = useRequestHeaders([
-      "x-forwarded-for",
-      "x-real-ip",
-      "cf-connecting-ip",
-    ]);
-
-    let ip =
-      headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
-      headers["x-real-ip"] ||
-      headers["cf-connecting-ip"] ||
-      "0.0.0.0";
-
-    console.log("Client IP:", ip);
-
     if (
       to.path.startsWith("/me") ||
       to.path.startsWith("/new") ||
