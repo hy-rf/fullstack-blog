@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const config = useRuntimeConfig();
 // if (import.meta.client && !config.public.isDev) {
 //   // ==================== CORE PROTECTION MECHANISMS ====================
 
@@ -332,7 +331,8 @@ const { data: user } = await useAsyncData<User>("user", async () => {
     };
   }
 });
-
+// Init user and preferences(locale, color mode etc).
+// TODO: manage start state of color mode and locale
 userStore.init(user.value!);
 
 watch(
@@ -342,10 +342,8 @@ watch(
       app_name: "udevkit",
       screen_name: "Home",
     });
-    console.table(userStore.$state);
   }
 );
-const runtimeConfig = useRuntimeConfig();
 </script>
 
 <template>
