@@ -86,6 +86,7 @@ defineProps({
   padding-right: 0;
   margin-left: auto;
   padding-top: 0.1rem;
+  background-color: transparent;
 }
 .like-count {
   span {
@@ -98,6 +99,7 @@ defineProps({
 .reply-button {
   border: 0;
   padding-top: 0.2rem;
+  background-color: transparent;
 }
 .reply-count {
   span {
