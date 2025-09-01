@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     server: true,
     client: process.env.NODE_ENV !== "production",
   },
-  srcDir: "app/",
+  srcDir: "app",
 
   vite: {
     server: {

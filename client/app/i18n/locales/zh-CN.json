@@ -8,7 +8,8 @@
     "title": "关注"
   },
   "me": {
-    "title": "个人中心"
+    "title": "个人中心",
+    "username": "名称："
   },
   "nav": {
     "home": "首页",

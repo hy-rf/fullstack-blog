@@ -8,7 +8,8 @@
     "title": "Follows"
   },
   "me": {
-    "title": "Profile"
+    "title": "Profile",
+    "username": "Username: "
   },
   "nav": {
     "home": "Home",

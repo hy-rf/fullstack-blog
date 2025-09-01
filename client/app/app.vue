@@ -200,21 +200,21 @@ if (import.meta.client && !config.public.isDev) {
     );
 
   // Create deceptive objects that trigger protection when interacted with
-  const deceptiveObjects = [
+  const deceptiveObjects: Array<Record<string, unknown>> = [
     {
-      toString: () => {
+      toString: (): string => {
         triggerProtection();
         return "";
       },
     },
     {
-      valueOf: () => {
+      valueOf: (): number => {
         triggerProtection();
         return 0;
       },
     },
     {
-      then: (resolve) => {
+      then: (resolve: () => void): void => {
         triggerProtection();
         resolve();
       },
@@ -283,8 +283,14 @@ if (import.meta.client && !config.public.isDev) {
   // setInterval(detectCodeModification, 10000);
 
   // Final nuclear option - if all else fails
-  window.addEventListener("devtoolschange", (e) => {
-    if (e.detail.open) {
+  interface DevToolsChangeDetail {
+    open: boolean;
+  }
+
+  // Add event listener with proper typing
+  window.addEventListener("devtoolschange", (e: Event) => {
+    const customEvent = e as CustomEvent<DevToolsChangeDetail>;
+    if (customEvent.detail.open) {
       triggerProtection();
     }
   });
@@ -307,24 +313,7 @@ import { useUserStore } from "./stores/user";
 import type { User } from "./types/User";
 const userStore = useUserStore();
 const { gtag } = useGtag();
-const { t } = useI18n();
 const headers = useRequestHeaders(["cookie"]);
-
-const username = computed(() => {
-  return (
-    (userStore.isUser && userStore.user.username) ||
-    t("auth.username_guest") ||
-    "Guest"
-  );
-});
-
-function hasRole(role: string) {
-  return !!(
-    userStore.user &&
-    Array.isArray(userStore.user.roles) &&
-    userStore.user.roles.includes(role)
-  );
-}
 
 const { data: user } = await useAsyncData<User>("user", async () => {
   try {
@@ -344,8 +333,6 @@ const { data: user } = await useAsyncData<User>("user", async () => {
 });
 
 userStore.init(user.value!);
-console.log("Client user initialized!");
-console.table(user.value);
 
 watch(
   () => userStore.loaded,
@@ -363,7 +350,9 @@ const runtimeConfig = useRuntimeConfig();
 <template>
   <MobileHeader />
   <main>
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </main>
 </template>
 
