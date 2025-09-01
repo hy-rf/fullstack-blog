@@ -24,7 +24,7 @@ const userStore = useUserStore();
       <NuxtLink to="/me/update">Update Account</NuxtLink>
     </li>
     <li>
-      <NuxtLink to="/me/locale">Change Locale</NuxtLink>
+      <NuxtLink to="/me/settigs">Settings</NuxtLink>
     </li>
   </ul>
 </template>
