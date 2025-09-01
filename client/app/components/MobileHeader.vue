@@ -83,9 +83,7 @@ header {
   background-color: rgba(233, 233, 233, 0.5);
   backdrop-filter: blur(1px);
   opacity: 1;
-  transition:
-    opacity 400ms ease,
-    backdrop-filter 1s ease;
+  transition: opacity 400ms ease, backdrop-filter 1s ease;
   z-index: 99;
 }
 a {
@@ -104,6 +102,9 @@ ul {
   li {
     width: 20%;
     text-align: center;
+    span {
+      color: #000;
+    }
   }
   & > li:nth-child(3) {
     padding-top: 0;
@@ -116,15 +117,11 @@ ul {
   background-color: #ddddddee;
 }
 .icon {
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 .header-hide {
   opacity: 0.3;
   backdrop-filter: blur(1px);
-  transition:
-    opacity 400ms ease,
-    backdrop-filter 1s ease;
+  transition: opacity 400ms ease, backdrop-filter 1s ease;
 }
 </style>
