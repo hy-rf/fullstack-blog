@@ -1,38 +1,73 @@
 <script setup lang="ts">
-import HeaderLink from "./HeaderLink.vue";
-
 const { t, locales } = useI18n();
 const userStore = useUserStore();
 const route = useRoute();
+
+const headerOpaque = ref(false);
+let rafId: number | null = null;
+let lastScrollY = ref(0);
+
+function onScroll() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(() => {
+    const currentY = window.scrollY || 0;
+    const delta = currentY - lastScrollY.value;
+    const threshold = 5;
+
+    if (currentY <= 10) {
+      headerOpaque.value = false;
+    } else if (delta > threshold) {
+      headerOpaque.value = true;
+    } else if (delta < -threshold) {
+      headerOpaque.value = false;
+    }
+
+    lastScrollY.value = currentY;
+  });
+}
+
+onMounted(() => {
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+  if (rafId) cancelAnimationFrame(rafId);
+});
 </script>
 
 <template>
-  <header>
+  <header
+    class="site-header"
+    :class="headerOpaque ? 'header-hide' : ''"
+    aria-hidden="false"
+  >
     <ul>
       <li :class="{ active: route.path == '/' }">
-        <HeaderLink link="/">
+        <NuxtLink to="/">
           <Icon name="mdi-light:home" size="36" />
-        </HeaderLink>
+        </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/search' }">
-        <HeaderLink link="/search">
+        <NuxtLink to="/search">
           <Icon name="mdi-light:magnify" size="36" />
-        </HeaderLink>
+        </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/new' }">
-        <HeaderLink link="/new">
-          <Icon name="mdi-light:plus" size="55" />
-        </HeaderLink>
+        <NuxtLink to="/new">
+          <Icon name="mdi-light:plus" size="46" />
+        </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/follow' }">
-        <HeaderLink link="/follow">
+        <NuxtLink to="/follow">
           <Icon name="mdi-light:heart" size="36" />
-        </HeaderLink>
+        </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/me' }">
-        <HeaderLink link="/me">
+        <NuxtLink to="/me">
           <Icon name="mdi-light:account" size="36" />
-        </HeaderLink>
+        </NuxtLink>
       </li>
     </ul>
   </header>
@@ -45,11 +80,18 @@ header {
   height: 50px;
   width: 100vw;
   padding-inline: 0;
-  background-color: #e9e9e9;
-  filter: blur(1);
+  background-color: rgba(233, 233, 233, 0.5);
+  backdrop-filter: blur(1px);
+  opacity: 1;
+  transition:
+    opacity 400ms ease,
+    backdrop-filter 1s ease;
+  z-index: 99;
 }
 a {
   display: block;
+  padding-top: 0.5rem;
+  height: 100%;
 }
 a:active {
   color: #000;
@@ -61,22 +103,28 @@ ul {
   height: 100%;
   li {
     width: 20%;
-    padding-top: 0.5rem;
     text-align: center;
   }
   & > li:nth-child(3) {
     padding-top: 0;
     span {
-      transform: translateY(-2px);
+      transform: translateY(-7px);
     }
   }
 }
 .active {
-  background-color: #dddddd;
+  background-color: #ddddddee;
 }
 .icon {
   transition:
     transform 0.3s ease,
     color 0.3s ease;
+}
+.header-hide {
+  opacity: 0.3;
+  backdrop-filter: blur(1px);
+  transition:
+    opacity 400ms ease,
+    backdrop-filter 1s ease;
 }
 </style>
