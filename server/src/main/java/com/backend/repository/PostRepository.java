@@ -97,7 +97,7 @@ public interface PostRepository
             FROM posts p
             LEFT JOIN posts pc ON p.id = pc.root_post_id
             LEFT JOIN users u ON u.id = p.author_id
-            WHERE p.root_post_id = :id OR p.id = :id
+            WHERE p.post_id = :id OR p.id = :id
             GROUP BY p.id, p.content, p.created_at, u.username
             ORDER BY p.id ASC, p.created_at DESC;
                     """, nativeQuery = true)
