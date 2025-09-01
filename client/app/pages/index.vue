@@ -2,21 +2,26 @@
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
 
+const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
-const { data: posts, pending } = useAsyncData<Array<PostSummary>>("post", () =>
-  $fetch(`/api/post?page_token=1`)
+const { data: posts, pending } = useFetch<PostSummary[]>(
+  `/api/post?page_token=1`,
+  { server: true }
 );
+
+if (posts.value) {
+  postStore.init(posts.value);
+}
 </script>
 
 <template>
   <h1>{{ t("home.feed") }}</h1>
   <section class="post-list" aria-label="Posts list">
     <PostCard
-      v-for="post in posts"
+      v-for="post in posts || postStore.posts"
       :key="post.id"
       :post="post"
-      :id="'post-card-' + post.id"
     ></PostCard>
   </section>
   <div v-if="pending">

@@ -39,6 +39,7 @@ defineProps({
         />
       </div>
     </div>
+    <slot></slot>
   </article>
 </template>
 
