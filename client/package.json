@@ -16,19 +16,14 @@
     "@nuxt/image": "^1.10.0",
     "@nuxt/test-utils": "^3.19.1",
     "@nuxtjs/i18n": "^10.0.3",
-    "@nuxtjs/mdc": "^0.17.2",
     "@pinia/nuxt": "^0.11.1",
     "eslint": "^9.30.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^3.17.5",
     "nuxt-gtag": "^3.0.3",
-    "nuxt-tiptap-editor": "^2.3.1",
     "pinia": "^3.0.3",
     "typescript": "^5.8.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
-  },
-  "devDependencies": {
-    "prettier": "^3.6.2"
   }
 }

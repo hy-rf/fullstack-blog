@@ -20,13 +20,9 @@ export default defineNuxtConfig({
     "@nuxt/test-utils",
     "@nuxt/image",
     "@nuxt/icon",
-    "@nuxt/fonts",
-    "@nuxt/eslint",
     "@pinia/nuxt",
     "@nuxtjs/i18n",
-    "nuxt-tiptap-editor",
     "nuxt-gtag",
-    "@nuxtjs/mdc",
   ],
 
   runtimeConfig: {
