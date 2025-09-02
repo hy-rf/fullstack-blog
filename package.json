@@ -1,0 +1,24 @@
+{
+  "name": "fullstack-blog",
+  "version": "1.0.0",
+  "description": "1. Install postgresql 17 2. Install [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) 3. Run vscode debug 4. Open(http://localhost:8080)in your browser showing swagger doc",
+  "homepage": "https://github.com/hy-rf/fullstack-blog#readme",
+  "bugs": {
+    "url": "https://github.com/hy-rf/fullstack-blog/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hy-rf/fullstack-blog.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "prettier-plugin-java": "^2.7.4"
+  }
+}
