@@ -74,15 +74,17 @@ public interface PostRepository
             p.created_at,
             p.author_id,
             u.username,
-            COUNT(pc.id) AS post_count
+            COUNT(pc.id) AS post_count,
+            COUNT(DISTINCT l.user_id) AS like_count
             FROM posts p
-            LEFT JOIN posts pc ON p.id = pc.root_post_id
+            LEFT JOIN posts pc ON p.id = pc.post_id
             LEFT JOIN users u ON u.id = p.author_id
+            LEFT JOIN post_likes l ON p.id = l.post_id
             WHERE p.root_post_id IS NULL
-            GROUP BY p.id, p.content, p.created_at, u.username
-            ORDER BY p.created_at DESC;
+            GROUP BY p.id, p.content, p.created_at, u.username, l.user_id
+            ORDER BY p.created_at DESC LIMIT :limit OFFSET :offset;
                     """, nativeQuery = true)
-    List<PostSummary> findAllByRootPostIsNullOrderByCreatedAtDesc();
+    List<PostSummary> findAllByPostSummariesAndOffset(Integer offset, @Nullable Integer limit);
 
     @Query(value = """
                     SELECT
@@ -93,12 +95,14 @@ public interface PostRepository
             u.username,
             p.root_post_id,
             p.post_id AS parent_post_id,
-            COUNT(pc.id) AS post_count
+            COUNT(pc.id) AS post_count,
+            COUNT(DISTINCT l.user_id) AS like_count
             FROM posts p
-            LEFT JOIN posts pc ON p.id = pc.root_post_id
+            LEFT JOIN posts pc ON p.id = pc.post_id
             LEFT JOIN users u ON u.id = p.author_id
+            LEFT JOIN post_likes l ON p.id = l.post_id
             WHERE p.post_id = :id OR p.id = :id
-            GROUP BY p.id, p.content, p.created_at, u.username
+            GROUP BY p.id, p.content, p.created_at, u.username, l.user_id
             ORDER BY p.id ASC, p.created_at DESC;
                     """, nativeQuery = true)
     List<PostPage> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);

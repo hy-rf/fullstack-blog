@@ -5,4 +5,5 @@ export default interface PostSummary {
   authorId: string;
   authorName: string;
   postCount: number;
+  likeCount: number;
 }

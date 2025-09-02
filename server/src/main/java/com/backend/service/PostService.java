@@ -43,8 +43,8 @@ public class PostService {
    * 
    * @return
    */
-  public List<PostSummary> getPosts() {
-    List<PostSummary> p = postRepository.findAllByRootPostIsNullOrderByCreatedAtDesc();
+  public List<PostSummary> getPosts(Integer offset) {
+    List<PostSummary> p = postRepository.findAllByPostSummariesAndOffset(offset, null);
     return p;
   }
 

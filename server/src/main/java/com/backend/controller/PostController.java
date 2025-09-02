@@ -60,8 +60,8 @@ public class PostController {
                         description = "Page token for pagination", example = "default_page_token",
                         schema = @Schema(
                                         defaultValue = "default_page_token")) @RequestParam String page_token) {
-                List<PostSummary> posts = postService.getPosts();
-                return ResponseEntity.ok().body(posts);
+                List<PostSummary> posts = postService.getPosts(0);
+                return ResponseEntity.ok(posts);
         }
 
         /**

@@ -15,4 +15,5 @@ public class PostPage {
   private Integer rootPostId;
   private Integer parentPostId;
   private Long postCount;
+  private Long likeCount;
 }

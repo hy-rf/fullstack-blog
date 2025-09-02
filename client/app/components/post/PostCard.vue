@@ -30,7 +30,7 @@ defineProps({
         <Icon name="mdi-light:heart" size="22" />
       </button>
       <div class="like-count">
-        <span>{{ Math.floor(Math.random() * 100) }}</span>
+        <span>{{ post.likeCount }}</span>
       </div>
       <button class="reply-button">
         <Icon name="mdi-light:comment" size="20" />
