@@ -26,6 +26,5 @@ services:
 networks:
   devnet:
 
-
 volumes:
   pgdata:
