@@ -45,14 +45,12 @@ const showPostEditor = ref(false);
 
 <template>
   <section class="post-list" aria-label="Posts list">
-    <PostCard v-if="posts && posts.length > 0" :post="posts[0]" />
     <PostCard
-      v-for="post in posts?.filter((e) => e.parentPostId == parseInt(postId))"
+      v-for="post in posts"
       :key="post.id"
       :post="post"
       :id="'post-card-' + post.id"
     >
-      <PostList :posts="posts?.filter((e) => e.parentPostId == post.id)!" />
     </PostCard>
     <div v-if="userStore.isUser">
       You ar logged in user there will be a form to add a child a post
