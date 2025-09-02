@@ -137,6 +137,7 @@ function prevPage() {
 <template>
   <div class="container">
     <h1>{{ t("posts.search") }}</h1>
+    <p>Total: {{ posts?.totalElements }} Posts</p>
     <!-- Filters bound to form state, not store, except  -->
     <div class="filters-container">
       <form
