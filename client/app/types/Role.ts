@@ -1,5 +1,5 @@
 export default interface Role {
-  id: number
-  name: string
-  users: string[]
+  id: number;
+  name: string;
+  users: string[];
 }

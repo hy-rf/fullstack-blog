@@ -9,7 +9,7 @@ export const usePostSearchStore = defineStore("postSearch", {
     sortBy: "createdAt",
     order: "desc",
     page: 1,
-    size: 10
+    size: 10,
   }),
   getters: {
     queryParams: (state) => ({
@@ -20,8 +20,8 @@ export const usePostSearchStore = defineStore("postSearch", {
       sortBy: state.sortBy,
       order: state.order,
       page: state.page,
-      size: state.size
-    })
+      size: state.size,
+    }),
   },
   actions: {
     setFromRoute(query: Record<string, any>) {
@@ -33,6 +33,6 @@ export const usePostSearchStore = defineStore("postSearch", {
       this.order = query.order || "desc";
       this.page = Number(query.page) || 1;
       this.size = Number(query.size) || 10;
-    }
-  }
+    },
+  },
 });

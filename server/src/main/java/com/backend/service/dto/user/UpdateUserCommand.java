@@ -14,5 +14,4 @@ public class UpdateUserCommand {
   private String email;
 
   private String password;
-
 }

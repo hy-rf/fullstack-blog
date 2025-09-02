@@ -1,12 +1,11 @@
 package com.backend.controller.dto.post;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
-public class UpdatePostResponse {
+@Getter
+public class AddLikeResponse {
 
   private Boolean success;
-  private String message;
 }

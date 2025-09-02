@@ -7,7 +7,7 @@ const { t, locale } = useI18n();
 
 const { data: posts, pending } = useFetch<PostSummary[]>(
   `/api/post?page_token=1`,
-  { server: true }
+  { server: true },
 );
 
 if (posts.value) {

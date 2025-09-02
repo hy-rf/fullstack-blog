@@ -7,4 +7,5 @@ export default interface PostPage {
   rootPostId: number;
   parentPostId: number;
   postCount: number;
+  likeCount: number;
 }

@@ -2,53 +2,56 @@ package com.backend.security;
 
 import com.backend.model.Role;
 import com.backend.model.User;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 public class CustomUserDetails implements UserDetails {
 
-    private final Integer id;
-    private final String username;
-    private final String password;
-    private final Collection<? extends GrantedAuthority> authorities;
+  private final Integer id;
+  private final String username;
+  private final String password;
+  private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPasswordHash();
-        this.authorities = user.getRoles().stream().map(Role::getName)
-                .map(role -> (GrantedAuthority) () -> "ROLE_" + role).collect(Collectors.toList());
-    }
+  public CustomUserDetails(User user) {
+    this.id = user.getId();
+    this.username = user.getUsername();
+    this.password = user.getPasswordHash();
+    this.authorities = user
+      .getRoles()
+      .stream()
+      .map(Role::getName)
+      .map(role -> (GrantedAuthority) () -> "ROLE_" + role)
+      .collect(Collectors.toList());
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return authorities;
+  }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+  @Override
+  public String getUsername() {
+    return username;
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 }

@@ -28,7 +28,7 @@ function utcToLocal(utcValue: string): string {
       second: "2-digit",
       hour12: false,
       timeZone: "Asia/Taipei",
-    })
+    }),
   );
 
   return utcDate
@@ -75,7 +75,7 @@ const {
   error,
 } = await useAsyncData<PostListViewModel>(
   () => `postsSearch-${JSON.stringify(route.query)}`,
-  () => fetchPosts(route.query)
+  () => fetchPosts(route.query),
 );
 
 // Watch route query → update store (and form)
@@ -93,7 +93,7 @@ watch(
       page: searchStore.page,
       size: searchStore.size,
     });
-  }
+  },
 );
 
 // Change size → update store and query ( No search button click needed )

@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PostPage {
+
   private Integer id;
   private String content;
   private Instant createdAt;

@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CreatePostCommandResult {
+public class CreateLikeCommand {
 
-  private boolean Success;
+  private Integer postId;
+  private Integer userId;
 }

@@ -322,7 +322,7 @@ const { data: user } = await useAsyncData<User>("user", async () => {
       {
         credentials: "include",
         headers,
-      }
+      },
     );
   } catch {
     return {
@@ -342,7 +342,7 @@ watch(
       app_name: "udevkit",
       screen_name: "Home",
     });
-  }
+  },
 );
 </script>
 

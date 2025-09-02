@@ -12,17 +12,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "com.backend.repository")
 public class Application {
 
-    @PostConstruct
-    public void startupApplication() {
-        log.info("Start application");
-    }
+  @PostConstruct
+  public void startupApplication() {
+    log.info("Start application");
+  }
 
-    @PreDestroy
-    public void shutdownApplication() {
-        log.info("Shutdown application");
-    }
+  @PreDestroy
+  public void shutdownApplication() {
+    log.info("Shutdown application");
+  }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 }

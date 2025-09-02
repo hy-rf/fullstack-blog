@@ -1,8 +1,7 @@
 package com.backend.common.security;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.backend.common.PasswordUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,6 +23,9 @@ public class PBKDF2PasswordEncoder implements PasswordEncoder {
 
   @Override
   public boolean matches(CharSequence rawPassword, String encodedPassword) {
-    return passwordUtils.verifyPassword(rawPassword.toString(), encodedPassword);
+    return passwordUtils.verifyPassword(
+      rawPassword.toString(),
+      encodedPassword
+    );
   }
 }

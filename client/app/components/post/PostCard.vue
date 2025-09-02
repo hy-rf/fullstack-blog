@@ -3,12 +3,25 @@ import type PostSummary from "~/types/PostSummary";
 
 const { t, locale } = useI18n();
 
-defineProps({
+const props = defineProps({
   post: {
     type: Object as () => PostSummary,
     required: true,
   },
 });
+
+const likeCount = ref(props.post.likeCount);
+
+const likePost = async (postId: number) => {
+  const res = await fetch("/api/like", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ postId }),
+  });
+  if (res.status == 200) {
+    likeCount.value++;
+  }
+};
 </script>
 
 <template>
@@ -26,11 +39,11 @@ defineProps({
           {{ post.authorName }}
         </NuxtLink>
       </div>
-      <button class="like-button">
+      <button class="like-button" @click="likePost(post.id)">
         <Icon name="mdi-light:heart" size="22" />
       </button>
       <div class="like-count">
-        <span>{{ post.likeCount }}</span>
+        <span>{{ likeCount }}</span>
       </div>
       <button class="reply-button">
         <Icon name="mdi-light:comment" size="20" />

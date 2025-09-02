@@ -4,6 +4,7 @@ import com.backend.model.User;
 import com.backend.service.dto.post.AuthorDto;
 
 public class AuthorMapper {
+
   public AuthorDto toAuthorDto(User user) {
     AuthorDto authorDto = new AuthorDto();
     authorDto.setId(user.getId());

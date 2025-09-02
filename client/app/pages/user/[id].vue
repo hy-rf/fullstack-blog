@@ -2,13 +2,12 @@
 definePageMeta({
   validate: async (route) => {
     // Check if the id is made up of digits
-    return typeof route.params.id === 'string' && /^\d+$/.test(route.params.id)
-  }
-})
+    return typeof route.params.id === "string" && /^\d+$/.test(route.params.id);
+  },
+});
 
 const route = useRoute();
 const userId = route.params.id as string;
-
 </script>
 
 <template>
@@ -17,6 +16,4 @@ const userId = route.params.id as string;
   </div>
 </template>
 
-<style lang="css" scoped>
-
-</style>
+<style lang="css" scoped></style>

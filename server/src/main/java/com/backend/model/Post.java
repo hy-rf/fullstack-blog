@@ -1,10 +1,5 @@
 package com.backend.model;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
@@ -21,8 +16,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Data;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -59,8 +60,11 @@ public class Post {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JsonManagedReference
-  @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"),
-      inverseJoinColumns = @JoinColumn(name = "user_id"))
+  @JoinTable(
+    name = "post_likes",
+    joinColumns = @JoinColumn(name = "post_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id")
+  )
   private Set<User> likes = new HashSet<>();
 
   @PrePersist

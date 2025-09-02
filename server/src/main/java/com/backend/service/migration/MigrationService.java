@@ -1,11 +1,5 @@
 package com.backend.service.migration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.backend.common.PasswordUtils;
 import com.backend.model.Post;
 import com.backend.model.Role;
@@ -14,7 +8,11 @@ import com.backend.repository.PostRepository;
 import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -27,9 +25,14 @@ public class MigrationService {
   private final PostRepository postRepository;
   private final PasswordUtils passwordUtils;
 
-  public MigrationService(PostDataProvider postDataProvider, UserDataProvider userDataProvider,
-      UserRepository userRepository, RoleRepository roleRepository, PostRepository postRepository,
-      PasswordUtils passwordUtils) {
+  public MigrationService(
+    PostDataProvider postDataProvider,
+    UserDataProvider userDataProvider,
+    UserRepository userRepository,
+    RoleRepository roleRepository,
+    PostRepository postRepository,
+    PasswordUtils passwordUtils
+  ) {
     this.postDataProvider = postDataProvider;
     this.userDataProvider = userDataProvider;
     this.userRepository = userRepository;
@@ -53,17 +56,21 @@ public class MigrationService {
     String hashedPassword = passwordUtils.hashPassword(userData.getPassword());
     newUser.setPasswordHash(hashedPassword);
 
-    Role userRole = roleRepository.findByName("user").orElseGet(() -> {
-      Role role = new Role();
-      role.setName("user");
-      return roleRepository.save(role);
-    });
+    Role userRole = roleRepository
+      .findByName("user")
+      .orElseGet(() -> {
+        Role role = new Role();
+        role.setName("user");
+        return roleRepository.save(role);
+      });
 
-    Role adminRole = roleRepository.findByName("admin").orElseGet(() -> {
-      Role role = new Role();
-      role.setName("admin");
-      return roleRepository.save(role);
-    });
+    Role adminRole = roleRepository
+      .findByName("admin")
+      .orElseGet(() -> {
+        Role role = new Role();
+        role.setName("admin");
+        return roleRepository.save(role);
+      });
 
     List<Role> roles = new ArrayList<>();
     roles.add(userRole);

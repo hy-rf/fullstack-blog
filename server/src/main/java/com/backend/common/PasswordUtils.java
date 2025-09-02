@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordUtils {
 
-  private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(5);
+  private final BCryptPasswordEncoder bCryptPasswordEncoder =
+    new BCryptPasswordEncoder(5);
 
   public String hashPassword(String password) {
     return bCryptPasswordEncoder.encode(password);

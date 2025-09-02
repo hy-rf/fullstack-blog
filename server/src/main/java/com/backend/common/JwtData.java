@@ -1,7 +1,6 @@
 package com.backend.common;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class JwtData {
-    private Integer userId;
-    private String userName;
-    private List<Integer> roleIds;
-    private List<String> roleNames;
+
+  private Integer userId;
+  private String userName;
+  private List<Integer> roleIds;
+  private List<String> roleNames;
 }

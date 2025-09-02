@@ -26,7 +26,7 @@ const {
   status,
   error,
 } = await useAsyncData<Array<PostPage>>(`post-${postId}`, () =>
-  $fetch(`/api/post/${route.params.id}`)
+  $fetch(`/api/post/${route.params.id}`),
 );
 
 const userStore = useUserStore();
@@ -34,7 +34,7 @@ const userStore = useUserStore();
 const isPostEditable = computed(() => {
   const currentUser = userStore.user;
   const currentPost = posts.value?.findLast(
-    (post) => String(post.id) === postId
+    (post) => String(post.id) === postId,
   );
   if (!currentUser || !currentPost) return false;
   return Number(currentUser.id) === Number(currentPost.authorId);

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostSummary {
+
   private Integer id;
   private String content;
   private Instant createdAt;

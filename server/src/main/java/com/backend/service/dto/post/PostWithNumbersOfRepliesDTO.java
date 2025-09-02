@@ -1,21 +1,27 @@
 package com.backend.service.dto.post;
 
-import java.time.OffsetDateTime;
 import jakarta.persistence.ColumnResult;
 import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.SqlResultSetMapping;
+import java.time.OffsetDateTime;
 
-
-@SqlResultSetMapping(name = "PostWithNumbersOfRepliesMapping",
-    classes = @ConstructorResult(targetClass = PostWithNumbersOfRepliesDTO.class,
-        columns = {@ColumnResult(name = "id", type = Integer.class),
-            @ColumnResult(name = "content", type = String.class),
-            @ColumnResult(name = "createdAt", type = OffsetDateTime.class),
-            @ColumnResult(name = "authorId", type = Integer.class),
-            @ColumnResult(name = "username", type = String.class),
-            @ColumnResult(name = "userRoleNameList", type = String.class),
-            @ColumnResult(name = "numberOfReplies", type = Integer.class)}))
+@SqlResultSetMapping(
+  name = "PostWithNumbersOfRepliesMapping",
+  classes = @ConstructorResult(
+    targetClass = PostWithNumbersOfRepliesDTO.class,
+    columns = {
+      @ColumnResult(name = "id", type = Integer.class),
+      @ColumnResult(name = "content", type = String.class),
+      @ColumnResult(name = "createdAt", type = OffsetDateTime.class),
+      @ColumnResult(name = "authorId", type = Integer.class),
+      @ColumnResult(name = "username", type = String.class),
+      @ColumnResult(name = "userRoleNameList", type = String.class),
+      @ColumnResult(name = "numberOfReplies", type = Integer.class),
+    }
+  )
+)
 public class PostWithNumbersOfRepliesDTO {
+
   private Integer id;
   private String content;
   private OffsetDateTime createdAt;
@@ -24,8 +30,15 @@ public class PostWithNumbersOfRepliesDTO {
   private String userRoleNameList;
   private Integer numberOfReplies;
 
-  public PostWithNumbersOfRepliesDTO(Integer id, String content, OffsetDateTime createdAt,
-      Integer authorId, String username, String userRoleNameList, Integer numberOfReplies) {
+  public PostWithNumbersOfRepliesDTO(
+    Integer id,
+    String content,
+    OffsetDateTime createdAt,
+    Integer authorId,
+    String username,
+    String userRoleNameList,
+    Integer numberOfReplies
+  ) {
     this.id = id;
     this.content = content;
     this.createdAt = createdAt;

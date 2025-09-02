@@ -1,14 +1,10 @@
 package com.backend.repository;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-
 import com.backend.model.Role;
+import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoleRepository extends BaseRepository<Role, Integer> {
-
   Optional<Role> findByName(String string);
-
 }
