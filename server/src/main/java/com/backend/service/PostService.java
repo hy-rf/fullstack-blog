@@ -11,6 +11,7 @@ import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
+import com.backend.service.dto.post.RemoveLikeCommand;
 import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
 import com.backend.service.dto.post.UpdatePostResultStatus;
@@ -168,6 +169,15 @@ public class PostService {
     User user = userRepository.findById(userId).orElseThrow();
     Post post = postRepository.findById(postId).orElseThrow();
     post.getLikes().add(user);
+    postRepository.save(post);
+  }
+
+  public void removeLike(RemoveLikeCommand removeLikeCommand) {
+    Integer postId = removeLikeCommand.getPostId();
+    Integer userId = removeLikeCommand.getUserId();
+    User user = userRepository.findById(userId).orElseThrow();
+    Post post = postRepository.findById(postId).orElseThrow();
+    post.getLikes().remove(user);
     postRepository.save(post);
   }
 }
