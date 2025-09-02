@@ -83,7 +83,7 @@ public interface PostRepository
     LEFT JOIN users u ON u.id = p.author_id
     LEFT JOIN post_likes l ON p.id = l.post_id
     WHERE p.root_post_id IS NULL
-    GROUP BY p.id, p.content, p.created_at, u.username, l.user_id
+    GROUP BY p.id, p.content, p.created_at, u.username
     ORDER BY p.created_at DESC LIMIT :limit OFFSET :offset;
             """,
     nativeQuery = true
@@ -110,7 +110,7 @@ public interface PostRepository
     LEFT JOIN users u ON u.id = p.author_id
     LEFT JOIN post_likes l ON p.id = l.post_id
     WHERE p.post_id = :id OR p.id = :id
-    GROUP BY p.id, p.content, p.created_at, u.username, l.user_id
+    GROUP BY p.id, p.content, p.created_at, u.username
     ORDER BY p.id ASC, p.created_at DESC;
             """,
     nativeQuery = true
