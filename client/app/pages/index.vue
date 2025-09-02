@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// TODO: save scroll info so that can keep after browsing other routes then back
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
 
@@ -9,9 +10,15 @@ const { data: posts, pending } = useFetch<PostSummary[]>(`/api/post?offset=0`, {
   server: true,
 });
 
-if (posts.value && postStore.posts.length == 0) {
+if (import.meta.server && posts.value && postStore.posts.length === 0) {
   postStore.init(posts.value);
 }
+
+const postsToShow = computed(() => {
+  if (postStore.posts && postStore.posts.length > 0) return postStore.posts;
+  return posts.value ?? [];
+});
+
 
 const isFetchingMore = ref(false);
 const threshold = 10;
@@ -44,8 +51,10 @@ onMounted(() => {
   document.addEventListener("scroll", onScroll);
 });
 
-onUnmounted(() => {
+onBeforeRouteLeave(() => {
   document.removeEventListener("scroll", onScroll);
+  console.log(listRef.value?.scrollTop);
+  
 });
 </script>
 
@@ -54,7 +63,7 @@ onUnmounted(() => {
   <button @click="loadPosts">Add feeds</button>
   <section ref="listRef" class="post-list" aria-label="Posts list">
     <PostCard
-      v-for="post in posts || postStore.posts"
+      v-for="post in postsToShow"
       :key="post.id"
       :post="post"
     ></PostCard>
