@@ -50,7 +50,7 @@ public class PostService {
   public List<PostSummary> getPosts(Integer offset) {
     List<PostSummary> p = postRepository.findAllByPostSummariesAndOffset(
       offset,
-      10
+      50
     );
     return p;
   }

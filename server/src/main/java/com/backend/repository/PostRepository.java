@@ -117,13 +117,19 @@ public interface PostRepository
   )
   List<PostPage> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
 
-  @Query(value = """
-      INSERT INTO post_likes (post_id, user_id) VALUES (:postId, :userId);
-      """, nativeQuery = true)
-    void addLike();
+  @Query(
+    value = """
+    INSERT INTO post_likes (post_id, user_id) VALUES (:postId, :userId);
+    """,
+    nativeQuery = true
+  )
+  void addLike();
 
-  @Query(value = """
-      DELETE FROM post_likes WHERE post_id = :postId AND user_id = :userId;
-      """, nativeQuery = true)
-    void removeLike();
+  @Query(
+    value = """
+    DELETE FROM post_likes WHERE post_id = :postId AND user_id = :userId;
+    """,
+    nativeQuery = true
+  )
+  void removeLike();
 }

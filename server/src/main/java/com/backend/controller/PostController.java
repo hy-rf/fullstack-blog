@@ -63,9 +63,9 @@ public class PostController {
       description = "Page token for pagination",
       example = "default_page_token",
       schema = @Schema(defaultValue = "default_page_token")
-    ) @RequestParam String page_token
+    ) @RequestParam Integer offset
   ) {
-    List<PostSummary> posts = postService.getPosts(0);
+    List<PostSummary> posts = postService.getPosts(offset);
     return ResponseEntity.ok(posts);
   }
 
