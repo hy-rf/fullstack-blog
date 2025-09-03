@@ -26,39 +26,53 @@ const likePost = async (postId: number) => {
 
 <template>
   <article class="post-card">
-    <div class="post-main-info">
+    <div class="post-main">
       <NuxtLink :to="`/post/${post.id}`">
         <p>
           {{ post.content.substring(0, 50) }}
         </p>
       </NuxtLink>
     </div>
-    <div class="post-other-info">
+    <div class="post-other">
       <div class="author-info">
         <NuxtLink :to="`/user/${post.authorId}`">
           {{ post.authorName }}
         </NuxtLink>
       </div>
-      <button class="like-button" @click="likePost(post.id)">
-        <Icon name="mdi-light:heart" size="22" />
-      </button>
-      <div class="like-count">
-        <span>{{ likeCount }}</span>
-      </div>
-      <button class="reply-button">
-        <Icon name="mdi-light:comment" size="20" />
-      </button>
-      <div class="reply-count">
-        <span>
-          {{ " " + post.postCount }}
-        </span>
-      </div>
-      <div class="created-at">
-        <NuxtTime
-          :datetime="post.createdAt"
-          :relative="true"
-          :locale="locale"
-        />
+      <div class="post-other-right">
+        <div>
+          <button class="like-button" @click="likePost(post.id)">
+            <Icon name="mdi-light:heart" size="20" />
+          </button>
+          <div class="like-count">
+            <span>{{ likeCount }}</span>
+          </div>
+        </div>
+        <div>
+          <button class="save-button" @click="likePost(post.id)">
+            <Icon name="mdi-light:bookmark" size="20" />
+          </button>
+          <div class="save-count">
+            <span>{{ 0 }}</span>
+          </div>
+        </div>
+        <div>
+          <button class="reply-button">
+            <Icon name="mdi-light:comment" size="20" />
+          </button>
+          <div class="reply-count">
+            <span>
+              {{ " " + post.postCount }}
+            </span>
+          </div>
+        </div>
+        <div class="created-at">
+          <NuxtTime
+            :datetime="post.createdAt"
+            :relative="true"
+            :locale="locale"
+          />
+        </div>
       </div>
     </div>
     <slot></slot>
@@ -71,7 +85,7 @@ const likePost = async (postId: number) => {
 
   border-bottom: 1px solid #666666;
 }
-.post-main-info {
+.post-main {
   gap: 0.5rem;
   padding-bottom: 0.5rem;
   a {
@@ -82,9 +96,8 @@ const likePost = async (postId: number) => {
     }
   }
 }
-.post-other-info {
+.post-other {
   display: flex;
-  justify-content: space-between;
 }
 .author-info {
   a {
@@ -94,42 +107,36 @@ const likePost = async (postId: number) => {
     color: #000;
   }
 }
-.like-button {
-  border: 0;
-  padding-right: 0;
+.post-other-right {
+  display: flex;
   margin-left: auto;
-  padding-top: 0.1rem;
-  background-color: transparent;
-}
-.like-count {
-  span {
-    font-size: small;
-    display: inline-block;
-    padding-top: 0.5rem;
+  gap: 0.8rem;
+  div {
+    display: flex;
+    gap: 0.1rem;
+    span {
+      display: inline-block;
+      vertical-align: bottom;
+      padding-top: 0.5rem;
+      font-size: 0.9rem;
+    }
   }
-  padding-right: 0.8rem;
 }
-.reply-button {
+button {
   border: 0;
   padding-top: 0.2rem;
   background-color: transparent;
 }
-.reply-count {
-  span {
-    font-size: small;
-    display: inline-block;
-    padding-top: 0.5rem;
-  }
-}
 .created-at {
-  width: 7rem;
+  width: 5rem;
   text-align-last: right;
   time {
     display: inline-block;
+    margin-left: auto;
     padding-top: 0.5rem;
-    font-size: smaller;
+    font-size: small;
     color: gray;
-    text-align: end;
+    text-align-last: end;
   }
 }
 </style>
