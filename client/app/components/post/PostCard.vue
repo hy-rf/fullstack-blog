@@ -23,6 +23,17 @@ const likePost = async (postId: number) => {
     likeCount.value++;
   }
 };
+
+const savePost = async (postId: number) => {
+  const res = await fetch("/api/save-post", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ postId }),
+  });
+  if (res.status == 200) {
+    saveCount.value++;
+  }
+};
 </script>
 
 <template>
@@ -50,7 +61,7 @@ const likePost = async (postId: number) => {
           </div>
         </div>
         <div>
-          <button class="save-button" @click="likePost(post.id)">
+          <button class="save-button" @click="savePost(post.id)">
             <Icon name="mdi-light:bookmark" size="20" />
           </button>
           <div class="save-count">
