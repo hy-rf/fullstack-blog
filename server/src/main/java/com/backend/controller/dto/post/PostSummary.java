@@ -17,4 +17,5 @@ public class PostSummary {
   private String authorName;
   private Long postCount;
   private Long likeCount;
+  private Long saveCount;
 }

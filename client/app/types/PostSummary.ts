@@ -6,4 +6,5 @@ export default interface PostSummary {
   authorName: string;
   postCount: number;
   likeCount: number;
+  saveCount: number;
 }

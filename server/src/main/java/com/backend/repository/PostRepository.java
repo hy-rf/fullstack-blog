@@ -79,13 +79,15 @@ public interface PostRepository
     p.author_id,
     u.username,
     COUNT(pc.id) AS post_count,
-    COUNT(DISTINCT l.user_id) AS like_count
+    COUNT(DISTINCT l.user_id) AS like_count,
+    COUNT(DISTINCT usp.user_id) AS save_count
     FROM posts p
     LEFT JOIN posts pc ON p.id = pc.post_id
     LEFT JOIN users u ON u.id = p.author_id
     LEFT JOIN post_likes l ON p.id = l.post_id
+    LEFT JOIN user_saved_posts usp ON p.id = usp.post_id
     WHERE p.root_post_id IS NULL
-    GROUP BY p.id, p.content, p.created_at, u.username
+    GROUP BY p.id, p.content, p.created_at, u.username, usp.post_id
     ORDER BY p.created_at DESC LIMIT :limit OFFSET :offset;
             """,
     nativeQuery = true

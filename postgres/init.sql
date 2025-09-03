@@ -69,3 +69,5 @@ INSERT INTO roles (name) VALUES ('user');
 CREATE INDEX IF NOT EXISTS idx_posts_post_id ON posts(post_id);
 
 CREATE INDEX IF NOT EXISTS idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
+
+CREATE INDEX IF NOT EXISTS index_saved_posts ON user_saved_posts(user_id, post_id);

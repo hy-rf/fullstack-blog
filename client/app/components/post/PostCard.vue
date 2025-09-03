@@ -11,6 +11,7 @@ const props = defineProps({
 });
 
 const likeCount = ref(props.post.likeCount);
+const saveCount = ref(props.post.saveCount);
 
 const likePost = async (postId: number) => {
   const res = await fetch("/api/like", {
@@ -53,7 +54,7 @@ const likePost = async (postId: number) => {
             <Icon name="mdi-light:bookmark" size="20" />
           </button>
           <div class="save-count">
-            <span>{{ 0 }}</span>
+            <span>{{ saveCount }}</span>
           </div>
         </div>
         <div>
