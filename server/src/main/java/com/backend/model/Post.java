@@ -67,6 +67,14 @@ public class Post {
   )
   private Set<User> likes = new HashSet<>();
 
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "post_tags",
+    joinColumns = @JoinColumn(name = "post_id"),
+    inverseJoinColumns = @JoinColumn(name = "tag_id")
+  )
+  private Set<Tag> tags = new HashSet<>();
+
   @PrePersist
   public void onCreate() {
     createdAt = OffsetDateTime.now();
