@@ -38,6 +38,12 @@ CREATE TABLE
     user_id INTEGER NOT NULL
   );
 
+CREATE TABLE
+  user_saved_posts (
+    user_id INTEGER NOT NULL,
+    post_id INTEGER NOT NULL
+  );
+
 ALTER TABLE IF EXISTS posts ADD FOREIGN KEY (author_id) REFERENCES users;
 
 ALTER TABLE IF EXISTS posts ADD FOREIGN KEY (root_post_id) REFERENCES posts;
@@ -51,6 +57,10 @@ ALTER TABLE IF EXISTS user_roles ADD FOREIGN KEY (user_id) REFERENCES users;
 ALTER TABLE IF EXISTS post_likes ADD FOREIGN KEY (post_id) REFERENCES posts;
 
 ALTER TABLE IF EXISTS post_likes ADD FOREIGN KEY (user_id) REFERENCES users;
+
+ALTER TABLE IF EXISTS user_saved_posts ADD FOREIGN KEY (user_id) REFERENCES users;
+
+ALTER TABLE IF EXISTS user_saved_posts ADD FOREIGN KEY (post_id) REFERENCES posts;
 
 INSERT INTO roles (name) VALUES ('admin');
 

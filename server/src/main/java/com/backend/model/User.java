@@ -56,6 +56,14 @@ public class User {
   )
   private List<Role> roles = new ArrayList<>();
 
+  @ManyToMany
+  @JoinTable(
+    name = "user_saved_posts",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "post_id")
+  )
+  private List<Post> savedPosts = new ArrayList<>();
+
   @PrePersist
   public void onCreate() {
     createdAt = OffsetDateTime.now();

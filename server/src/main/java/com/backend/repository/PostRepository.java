@@ -12,10 +12,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface PostRepository
@@ -117,19 +119,43 @@ public interface PostRepository
   )
   List<PostPage> findAllByRootPostIdOrderByCreatedAtDesc(Integer id);
 
+  @Modifying
+  @Transactional
   @Query(
     value = """
     INSERT INTO post_likes (post_id, user_id) VALUES (:postId, :userId);
     """,
     nativeQuery = true
   )
-  void addLike();
+  int addLike(Integer postId, Integer userId);
 
+  @Modifying
+  @Transactional
   @Query(
     value = """
     DELETE FROM post_likes WHERE post_id = :postId AND user_id = :userId;
     """,
     nativeQuery = true
   )
-  void removeLike();
+  int removeLike(Integer postId, Integer userId);
+
+  @Modifying
+  @Transactional
+  @Query(
+    value = """
+    INSERT INTO user_saved_posts (user_id, post_id) VALUES (:userId, :postId);
+    """,
+    nativeQuery = true
+  )
+  int addSavedPost(Integer userId, Integer postId);
+
+  @Modifying
+  @Transactional
+  @Query(
+    value = """
+    DELETE FROM user_saved_posts WHERE user_id = :userId AND post_id = :postId;
+    """,
+    nativeQuery = true
+  )
+  int removeSavedPost(Integer userId, Integer postId);
 }

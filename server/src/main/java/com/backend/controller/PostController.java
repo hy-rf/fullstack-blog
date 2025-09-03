@@ -8,6 +8,7 @@ import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
+import com.backend.repository.PostRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
@@ -24,13 +25,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,15 +45,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PostController {
+
+  private final PostRepository postRepository;
 
   private final PostMapper postMapper;
   private final PostService postService;
-
-  public PostController(PostMapper postMapper, PostService postService) {
-    this.postMapper = postMapper;
-    this.postService = postService;
-  }
 
   /**
    * This is for getting feeds on home page and it gets different posts if page_token exists.
@@ -208,5 +210,51 @@ public class PostController {
     Integer userId = userDetails.getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
+  }
+
+  @DeleteMapping("/like")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<AddLikeResponse> removeLike(
+    @RequestBody AddLikeRequest addLikeRequest
+  ) {
+    Integer postId = addLikeRequest.getPostId();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    Integer userId = userDetails.getId();
+    postService.createLike(new CreateLikeCommand(postId, userId));
+    return ResponseEntity.ok(new AddLikeResponse(true));
+  }
+
+  @PostMapping("/save-post")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<Boolean> savePost(@RequestParam Integer postId) {
+    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    int result = postRepository.addSavedPost(userId, postId);
+    if (result == 0) return ResponseEntity.status(403).body(false);
+    if (result == 1) return ResponseEntity.ok(true);
+    if (result > 1) {
+      return ResponseEntity.status(500).body(false);
+    } else {
+      return ResponseEntity.status(500).body(false);
+    }
+  }
+
+  @DeleteMapping("/save-post")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<Boolean> removeSavedPost(@RequestParam Integer postId) {
+    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    int result = postRepository.removeSavedPost(userId, postId);
+    if (result == 0) return ResponseEntity.status(403).body(false);
+    if (result == 1) return ResponseEntity.ok(true);
+    if (result > 1) {
+      return ResponseEntity.status(500).body(false);
+    } else {
+      return ResponseEntity.status(500).body(false);
+    }
+  }
+
+  @GetMapping("/saved-posts")
+  public ResponseEntity<List<PostSummary>> getSavedPosts() {
+    throw new NotImplementedException();
   }
 }
