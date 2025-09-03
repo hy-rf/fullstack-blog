@@ -255,6 +255,7 @@ public class PostController {
 
   @GetMapping("/saved-posts")
   public ResponseEntity<List<PostSummary>> getSavedPosts() {
-    throw new NotImplementedException();
+    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    return ResponseEntity.ok(postRepository.getSavedPostsByUserId(userId));
   }
 }

@@ -57,11 +57,8 @@ public class UserController {
     return ResponseEntity.ok().body(user);
   }
 
-  @PreAuthorize("hasRole('admin')")
   @GetMapping("/user/{id}")
   public User getUserById(@PathVariable Integer id) {
-    // Logic to retrieve user by ID
-
     return userService.getUserById(id);
   }
 
