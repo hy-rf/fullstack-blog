@@ -70,28 +70,27 @@ public interface PostRepository
   )
   PostWithNumbersOfRepliesDTO find();
 
-  @Query(
-    value = """
-            SELECT
-    p.id,
-    p.content,
-    p.created_at,
-    p.author_id,
-    u.username,
-    COUNT(pc.id) AS post_count,
-    COUNT(DISTINCT l.user_id) AS like_count,
-    COUNT(DISTINCT usp.user_id) AS save_count
+  // ...existing code...
+@Query(
+  value = """
+    SELECT
+      p.id,
+      p.content,
+      p.created_at,
+      p.author_id,
+      u.username,
+      (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+      (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
+      (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count
     FROM posts p
-    LEFT JOIN posts pc ON p.id = pc.post_id
-    LEFT JOIN users u ON u.id = p.author_id
-    LEFT JOIN post_likes l ON p.id = l.post_id
-    LEFT JOIN user_saved_posts usp ON p.id = usp.post_id
+    JOIN users u ON u.id = p.author_id
     WHERE p.root_post_id IS NULL
-    GROUP BY p.id, p.content, p.created_at, u.username, usp.post_id
-    ORDER BY p.created_at DESC LIMIT :limit OFFSET :offset;
-            """,
-    nativeQuery = true
-  )
+    ORDER BY p.created_at DESC
+    LIMIT :limit OFFSET :offset
+    """,
+  nativeQuery = true
+)
+// ...existing code...
   List<PostSummary> findAllByPostSummariesAndOffset(
     Integer offset,
     @Nullable Integer limit

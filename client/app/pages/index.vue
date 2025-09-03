@@ -55,7 +55,7 @@ onMounted(() => {
   document.addEventListener("scroll", onScroll);
   if (window) {
     const options: ScrollToOptions = {
-      top: 0
+      top: postStore.scroll
     }
     // why SetTimeout
     setTimeout(() => {
