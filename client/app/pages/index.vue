@@ -60,7 +60,6 @@ onBeforeRouteLeave(() => {
 
 <template>
   <h1>{{ t("home.feed") }}</h1>
-  <button @click="loadPosts">Add feeds</button>
   <section ref="listRef" class="post-list" aria-label="Posts list">
     <PostCard
       v-for="post in postsToShow"
