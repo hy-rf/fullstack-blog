@@ -10,6 +10,7 @@ import com.backend.mapper.PostMapper;
 import com.backend.model.Post;
 import com.backend.repository.PostRepository;
 import com.backend.repository.dto.PostPage;
+import com.backend.repository.dto.SavedPost;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
 import com.backend.service.dto.post.CreateLikeCommand;
@@ -256,5 +257,11 @@ public class PostController {
   public ResponseEntity<List<PostSummary>> getSavedPosts() {
     Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.getSavedPostsByUserId(userId));
+  }
+
+  @GetMapping("/saved-posts-summary")
+  public ResponseEntity<List<SavedPost>> getSavedPostsSummary() {
+    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    return ResponseEntity.ok(postRepository.findSavedPostIdsByUserId(userId));
   }
 }

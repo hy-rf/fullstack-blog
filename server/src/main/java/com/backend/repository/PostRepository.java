@@ -3,6 +3,7 @@ package com.backend.repository;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.repository.dto.PostPage;
+import com.backend.repository.dto.SavedPost;
 import com.backend.service.dto.post.PostWithNumbersOfRepliesDTO;
 import java.util.List;
 import java.util.Optional;
@@ -183,4 +184,14 @@ public interface PostRepository
     nativeQuery = true
   )
   List<PostSummary> getSavedPostsByUserId(Integer userId);
+
+  @Query(
+  value = """
+    SELECT post_id, user_id
+    FROM user_saved_posts
+    WHERE user_id = :userId
+    """,
+  nativeQuery = true
+)
+List<SavedPost> findSavedPostIdsByUserId(Integer userId);
 }

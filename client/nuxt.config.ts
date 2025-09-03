@@ -45,8 +45,8 @@ export default defineNuxtConfig({
     defaultLocale: "en-US",
   },
 
-  tiptap: {
-    prefix: "Tiptap",
+  icon: {
+    mode: "svg"
   },
 
   gtag: {

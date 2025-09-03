@@ -3,16 +3,13 @@
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
 
+const userStore = useUserStore()
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
 const { data: posts, pending } = useFetch<PostSummary[]>(`/api/post?offset=${postStore.offset}`, {
   server: true,
 });
-
-if (import.meta.server && posts.value && postStore.posts.length === 0) {
-  postStore.init(posts.value);
-}
 
 const postsToShow = computed(() => {
   if (postStore.posts && postStore.posts.length > 0) return postStore.posts;
@@ -39,38 +36,35 @@ const loadMorePosts = async () => {
 const listRef = ref<HTMLElement | null>(null);
 const onScroll = () => {
   const el = listRef.value;
-  if (!el || isFetchingMore.value) return;
+  // should not fetch while fetching
+  if (isFetchingMore.value || !el) return;
   const { scrollHeight } = el;
-  console.log(window.scrollY, scrollHeight, threshold);
-  
-
   if (window.scrollY >= scrollHeight - threshold) {
     loadMorePosts();
   }
 };
 
 onMounted(() => {
-  postStore.posts = postsToShow.value // postStore.posts is [] onBeforeUnmount without this line, 
+  postStore.posts = postsToShow.value // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though, 
   // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
-  if (window) {
-    const options: ScrollToOptions = {
-      top: 0
-    }
-    // why SetTimeout
-    setTimeout(() => {
-      window.scrollBy(options)
-    },0) 
+
+  const savedPosts: string | null = localStorage.getItem("saved-posts");
+  if(savedPosts === null) {
+    (async () => {
+      const r: {postId:number,userId:number}[] = await (await fetch("/api/saved-posts-summary")).json()
+      localStorage.setItem("saved-posts",r.map(e=>e.postId).join(","))
+    })()
+  } else {
+    userStore.savedPosts = savedPosts.split(",").map(e => parseInt(e))
+  }
+  if(localStorage.getItem("liked-posts") === null) {
+    // TODO: call api
   }
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("scroll", onScroll);
-  console.log(postStore.scroll);
-  
-  postStore.scroll = window.scrollY;
-  console.log(postStore.posts);
-  
 });
 </script>
 

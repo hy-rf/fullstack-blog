@@ -5,6 +5,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     user: {} as User,
     loaded: false,
+    savedPosts: [] as number[]
   }),
   getters: {
     isUser: (state) => state.user.roles.includes("ROLE_user"),

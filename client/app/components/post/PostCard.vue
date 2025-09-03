@@ -3,6 +3,8 @@ import type PostSummary from "~/types/PostSummary";
 
 const { t, locale } = useI18n();
 
+const userStore = useUserStore();
+
 const props = defineProps({
   post: {
     type: Object as () => PostSummary,
@@ -34,6 +36,8 @@ const savePost = async (postId: number) => {
     saveCount.value++;
   }
 };
+
+const isSaved = userStore.savedPosts.includes(props.post.id)
 </script>
 
 <template>
