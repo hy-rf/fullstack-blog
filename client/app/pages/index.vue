@@ -6,7 +6,7 @@ import type PostSummary from "~/types/PostSummary";
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
-const { data: posts, pending } = useFetch<PostSummary[]>(`/api/post?offset=0`, {
+const { data: posts, pending } = useFetch<PostSummary[]>(`/api/post?offset=${postStore.offset}`, {
   server: true,
 });
 
@@ -21,9 +21,9 @@ const postsToShow = computed(() => {
 
 
 const isFetchingMore = ref(false);
-const threshold = 10;
+const threshold = 3000;
 
-const loadPosts = async () => {
+const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
   isFetchingMore.value = true;
   try {
@@ -31,7 +31,7 @@ const loadPosts = async () => {
       r.json(),
     );
     postStore.append(data);
-    postStore.offset += 50;
+    postStore.offset = postStore.offset + 50
   } finally {
     isFetchingMore.value = false;
   }
@@ -40,20 +40,36 @@ const listRef = ref<HTMLElement | null>(null);
 const onScroll = () => {
   const el = listRef.value;
   if (!el || isFetchingMore.value) return;
-  const { scrollTop, clientHeight, scrollHeight } = el;
+  const { scrollHeight } = el;
+  console.log(window.scrollY, scrollHeight, threshold);
+  
 
-  if (scrollTop + clientHeight >= scrollHeight - threshold) {
-    loadPosts();
+  if (window.scrollY >= scrollHeight - threshold) {
+    loadMorePosts();
   }
 };
 
 onMounted(() => {
+  postStore.posts = postsToShow.value // postStore.posts is [] onBeforeUnmount without this line, 
+  // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
+  if (window) {
+    const options: ScrollToOptions = {
+      top: 0
+    }
+    // why SetTimeout
+    setTimeout(() => {
+      window.scrollBy(options)
+    },0) 
+  }
 });
 
-onBeforeRouteLeave(() => {
+onBeforeUnmount(() => {
   document.removeEventListener("scroll", onScroll);
-  console.log(listRef.value?.scrollTop);
+  console.log(postStore.scroll);
+  
+  postStore.scroll = window.scrollY;
+  console.log(postStore.posts);
   
 });
 </script>
