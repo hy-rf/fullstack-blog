@@ -19,7 +19,10 @@
     "title": "Profile",
     "update_link": "Update Account",
     "username": "Username",
-    "your_permissions": "Your permissions"
+    "your_permissions": "Your permissions",
+    "saved":{
+      "delete_button":"Delete"
+    }
   },
   "nav": {
     "home": "Home",
