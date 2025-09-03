@@ -1,20 +1,25 @@
 {
   "auth": {
     "loading": "載入中",
-    "username_guest": "訪客",
-    "login_success": "登入成功！"
+    "login_success": "登入成功！",
+    "username_guest": "訪客"
   },
   "follow": {
     "title": "追蹤"
   },
+  "home": {
+    "asc": "舊到新",
+    "desc": "新到舊",
+    "feed": "動態"
+  },
   "me": {
+    "liked_posts_link": "按讚的貼文",
+    "saved_posts_link": "已儲存的貼文",
+    "settings_link": "設定",
     "title": "會員中心",
-"username": "使用者名稱",
-"update_link": "更新帳戶",
-"saved_posts_link": "已儲存的貼文",
-"liked_posts_link": "按讚的貼文",
-"settings_link": "設定",
-"your_permissions": "您的權限"
+    "update_link": "更新帳戶",
+    "username": "使用者名稱",
+    "your_permissions": "您的權限"
   },
   "nav": {
     "home": "首頁",
@@ -24,26 +29,21 @@
     "new": "新增",
     "posts": "文章專區",
     "register": "註冊",
-    "users": "用戶管理",
-    "search": "搜尋文章"
+    "search": "搜尋文章",
+    "users": "用戶管理"
   },
   "new": {
     "title": "新文章"
   },
-  "home": {
-    "feed": "動態",
-    "asc": "舊到新",
-    "desc": "新到舊"
-  },
   "post": {
     "author": "作者",
     "author_info": "作者資訊",
-    "replies": "回覆",
-    "username": "使用者名稱：",
-    "edit_button": "Edit",
     "edit": {
       "submit_button": "Submit"
-    }
+    },
+    "edit_button": "Edit",
+    "replies": "回覆",
+    "username": "使用者名稱："
   },
   "posts": {
     "author": "作者",
@@ -67,6 +67,9 @@
   },
   "reply": {
     "author": "作者"
+  },
+  "user": {
+    "title": ""
   },
   "welcome": "歡迎光臨"
 }

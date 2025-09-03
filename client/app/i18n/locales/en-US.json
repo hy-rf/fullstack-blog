@@ -1,20 +1,25 @@
 {
   "auth": {
     "loading": "Loading",
-    "username_guest": "Guest",
-    "login_success": "Login Success!"
+    "login_success": "Login Success!",
+    "username_guest": "Guest"
   },
   "follow": {
     "title": "Follows"
   },
+  "home": {
+    "asc": "Older",
+    "desc": "Newer",
+    "feed": "Feed"
+  },
   "me": {
+    "liked_posts_link": "Liked Posts",
+    "saved_posts_link": "Saved Posts",
+    "settings_link": "Settings",
     "title": "Profile",
+    "update_link": "Update Account",
     "username": "Username",
-"update_link": "Update Account",
-"saved_posts_link": "Saved Posts",
-"liked_posts_link": "Liked Posts",
-"settings_link": "Settings",
-"your_permissions": "Your permissions"
+    "your_permissions": "Your permissions"
   },
   "nav": {
     "home": "Home",
@@ -24,26 +29,21 @@
     "new": "New",
     "posts": "Posts",
     "register": "Register",
-    "users": "Users",
-    "search": "Search Posts"
+    "search": "Search Posts",
+    "users": "Users"
   },
   "new": {
     "title": "New post"
   },
-  "home": {
-    "feed": "Feed",
-    "asc": "Older",
-    "desc": "Newer"
-  },
   "post": {
     "author": "By ",
     "author_info": "Author Info",
-    "replies": "Replies",
-    "username": "User name: ",
-    "edit_button": "Edit",
     "edit": {
       "submit_button": "Submit"
-    }
+    },
+    "edit_button": "Edit",
+    "replies": "Replies",
+    "username": "User name: "
   },
   "posts": {
     "author": "By ",
@@ -62,6 +62,9 @@
   },
   "reply": {
     "author": "Author"
+  },
+  "user": {
+    "title": ""
   },
   "welcome": "Welcome"
 }

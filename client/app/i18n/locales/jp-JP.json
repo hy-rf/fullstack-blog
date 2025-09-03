@@ -1,20 +1,25 @@
 {
   "auth": {
     "loading": "読み込み中",
-    "username_guest": "ゲスト",
-    "login_success": "ログイン成功！"
+    "login_success": "ログイン成功！",
+    "username_guest": "ゲスト"
   },
   "follow": {
     "title": "フォロー"
   },
+  "home": {
+    "asc": "古い順",
+    "desc": "新しい順",
+    "feed": "フィード"
+  },
   "me": {
+    "liked_posts_link": "いいねした投稿",
+    "saved_posts_link": "保存済みの投稿",
+    "settings_link": "設定",
     "title": "プロフィール",
+    "update_link": "アカウントを更新",
     "username": "ユーザー名",
-"update_link": "アカウントを更新",
-"saved_posts_link": "保存済みの投稿",
-"liked_posts_link": "いいねした投稿",
-"settings_link": "設定",
-"your_permissions": "あなたの権限"
+    "your_permissions": "あなたの権限"
   },
   "nav": {
     "home": "ホーム",
@@ -24,26 +29,21 @@
     "new": "新規",
     "posts": "投稿",
     "register": "登録",
-    "users": "ユーザー",
-    "search": "投稿を検索"
+    "search": "投稿を検索",
+    "users": "ユーザー"
   },
   "new": {
     "title": "新規投稿"
   },
-  "home": {
-    "feed": "フィード",
-    "asc": "古い順",
-    "desc": "新しい順"
-  },
   "post": {
     "author": "投稿者：",
     "author_info": "投稿者情報",
-    "replies": "返信",
-    "username": "ユーザー名: ",
-    "edit_button": "Edit",
     "edit": {
       "submit_button": "Submit"
-    }
+    },
+    "edit_button": "Edit",
+    "replies": "返信",
+    "username": "ユーザー名: "
   },
   "posts": {
     "author": "投稿者：",
@@ -62,6 +62,9 @@
   },
   "reply": {
     "author": "投稿者"
+  },
+  "user": {
+    "title": ""
   },
   "welcome": "ようこそ"
 }

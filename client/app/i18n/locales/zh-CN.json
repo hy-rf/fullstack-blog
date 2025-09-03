@@ -1,20 +1,26 @@
 {
   "auth": {
     "loading": "加载中",
-    "username_guest": "游客",
-    "login_success": "登录成功！"
+    "login_success": "登录成功！",
+    "username_guest": "游客"
   },
   "follow": {
     "title": "关注"
   },
+  "home": {
+    "asc": "旧到新",
+    "desc": "新到旧",
+    "feed": "动态",
+    "search": "搜索帖子"
+  },
   "me": {
+    "liked_posts_link": "已点赞的帖子",
+    "saved_posts_link": "已保存的帖子",
+    "settings_link": "设置",
     "title": "个人中心",
+    "update_link": "更新账号",
     "username": "用户名",
-"update_link": "更新账号",
-"saved_posts_link": "已保存的帖子",
-"liked_posts_link": "已点赞的帖子",
-"settings_link": "设置",
-"your_permissions": "您的权限"
+    "your_permissions": "您的权限"
   },
   "nav": {
     "home": "首页",
@@ -24,27 +30,21 @@
     "new": "新建",
     "posts": "帖子",
     "register": "注册",
-    "users": "用户",
-    "search": "搜索帖子"
+    "search": "搜索帖子",
+    "users": "用户"
   },
   "new": {
     "title": "新帖子"
   },
-  "home": {
-    "feed": "动态",
-    "asc": "旧到新",
-    "desc": "新到旧",
-    "search": "搜索帖子"
-  },
   "post": {
     "author": "作者：",
     "author_info": "作者信息",
-    "replies": "回复",
-    "username": "用户名：",
-    "edit_button": "Edit",
     "edit": {
       "submit_button": "Submit"
-    }
+    },
+    "edit_button": "Edit",
+    "replies": "回复",
+    "username": "用户名："
   },
   "posts": {
     "author": "作者：",
@@ -63,6 +63,9 @@
   },
   "reply": {
     "author": "作者"
+  },
+  "user": {
+    "title": ""
   },
   "welcome": "欢迎"
 }
