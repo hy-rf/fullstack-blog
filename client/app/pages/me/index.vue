@@ -12,7 +12,7 @@ const userStore = useUserStore();
             <span>{{ t("me.username") }}</span>
             <span>{{ userStore.user.username }}</span>
           </div>
-          <span class="role-list-title">{{ t("your_permissions") }}</span><br />
+          <span class="role-list-title">{{ t("me.your_permissions") }}</span><br />
           <span class="role-names" v-for="(r, i) in userStore.user.roles">
             {{ i + 1 + ": " + r.split("_")[1] + " " }} <br />
           </span>
