@@ -9,7 +9,12 @@
   },
   "me": {
     "title": "Profile",
-    "username": "Username: "
+    "username": "Username",
+"update_link": "Update Account",
+"saved_posts_link": "Saved Posts",
+"liked_posts_link": "Liked Posts",
+"settings_link": "Settings",
+"your_permissions": "Your permissions"
   },
   "nav": {
     "home": "Home",

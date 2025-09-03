@@ -9,7 +9,12 @@
   },
   "me": {
     "title": "プロフィール",
-    "username": "ネーム："
+    "username": "ユーザー名",
+"update_link": "アカウントを更新",
+"saved_posts_link": "保存済みの投稿",
+"liked_posts_link": "いいねした投稿",
+"settings_link": "設定",
+"your_permissions": "あなたの権限"
   },
   "nav": {
     "home": "ホーム",

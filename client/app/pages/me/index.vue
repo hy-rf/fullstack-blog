@@ -12,7 +12,7 @@ const userStore = useUserStore();
             <span>{{ t("me.username") }}</span>
             <span>{{ userStore.user.username }}</span>
           </div>
-          <span class="role-list-title">Your permissions: </span><br />
+          <span class="role-list-title">{{ t("your_permissions") }}</span><br />
           <span class="role-names" v-for="(r, i) in userStore.user.roles">
             {{ i + 1 + ": " + r.split("_")[1] + " " }} <br />
           </span>
@@ -21,18 +21,21 @@ const userStore = useUserStore();
       </div>
     </li>
     <li>
-      <NuxtLink to="/me/update">Update Account</NuxtLink>
+      <NuxtLink to="/me/update">{{ t("me.update_link") }}</NuxtLink>
     </li>
     <li>
-      <NuxtLink to="/me/settigs">Settings</NuxtLink>
+      <NuxtLink to="/me/saved-posts">{{ t("me.saved_posts_link") }}</NuxtLink>
+    </li>
+    <li>
+      <NuxtLink to="/me/liked-posts">{{ t("me.liked_posts_link") }}</NuxtLink>
+    </li>
+    <li>
+      <NuxtLink to="/me/settings">{{ t("me.settings_link") }}</NuxtLink>
     </li>
   </ul>
 </template>
 
 <style lang="css" scoped>
-ul {
-  list-style: none;
-}
 li {
   padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;

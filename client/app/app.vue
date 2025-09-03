@@ -386,6 +386,9 @@ html {
 
   background: #eeeeee;
 }
+ul {
+  list-style: none;
+}
 h1 {
   margin-top: 0;
 }

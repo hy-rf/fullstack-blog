@@ -9,7 +9,12 @@
   },
   "me": {
     "title": "會員中心",
-    "username": "使用者名稱："
+"username": "使用者名稱",
+"update_link": "更新帳戶",
+"saved_posts_link": "已儲存的貼文",
+"liked_posts_link": "按讚的貼文",
+"settings_link": "設定",
+"your_permissions": "您的權限"
   },
   "nav": {
     "home": "首頁",

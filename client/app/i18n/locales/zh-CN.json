@@ -9,7 +9,12 @@
   },
   "me": {
     "title": "个人中心",
-    "username": "名称："
+    "username": "用户名",
+"update_link": "更新账号",
+"saved_posts_link": "已保存的帖子",
+"liked_posts_link": "已点赞的帖子",
+"settings_link": "设置",
+"your_permissions": "您的权限"
   },
   "nav": {
     "home": "首页",
