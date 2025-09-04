@@ -4,17 +4,14 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/home/user/ssl:ro
-      - ./nginx/validation:/home/user/validation:ro
     restart: always
 
   frontend:
     image: forum-frontend
     build:
-      context: ./client
+      context: client
     restart: always
 
   backend:
