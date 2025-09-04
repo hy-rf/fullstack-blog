@@ -227,7 +227,7 @@ public class PostController {
 
   @PostMapping("/save-post")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Boolean> savePost(@RequestParam Integer postId) {
+  public ResponseEntity<Boolean> savePost(@RequestParam(name = "post-id") Integer postId) {
     Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     int result = postRepository.addSavedPost(userId, postId);
     if (result == 0) return ResponseEntity.status(403).body(false);
