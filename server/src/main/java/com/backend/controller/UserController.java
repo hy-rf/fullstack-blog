@@ -4,13 +4,16 @@ import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.model.User;
 import com.backend.security.CustomUserDetails;
+import com.backend.service.UploadService;
 import com.backend.service.UserService;
 import com.backend.service.dto.user.CreateUserResult;
 import com.backend.service.dto.user.CreateUserStatus;
 import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
+import java.io.File;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,14 +26,39 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class UserController {
 
   private final UserService userService;
+  private final UploadService uploadService;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, UploadService uploadService) {
     this.userService = userService;
+    this.uploadService = uploadService;
+  }
+
+  @PostMapping("/user/avatar")
+  @PreAuthorize("hasRole('user')")
+  public ResponseEntity<String> uploadAvatar(
+    @RequestParam("file") MultipartFile file
+  ) {
+    try {
+      File tempFile = File.createTempFile(
+        "upload-",
+        file.getOriginalFilename()
+      );
+      file.transferTo(tempFile);
+      uploadService.save(tempFile, "avatar", 1);
+      tempFile.delete();
+
+      return ResponseEntity.ok("File uploaded successfully.");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+        e.getMessage()
+      );
+    }
   }
 
   @PreAuthorize("hasRole('admin')")
