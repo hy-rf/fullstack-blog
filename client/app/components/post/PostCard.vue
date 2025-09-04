@@ -27,14 +27,14 @@ const likePost = async (postId: number) => {
 };
 
 const savePost = async (postId: number) => {
-  const res = await fetch("/api/save-post", {
+  const res = await fetch(`/api/save-post?post-id=${postId}`, {
     method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ postId }),
+    headers: { "Content-Type": "application/json" }
   });
   if (res.status == 200) {
     saveCount.value++;
   }
+  userStore.loadSavedPosts()
 };
 
 const isSaved = userStore.savedPosts.includes(props.post.id)
