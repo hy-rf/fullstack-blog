@@ -264,4 +264,10 @@ public class PostController {
     Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.findSavedPostIdsByUserId(userId));
   }
+
+  @GetMapping("/liked-posts-summary")
+  public ResponseEntity<List<SavedPost>> getLikedPostsSummary() {
+    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    return ResponseEntity.ok(postRepository.findLikedPostIdsByUserId(userId));
+  }
 }

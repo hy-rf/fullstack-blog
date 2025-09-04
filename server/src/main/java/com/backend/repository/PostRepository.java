@@ -194,4 +194,13 @@ public interface PostRepository
   nativeQuery = true
 )
 List<SavedPost> findSavedPostIdsByUserId(Integer userId);
+  @Query(
+  value = """
+    SELECT post_id, user_id
+    FROM post_likes
+    WHERE user_id = :userId
+    """,
+  nativeQuery = true
+)
+List<SavedPost> findLikedPostIdsByUserId(Integer userId);
 }
