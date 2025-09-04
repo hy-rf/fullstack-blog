@@ -309,32 +309,9 @@
 //   });
 // }
 
-import { useUserStore } from "./stores/user";
-import type { User } from "./types/User";
-const userStore = useUserStore();
 const { gtag } = useGtag();
-const headers = useRequestHeaders(["cookie"]);
-
-const { data: user } = await useAsyncData<User>("user", async () => {
-  try {
-    return await $fetch<User>(
-      import.meta.server ? "http://localhost:3000/api/me" : "/api/me",
-      {
-        credentials: "include",
-        headers,
-      },
-    );
-  } catch {
-    return {
-      username: "Guest",
-      roles: [],
-    };
-  }
-});
-// Init user and preferences(locale, color mode etc).
-// TODO: manage start state of color mode and locale
-userStore.init(user.value!);
-
+import { useUserStore } from "~/stores/user";
+const userStore = useUserStore();
 watch(
   () => userStore.loaded,
   () => {

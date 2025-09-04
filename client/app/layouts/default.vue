@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import type { User } from "~/types/User";
+import { useUserStore } from "~/stores/user";
+const userStore = useUserStore();
+const headers = useRequestHeaders(["cookie"]);
+
+const { data: user } = await useAsyncData<User>("user", async () => {
+  try {
+    return await $fetch<User>(
+      import.meta.server ? "http://localhost:3000/api/me" : "/api/me",
+      {
+        credentials: "include",
+        headers,
+      },
+    );
+  } catch {
+    return {
+      username: "Guest",
+      roles: [],
+    };
+  }
+});
+// Init user and preferences(locale, color mode etc).
+// TODO: manage start state of color mode and locale
+userStore.init(user.value!);
+
+if (import.meta.client) {
+  console.log(userStore.user);
+
+  try {
+    window.localStorage;
+  } catch (err) {}
+}
+</script>
+
+<template>
+  <slot />
+</template>
+
+<style lang="css" scoped></style>

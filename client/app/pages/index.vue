@@ -2,7 +2,6 @@
 // TODO: save scroll info so that can keep after browsing other routes then back
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
-const userStore = useUserStore();
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
@@ -20,8 +19,6 @@ const postsToShow = computed(() => {
 
 const isFetchingMore = ref(false);
 const threshold = 3000;
-
-userStore.loadLikedPosts();
 
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
