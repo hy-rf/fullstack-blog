@@ -88,3 +88,17 @@ CREATE INDEX IF NOT EXISTS idx_posts_post_id ON posts(post_id);
 CREATE INDEX IF NOT EXISTS idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
 
 CREATE INDEX IF NOT EXISTS index_saved_posts ON user_saved_posts(user_id, post_id);
+
+-- Update 9/4
+
+CREATE TABLE post_images (
+  post_id INTEGER,
+  url VARCHAR(255)
+)
+ALTER TABLE IF EXISTS avatars ADD FOREIGN KEY (post_id) REFERENCES posts;
+
+CREATE TABLE avatars (
+  user_id INTEGER,
+  url VARCHAR(255)
+)
+ALTER TABLE IF EXISTS avatars ADD FOREIGN KEY (user_id) REFERENCES users;
