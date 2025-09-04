@@ -2,9 +2,10 @@ import { defineStore } from "pinia";
 import type PostSummary from "../types/PostSummary";
 
 export const useHomePostsStore = defineStore("homePost", {
-  state: (): { posts: PostSummary[]; offset: number } => ({
+  state: (): { posts: PostSummary[]; offset: number; scrollY: number } => ({
     posts: [],
-    offset: 50
+    offset: 50,
+    scrollY: 0
   }),
   getters: {},
   actions: {

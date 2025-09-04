@@ -2,7 +2,6 @@
 // TODO: save scroll info so that can keep after browsing other routes then back
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
-
 const userStore = useUserStore()
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
@@ -19,6 +18,8 @@ const postsToShow = computed(() => {
 
 const isFetchingMore = ref(false);
 const threshold = 3000;
+
+userStore.loadLikedPosts()
 
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
@@ -44,27 +45,26 @@ const onScroll = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   postStore.posts = postsToShow.value // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though, 
   // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
 
-  const savedPosts: string | null = localStorage.getItem("saved-posts");
-  if(savedPosts === null) {
-    (async () => {
-      const r: {postId:number,userId:number}[] = await (await fetch("/api/saved-posts-summary")).json()
-      localStorage.setItem("saved-posts",r.map(e=>e.postId).join(","))
-    })()
-  } else {
-    userStore.savedPosts = savedPosts.split(",").map(e => parseInt(e))
+  const options: ScrollToOptions = {
+    top: postStore.scrollY
   }
-  if(localStorage.getItem("liked-posts") === null) {
-    // TODO: call api
-  }
+  // Don't know why does setTimeout need here
+  setTimeout(() => {
+    window.scrollTo(options)
+  }, 0);
+  
+  
+  
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("scroll", onScroll);
+  postStore.scrollY = window.scrollY
 });
 </script>
 
