@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AvatarUploader from "~/components/me/AvatarUploader.vue";
 const { t } = useI18n();
 const userStore = useUserStore();
 </script>
@@ -20,6 +21,7 @@ const userStore = useUserStore();
         </div>
         <img src="/favicon.ico" alt="" sizes="80 80" />
       </div>
+      <AvatarUploader />
     </li>
     <li>
       <NuxtLink to="/me/update">{{ t("me.update_link") }}</NuxtLink>
