@@ -16,6 +16,10 @@ const likeCount = ref(props.post.likeCount);
 const saveCount = ref(props.post.saveCount);
 
 const likePost = async (postId: number) => {
+  if (userStore.likedPosts.includes(postId)) {
+    alert("Already liked this post");
+    return;
+  }
   const res = await fetch("/api/like", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -27,6 +31,10 @@ const likePost = async (postId: number) => {
 };
 
 const savePost = async (postId: number) => {
+  if (userStore.savedPosts.includes(postId)) {
+    alert("Already saved this post");
+    return;
+  }
   const res = await fetch(`/api/save-post?post-id=${postId}`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
