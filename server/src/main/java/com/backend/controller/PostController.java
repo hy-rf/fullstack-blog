@@ -218,8 +218,10 @@ public class PostController {
     @RequestBody AddLikeRequest addLikeRequest
   ) {
     Integer postId = addLikeRequest.getPostId();
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    Authentication authentication =
+      SecurityContextHolder.getContext().getAuthentication();
+    CustomUserDetails userDetails =
+      (CustomUserDetails) authentication.getPrincipal();
     Integer userId = userDetails.getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
@@ -227,8 +229,11 @@ public class PostController {
 
   @PostMapping("/save-post")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Boolean> savePost(@RequestParam(name = "post-id") Integer postId) {
-    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+  public ResponseEntity<Boolean> savePost(
+    @RequestParam(name = "post-id") Integer postId
+  ) {
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     int result = postRepository.addSavedPost(userId, postId);
     if (result == 0) return ResponseEntity.status(403).body(false);
     if (result == 1) return ResponseEntity.ok(true);
@@ -242,7 +247,8 @@ public class PostController {
   @DeleteMapping("/save-post")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Boolean> removeSavedPost(@RequestParam Integer postId) {
-    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     int result = postRepository.removeSavedPost(userId, postId);
     if (result == 0) return ResponseEntity.status(403).body(false);
     if (result == 1) return ResponseEntity.ok(true);
@@ -255,19 +261,22 @@ public class PostController {
 
   @GetMapping("/saved-posts")
   public ResponseEntity<List<PostSummary>> getSavedPosts() {
-    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.getSavedPostsByUserId(userId));
   }
 
   @GetMapping("/saved-posts-summary")
   public ResponseEntity<List<SavedPost>> getSavedPostsSummary() {
-    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.findSavedPostIdsByUserId(userId));
   }
 
   @GetMapping("/liked-posts-summary")
   public ResponseEntity<List<SavedPost>> getLikedPostsSummary() {
-    Integer userId = ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.findLikedPostIdsByUserId(userId));
   }
 }

@@ -29,20 +29,21 @@ const likePost = async (postId: number) => {
 const savePost = async (postId: number) => {
   const res = await fetch(`/api/save-post?post-id=${postId}`, {
     method: "post",
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
   });
   if (res.status == 200) {
     saveCount.value++;
   }
-  userStore.loadSavedPosts()
+  userStore.loadSavedPosts();
 };
 
-const isSaved = userStore.savedPosts.includes(props.post.id)
+const isSaved = userStore.savedPosts.includes(props.post.id);
 </script>
 
 <template>
   <article class="post-card">
     <div class="post-main">
+      <p style="font-size: smaller; padding-bottom: 0.3rem">#{{ post.id }}</p>
       <NuxtLink :to="`/post/${post.id}`">
         <p>
           {{ post.content.substring(0, 50) }}

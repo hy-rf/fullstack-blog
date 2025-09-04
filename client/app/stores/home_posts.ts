@@ -4,8 +4,8 @@ import type PostSummary from "../types/PostSummary";
 export const useHomePostsStore = defineStore("homePost", {
   state: (): { posts: PostSummary[]; offset: number; scrollY: number } => ({
     posts: [],
-    offset: 50,
-    scrollY: 0
+    offset: 0,
+    scrollY: 0,
   }),
   getters: {},
   actions: {

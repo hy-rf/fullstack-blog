@@ -71,9 +71,8 @@ public interface PostRepository
   )
   PostWithNumbersOfRepliesDTO find();
 
-  // ...existing code...
-@Query(
-  value = """
+  @Query(
+    value = """
     SELECT
       p.id,
       p.content,
@@ -82,16 +81,16 @@ public interface PostRepository
       u.username,
       (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
       (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
-      (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count
+      (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
+      (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
     FROM posts p
     JOIN users u ON u.id = p.author_id
     WHERE p.root_post_id IS NULL
     ORDER BY p.created_at DESC
     LIMIT :limit OFFSET :offset
     """,
-  nativeQuery = true
-)
-// ...existing code...
+    nativeQuery = true
+  )
   List<PostSummary> findAllByPostSummariesAndOffset(
     Integer offset,
     @Nullable Integer limit
@@ -161,7 +160,7 @@ public interface PostRepository
   )
   int removeSavedPost(Integer userId, Integer postId);
 
-    @Query(
+  @Query(
     value = """
             SELECT
     p.id,
@@ -186,21 +185,22 @@ public interface PostRepository
   List<PostSummary> getSavedPostsByUserId(Integer userId);
 
   @Query(
-  value = """
+    value = """
     SELECT post_id, user_id
     FROM user_saved_posts
     WHERE user_id = :userId
     """,
-  nativeQuery = true
-)
-List<SavedPost> findSavedPostIdsByUserId(Integer userId);
+    nativeQuery = true
+  )
+  List<SavedPost> findSavedPostIdsByUserId(Integer userId);
+
   @Query(
-  value = """
+    value = """
     SELECT post_id, user_id
     FROM post_likes
     WHERE user_id = :userId
     """,
-  nativeQuery = true
-)
-List<SavedPost> findLikedPostIdsByUserId(Integer userId);
+    nativeQuery = true
+  )
+  List<SavedPost> findLikedPostIdsByUserId(Integer userId);
 }

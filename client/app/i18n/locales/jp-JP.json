@@ -20,8 +20,8 @@
     "update_link": "アカウントを更新",
     "username": "ユーザー名",
     "your_permissions": "あなたの権限",
-    "saved":{
-      "delete_button":"削除"
+    "saved": {
+      "delete_button": "削除"
     }
   },
   "nav": {

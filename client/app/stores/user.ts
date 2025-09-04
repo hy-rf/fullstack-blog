@@ -6,7 +6,7 @@ export const useUserStore = defineStore("user", {
     user: {} as User,
     loaded: false,
     savedPosts: [] as number[],
-    likedPosts: [] as number[]
+    likedPosts: [] as number[],
   }),
   getters: {
     isUser: (state) => state.user.roles.includes("ROLE_user"),
@@ -45,30 +45,32 @@ export const useUserStore = defineStore("user", {
       return user;
     },
     loadPreferences() {
-      this.loadLikedPosts()
-      this.loadSavedPosts()
-      this.loadLocale()
+      this.loadLikedPosts();
+      this.loadSavedPosts();
+      this.loadLocale();
     },
     async loadSavedPosts() {
       const savedPosts: string | null = localStorage.getItem("saved-posts");
-        if(savedPosts === null) {
-          const r: {postId:number,userId:number}[] = await (await fetch("/api/saved-posts-summary")).json()
-          localStorage.setItem("saved-posts",r.map(e=>e.postId).join(","))
-        } else {
-          this.savedPosts = savedPosts.split(",").map(e => parseInt(e))
-        }
+      if (savedPosts === null) {
+        const r: { postId: number; userId: number }[] = await (
+          await fetch("/api/saved-posts-summary")
+        ).json();
+        localStorage.setItem("saved-posts", r.map((e) => e.postId).join(","));
+      } else {
+        this.savedPosts = savedPosts.split(",").map((e) => parseInt(e));
+      }
     },
     async loadLikedPosts() {
       const likedPosts: string | null = localStorage.getItem("liked-posts");
-        if(likedPosts === null) {
-          const r: {postId:number,userId:number}[] = await (await fetch("/api/liked-posts-summary")).json()
-          localStorage.setItem("liked-posts",r.map(e=>e.postId).join(","))
-        } else {
-          this.likedPosts = likedPosts.split(",").map(e => parseInt(e))
-        }
+      if (likedPosts === null) {
+        const r: { postId: number; userId: number }[] = await (
+          await fetch("/api/liked-posts-summary")
+        ).json();
+        localStorage.setItem("liked-posts", r.map((e) => e.postId).join(","));
+      } else {
+        this.likedPosts = likedPosts.split(",").map((e) => parseInt(e));
+      }
     },
-    loadLocale() {
-
-    }
+    loadLocale() {},
   },
 });

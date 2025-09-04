@@ -46,7 +46,7 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    mode: "svg"
+    mode: "svg",
   },
 
   gtag: {

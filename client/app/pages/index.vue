@@ -2,34 +2,36 @@
 // TODO: save scroll info so that can keep after browsing other routes then back
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
-const userStore = useUserStore()
+const userStore = useUserStore();
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
-const { data: posts, pending } = useFetch<PostSummary[]>(`/api/post?offset=${postStore.offset}`, {
-  server: true,
-});
+const { data: posts, pending } = useFetch<PostSummary[]>(
+  `/api/post?offset=${postStore.offset}`,
+  {
+    server: true,
+  },
+);
 
 const postsToShow = computed(() => {
   if (postStore.posts && postStore.posts.length > 0) return postStore.posts;
   return posts.value ?? [];
 });
 
-
 const isFetchingMore = ref(false);
 const threshold = 3000;
 
-userStore.loadLikedPosts()
+userStore.loadLikedPosts();
 
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
   isFetchingMore.value = true;
+  postStore.offset += 50;
   try {
     const data = await fetch(`/api/post?offset=${postStore.offset}`).then((r) =>
       r.json(),
     );
     postStore.append(data);
-    postStore.offset = postStore.offset + 50
   } finally {
     isFetchingMore.value = false;
   }
@@ -46,25 +48,22 @@ const onScroll = () => {
 };
 
 onMounted(async () => {
-  postStore.posts = postsToShow.value // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though, 
+  postStore.posts = postsToShow.value; // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
   // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
 
   const options: ScrollToOptions = {
-    top: postStore.scrollY
-  }
+    top: postStore.scrollY,
+  };
   // Don't know why does setTimeout need here
   setTimeout(() => {
-    window.scrollTo(options)
+    window.scrollTo(options);
   }, 0);
-  
-  
-  
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("scroll", onScroll);
-  postStore.scrollY = window.scrollY
+  postStore.scrollY = window.scrollY;
 });
 </script>
 
