@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// TODO: save scroll info so that can keep after browsing other routes then back
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
 const postStore = useHomePostsStore();
@@ -22,7 +21,7 @@ if (import.meta.server) {
   }
 } else {
   if (postStore.posts && postStore.posts.length > 0) {
-    postsRef.value = postStore.posts;
+    //postsRef.value = postStore.posts;
   } else {
     pending.value = true;
     try {
@@ -36,13 +35,6 @@ if (import.meta.server) {
     }
   }
 }
-
-const postsToShow = computed(() => {
-  if (postStore.posts && postStore.posts.length > 0) {
-    return postStore.posts;
-  }
-  return postsRef.value;
-});
 
 const isFetchingMore = ref(false);
 const threshold = 3000;
