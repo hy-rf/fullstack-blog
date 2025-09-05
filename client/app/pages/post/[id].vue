@@ -55,7 +55,7 @@ async function refresh() {
       :id="'post-card-' + post.id"
     >
     </PostCard>
-    <div v-if="userStore.isUser">
+    <div v-if="userStore.isUser" style="margin-top: 1rem">
       <PostEditor
         :post-to-edit="{ id: null, content: '' }"
         :root-post-id="posts![0].rootPostId || posts![0].id"

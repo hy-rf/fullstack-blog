@@ -35,6 +35,9 @@ const userStore = useUserStore();
     <li>
       <NuxtLink to="/me/settings">{{ t("me.settings_link") }}</NuxtLink>
     </li>
+    <li v-if="userStore.isAdmin">
+      <NuxtLink to="/admin">{{ t("me.admin_link") }}</NuxtLink>
+    </li>
   </ul>
 </template>
 

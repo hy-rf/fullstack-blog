@@ -33,8 +33,8 @@ const removeTag = (tag: string) => {
 };
 
 const submitPost = async () => {
-  if (!content.value) {
-    alert("Title or content is missing!");
+  if (!content.value.trim()) {
+    alert("Content is missing!");
     return;
   }
 
@@ -45,7 +45,7 @@ const submitPost = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: content.value,
+        content: content.value.trim(),
         tags: tags.value,
         rootPostId: props.rootPostId,
         postId: props.postId,
@@ -65,20 +65,38 @@ const submitPost = async () => {
     alert("Error creating post");
   }
 };
+console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
 </script>
 
 <template>
   <form @submit.prevent="submitPost">
-    <p>{{ `root: ${props.rootPostId}, parent: ${props.postId}` }}</p>
     <textarea v-model="content" placeholder="Enter post content" />
     <div>
       <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
-      <button @click="addTag" id="add-tag-button">Add Tag</button>
+      <button type="button" @click="addTag" id="add-tag-button">Add Tag</button>
     </div>
     <div>
-      <span v-for="tag in tags" :key="tag" class="tags">
-        {{ tag }}
-        <button @click="removeTag(tag)" class="remove-tag-buttons">x</button>
+      <span v-for="tag in tags" class="tags">
+        <span :key="tag" class="tag-name">
+          {{ tag }}
+        </span>
+        <button
+          type="button"
+          @click="removeTag(tag)"
+          class="remove-tag-buttons"
+        >
+          <Icon
+            name="material-symbols:close-rounded"
+            style="
+              color: black;
+              position: absolute;
+              margin: auto;
+              left: 0;
+              bottom: 0;
+            "
+            size="24"
+          />
+        </button>
       </span>
     </div>
     <button type="submit" id="submit-button">Submit Post</button>
@@ -86,6 +104,10 @@ const submitPost = async () => {
 </template>
 
 <style lang="css" scoped>
+form {
+  display: flex;
+  flex-direction: column;
+}
 button {
   margin: 0.5rem;
   padding: 0.5rem 1rem;
@@ -101,6 +123,7 @@ textarea {
   padding: 0.5rem;
   width: 100%;
   resize: vertical;
+  border-radius: 0.3rem;
 }
 textarea::-webkit-resizer {
   background: transparent;
@@ -108,8 +131,10 @@ textarea::-webkit-resizer {
 
 #submit-button {
   margin-top: 1rem;
-  background-color: #4caf50;
-  color: white;
+  background-color: #8bff9b;
+  color: black;
+  margin-left: auto;
+  border-radius: 0.3rem;
 }
 
 input {
@@ -127,30 +152,45 @@ input {
 
 #add-tag-button {
   padding: 0.5rem;
-  background-color: #2196f3;
-  color: white;
+  background-color: white;
+  color: black;
   display: inline-block;
 }
 
 span.tags {
   display: inline-block;
-  margin-top: 0.1rem;
-  padding-left: 1rem;
-  background-color: #e0e0e0;
-  border-radius: 4px;
+  border-radius: 0.3rem;
+  height: 26px;
+  position: relative;
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.tag-name {
+  display: inline-block;
+  padding-inline: 1rem;
+  vertical-align: super;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  line-height: 26.5px;
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
 }
 
 button.remove-tag-buttons {
+  /* box-sizing: content-box; */
   margin: 0;
-  padding: 1rem;
-  background: none;
-  border: none;
+  padding: 0;
+  background: #00000080;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   color: red;
   cursor: pointer;
-  transition: background-color 300ms ease-in;
-}
-button.remove-tag-buttons:hover {
-  background-color: #ff0000;
-  transition: background-color 300ms ease-out;
+  width: 26px;
+  height: 26px;
+  position: relative;
+  vertical-align: baseline;
+  top: 0.5px;
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
 }
 </style>
