@@ -58,6 +58,7 @@ const submitPost = async () => {
 
     const result = await response.text();
     alert(result);
+    // Refresh child posts of root post
     props.refresh();
   } catch (error) {
     console.error(error);
