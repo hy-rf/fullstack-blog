@@ -5,15 +5,43 @@ import type PostSummary from "~/types/PostSummary";
 const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
-const { data: posts, pending } = useFetch<PostSummary[]>(
-  `/api/post?offset=${postStore.offset || 0}`,
-);
+const initialOffset = postStore.offset || 0;
+const postsRef = ref<PostSummary[] | null>(null);
+const pending = ref(false);
+
+if (import.meta.server) {
+  pending.value = true;
+  try {
+    const data = await $fetch<PostSummary[]>(
+      `/api/post?offset=${initialOffset}`,
+    );
+    postStore.posts = data;
+    postsRef.value = data;
+  } finally {
+    pending.value = false;
+  }
+} else {
+  if (postStore.posts && postStore.posts.length > 0) {
+    postsRef.value = postStore.posts;
+  } else {
+    pending.value = true;
+    try {
+      const data = await $fetch<PostSummary[]>(
+        `/api/post?offset=${initialOffset}`,
+      );
+      postStore.posts = data;
+      postsRef.value = data;
+    } finally {
+      pending.value = false;
+    }
+  }
+}
 
 const postsToShow = computed(() => {
   if (postStore.posts && postStore.posts.length > 0) {
     return postStore.posts;
   }
-  return posts.value;
+  return postsRef.value;
 });
 
 const isFetchingMore = ref(false);
@@ -46,21 +74,14 @@ const onScroll = () => {
 };
 
 onMounted(async () => {
-  postStore.posts = postsToShow.value!;
-  // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
-  // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
 
   const options: ScrollToOptions = {
     top: postStore.scrollY,
   };
-  // Don't know why does setTimeout need here
-  // And it only work if time >?0, 100 is safe
-  // what does 'work' mean is that scroll position should be kept when navigating back from other routes that this home page was originally both ssr and csr
+
   setTimeout(() => {
     window.scrollTo(options);
-    console.log("loaded poststore csr");
-    if (!postStore.posts) postStore.posts = postsToShow.value!;
   }, 100);
 });
 
@@ -74,7 +95,7 @@ onBeforeUnmount(() => {
   <h1>{{ t("home.feed") }}</h1>
   <section ref="listRef" class="post-list" aria-label="Posts list">
     <PostCard
-      v-for="post in postStore.posts || posts"
+      v-for="post in postStore.posts || postsRef"
       :key="post.id"
       :post="post"
       hydrate-on-visible
