@@ -9,6 +9,10 @@ export default defineNuxtConfig({
   },
   srcDir: "app",
 
+  routeRules: {
+    "/admin/**": { ssr: false },
+  },
+
   vite: {
     server: {
       allowedHosts: ["localhost", "frontend"],
