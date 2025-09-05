@@ -9,6 +9,9 @@ export const useHomePostsStore = defineStore("homePost", {
   }),
   getters: {},
   actions: {
+    init(posts: PostSummary[]) {
+      this.posts = posts;
+    },
     append(newPosts: PostSummary | PostSummary[]) {
       if (Array.isArray(newPosts)) {
         this.posts.push(...newPosts);

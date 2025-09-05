@@ -25,11 +25,12 @@ const {
   data: posts,
   status,
   error,
-} = await useAsyncData<Array<PostPage>>(`post-${postId}`, () =>
+} = await useAsyncData<PostPage[]>(`post-${postId}`, () =>
   $fetch(`/api/post/${route.params.id}`),
 );
 
 const userStore = useUserStore();
+const postsToShow = ref<PostPage[]>(posts.value || []);
 
 const isPostEditable = computed(() => {
   const currentUser = userStore.user;
@@ -39,21 +40,28 @@ const isPostEditable = computed(() => {
   if (!currentUser || !currentPost) return false;
   return Number(currentUser.id) === Number(currentPost.authorId);
 });
-
-const showPostEditor = ref(false);
+async function refresh() {
+  const p = await fetch(`/api/post/${route.params.id}`).then((r) => r.json());
+  postsToShow.value = p;
+}
 </script>
 
 <template>
   <section class="post-list" aria-label="Posts list">
     <PostCard
-      v-for="post in posts"
+      v-for="post in postsToShow"
       :key="post.id"
       :post="post"
       :id="'post-card-' + post.id"
     >
     </PostCard>
     <div v-if="userStore.isUser">
-      You ar logged in user there will be a form to add a child a post
+      <PostEditor
+        :post-to-edit="{ id: null, content: '' }"
+        :root-post-id="posts![0].rootPostId || posts![0].id"
+        :post-id="parseInt(postId)"
+        :refresh="refresh"
+      />
     </div>
   </section>
 </template>
@@ -64,5 +72,6 @@ const showPostEditor = ref(false);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding-bottom: 3rem;
 }
 </style>

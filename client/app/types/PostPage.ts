@@ -8,4 +8,5 @@ export default interface PostPage {
   parentPostId: number;
   postCount: number;
   likeCount: number;
+  saveCount: number;
 }

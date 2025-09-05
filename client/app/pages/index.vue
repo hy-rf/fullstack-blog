@@ -6,15 +6,14 @@ const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
 
 const { data: posts, pending } = useFetch<PostSummary[]>(
-  `/api/post?offset=${postStore.offset}`,
-  {
-    server: true,
-  },
+  `/api/post?offset=${postStore.offset || 0}`,
 );
 
 const postsToShow = computed(() => {
-  if (postStore.posts && postStore.posts.length > 0) return postStore.posts;
-  return posts.value ?? [];
+  if (postStore.posts && postStore.posts.length > 0) {
+    return postStore.posts;
+  }
+  return posts.value;
 });
 
 const isFetchingMore = ref(false);
@@ -45,7 +44,7 @@ const onScroll = () => {
 };
 
 onMounted(async () => {
-  postStore.posts = postsToShow.value; // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
+  postStore.posts = postsToShow.value!; // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
   // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
 
@@ -53,9 +52,11 @@ onMounted(async () => {
     top: postStore.scrollY,
   };
   // Don't know why does setTimeout need here
+  // And it only work if time >?0, 100 is safe
+  // what does 'work' mean is that scroll position should be kept when navigating back from other routes that this home page was originally both ssr and csr
   setTimeout(() => {
     window.scrollTo(options);
-  }, 0);
+  }, 100);
 });
 
 onBeforeUnmount(() => {
@@ -68,9 +69,10 @@ onBeforeUnmount(() => {
   <h1>{{ t("home.feed") }}</h1>
   <section ref="listRef" class="post-list" aria-label="Posts list">
     <PostCard
-      v-for="post in postsToShow"
+      v-for="post in postStore.posts || posts"
       :key="post.id"
       :post="post"
+      hydrate-on-visible
     ></PostCard>
   </section>
 </template>

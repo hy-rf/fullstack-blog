@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 const content = ref("");
 const tagInput = ref("");
-const tags = ref<string[]>(["test"]);
+const tags = ref<string[]>([]);
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
@@ -56,7 +56,7 @@ const tagInputRef = ref<HTMLInputElement | null>(null);
 
 <template>
   <h1>{{ t("new.title") }}</h1>
-  <div>
+  <form @submit.prevent="submitPost">
     <textarea v-model="content" placeholder="Enter post content" />
     <div>
       <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
@@ -68,13 +68,8 @@ const tagInputRef = ref<HTMLInputElement | null>(null);
         <button @click="removeTag(tag)" class="remove-tag-buttons">x</button>
       </span>
     </div>
-    <button
-      @click="submitPost"
-      style="margin-top: 1rem; background-color: #4caf50; color: white"
-    >
-      Submit Post
-    </button>
-  </div>
+    <button type="submit" id="submit-button">Submit Post</button>
+  </form>
 </template>
 
 <style scoped>
@@ -96,6 +91,12 @@ textarea {
 }
 textarea::-webkit-resizer {
   background: transparent;
+}
+
+#submit-button {
+  margin-top: 1rem;
+  background-color: #4caf50;
+  color: white;
 }
 
 input {

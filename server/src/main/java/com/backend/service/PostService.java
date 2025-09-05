@@ -88,16 +88,6 @@ public class PostService {
     return new CreatePostCommandResult(true);
   }
 
-  public List<Post> getPostsByUser(Integer userId) {
-    Optional<List<Post>> posts = postRepository.findByAuthorId(userId);
-    if (posts.isEmpty() || posts.get().isEmpty()) {
-      throw new IllegalArgumentException(
-        "No posts found for user with id: " + userId
-      );
-    }
-    return posts.get();
-  }
-
   /**
    * This is getting child posts of current post so no need to get post content of current post.
    * TODO: filter child posts

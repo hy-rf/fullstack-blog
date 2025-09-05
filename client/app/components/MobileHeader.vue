@@ -56,7 +56,7 @@ onUnmounted(() => {
       </li>
       <li :class="{ active: route.path == '/new' }">
         <NuxtLink to="/new">
-          <Icon name="mdi-light:plus" size="46" />
+          <Icon name="mdi-light:plus" size="36" />
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/follow' }">
@@ -106,12 +106,6 @@ ul {
     text-align: center;
     span {
       color: #000;
-    }
-  }
-  & > li:nth-child(3) {
-    padding-top: 0;
-    span {
-      transform: translateY(-7px);
     }
   }
 }

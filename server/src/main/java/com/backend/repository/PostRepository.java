@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface PostRepository
   extends JpaRepository<Post, Integer>, JpaSpecificationExecutor<Post> {
-  Optional<List<Post>> findByAuthorId(Integer userId);
-
   @Override
   @NonNull
   @EntityGraph(attributePaths = { "author" })
@@ -38,39 +36,12 @@ public interface PostRepository
     @NonNull Pageable pageable
   );
 
-  @Query(
-    value = """
-          SELECT
-        p.id,
-        p.content,
-        p.created_at,
-        u.id AS authorId,
-        u.username AS author_name,
-        STRING_AGG(r.name, ', ') AS user_role_name_list,
-        COUNT(rep.id) AS number_of_replies
-    FROM
-        posts p
-    LEFT JOIN
-        users u
-            ON p.author_id = u.id
-    LEFT JOIN
-        user_roles ur
-            ON u.id = ur.user_id
-    LEFT JOIN
-        roles r
-            ON ur.role_id = r.id
-    LEFT JOIN
-        reply rep
-            ON rep.post_id = p.id
-    WHERE
-        p.id = 1
-    GROUP BY
-        p.id, p.content, p.created_at, p.author_id, u.id, u.username;
-              """,
-    nativeQuery = true
-  )
-  PostWithNumbersOfRepliesDTO find();
-
+  /**
+   * Get feed posts on home page
+   * @param offset
+   * @param limit
+   * @return
+   */
   @Query(
     value = """
     SELECT
@@ -106,14 +77,13 @@ public interface PostRepository
     u.username,
     p.root_post_id,
     p.post_id AS parent_post_id,
-    COUNT(pc.id) AS post_count,
-    COUNT(DISTINCT l.user_id) AS like_count
+    (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+    (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
+    (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
+    (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
     FROM posts p
-    LEFT JOIN posts pc ON p.id = pc.post_id
     LEFT JOIN users u ON u.id = p.author_id
-    LEFT JOIN post_likes l ON p.id = l.post_id
     WHERE p.post_id = :id OR p.id = :id
-    GROUP BY p.id, p.content, p.created_at, u.username
     ORDER BY p.id ASC, p.created_at DESC;
             """,
     nativeQuery = true

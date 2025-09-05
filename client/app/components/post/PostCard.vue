@@ -54,7 +54,7 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
       <p style="font-size: smaller; padding-bottom: 0.3rem">#{{ post.id }}</p>
       <NuxtLink :to="`/post/${post.id}`">
         <p>
-          {{ post.content.substring(0, 50) }}
+          {{ post.content }}
         </p>
       </NuxtLink>
     </div>
