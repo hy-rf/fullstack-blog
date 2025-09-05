@@ -27,6 +27,8 @@ const loadMorePosts = async () => {
     const data = await fetch(`/api/post?offset=${postStore.offset}`).then((r) =>
       r.json(),
     );
+    console.log(postStore);
+
     postStore.append(data);
   } finally {
     isFetchingMore.value = false;
@@ -44,7 +46,8 @@ const onScroll = () => {
 };
 
 onMounted(async () => {
-  postStore.posts = postsToShow.value!; // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
+  postStore.posts = postsToShow.value!;
+  // postStore.posts is [] onBeforeUnmount without this line when the page was ssr not in csr though,
   // which may cause state of browsing not being saved if no loadMorePosts called at least 1 time
   document.addEventListener("scroll", onScroll);
 
@@ -56,6 +59,8 @@ onMounted(async () => {
   // what does 'work' mean is that scroll position should be kept when navigating back from other routes that this home page was originally both ssr and csr
   setTimeout(() => {
     window.scrollTo(options);
+    console.log("loaded poststore csr");
+    if (!postStore.posts) postStore.posts = postsToShow.value!;
   }, 100);
 });
 
