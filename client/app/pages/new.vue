@@ -55,6 +55,7 @@ const tagInputRef = ref<HTMLInputElement | null>(null);
 </script>
 
 <template>
+  <h1>{{ t("new.title") }}</h1>
   <form @submit.prevent="submitPost">
     <textarea v-model="content" placeholder="Enter post content" />
     <div>
