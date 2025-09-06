@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     URL: process.env.URL,
     public: {
+      GATEWAY_URL: process.env.GATEWAY_URL,
       VERSION: process.env.VERSION,
       isDev: process.env.NODE_ENV !== "production",
     },
