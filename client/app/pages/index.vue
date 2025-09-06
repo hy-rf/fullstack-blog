@@ -6,7 +6,7 @@ const config = useRuntimeConfig();
 
 const postStore = useHomePostsStore();
 const initialOffset = postStore.offset || 0;
-const postsRef = ref<PostSummary[] | null>(null);
+const postsRef = ref<PostSummary[] | null>(null); // This is used in ssr for SEO
 const pending = ref(false);
 
 if (import.meta.server) {
@@ -15,42 +15,42 @@ if (import.meta.server) {
     const data = await $fetch<PostSummary[]>(
       `/api/post?offset=${initialOffset}`,
     );
-    postStore.posts = data;
+    console.log(postStore.posts);
+
+    // postStore.posts = data;
     postsRef.value = data;
   } finally {
     pending.value = false;
   }
 } else {
   // This block only runs on client(browser)
-  if (postStore.posts && postStore.posts.length > 0) {
-    //postsRef.value = postStore.posts;
-  } else {
+  if (!postStore.posts || postStore.posts.length == 0) {
     pending.value = true;
     try {
       const data = await $fetch<PostSummary[]>(
         `${config.public.GATEWAY_URL}/post?offset=${initialOffset}`,
       );
       postStore.posts = data;
-      postsRef.value = data;
     } finally {
       pending.value = false;
     }
+  } else {
+    console.log("Revisit feed");
   }
 }
 
+// Related to Load more feature
 const isFetchingMore = ref(false);
 const threshold = 3000;
 
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
   isFetchingMore.value = true;
-  postStore.offset += 50;
+  postStore.offset += 30;
   try {
     const data = await fetch(
       `${config.public.GATEWAY_URL}/post?offset=${postStore.offset}`,
     ).then((r) => r.json());
-    console.log(postStore);
-
     postStore.append(data);
   } finally {
     isFetchingMore.value = false;
@@ -69,14 +69,12 @@ const onScroll = () => {
 
 onMounted(async () => {
   document.addEventListener("scroll", onScroll);
-
   const options: ScrollToOptions = {
     top: postStore.scrollY,
   };
-
   setTimeout(() => {
     window.scrollTo(options);
-  }, 100);
+  }, 0);
 });
 
 onBeforeUnmount(() => {
