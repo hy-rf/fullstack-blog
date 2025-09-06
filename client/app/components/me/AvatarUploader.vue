@@ -3,6 +3,8 @@ import { ref } from "vue";
 
 const file = ref<File | null>(null);
 const message = ref<string>("");
+const runtimeConfig = useRuntimeConfig();
+const { t } = useI18n();
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -19,11 +21,18 @@ const uploadAvatar = async () => {
 
   const formData = new FormData();
   formData.append("file", file.value);
-  const response = await fetch("http://localhost:8080/user/avatar", {
-    method: "post",
-    body: formData,
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${runtimeConfig.public.GATEWAY_URL}/user/avatar`,
+    {
+      method: "post",
+      body: formData,
+      credentials: "include",
+    },
+  );
+  if (response.ok) {
+    alert(t("me.avatar_upload_success_message"));
+    file.value = null;
+  }
 };
 </script>
 
