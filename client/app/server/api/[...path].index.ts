@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody, getQuery } from "h3";
-import { API_BASE_URL } from "~/constants/api_ constants";
+import { API_BASE_URL } from "~/constants/api_constants";
 
 export default defineEventHandler(async (event) => {
   const path = event.node.req.url?.split("api")[1];
