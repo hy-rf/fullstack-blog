@@ -309,8 +309,10 @@
 //   });
 // }
 
+const device = useDevice();
 const { gtag } = useGtag();
 import { useUserStore } from "~/stores/user";
+import useDevice from "./composables/useDevice";
 const userStore = useUserStore();
 watch(
   () => userStore.loaded,
@@ -321,10 +323,12 @@ watch(
     });
   },
 );
+console.log();
 </script>
 
 <template>
-  <MobileHeader />
+  <MobileHeader v-if="device.isMobile.value" />
+  <DesktopHeader v-if="device.isDesktop.value" />
   <main>
     <NuxtLayout>
       <NuxtPage />
@@ -342,6 +346,12 @@ main {
   box-shadow: 0 2px 16px rgba(35, 41, 70, 0.07);
   border-left: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
+}
+
+@media screen and (min-width: 768px) {
+  main {
+    padding-top: 4rem;
+  }
 }
 </style>
 

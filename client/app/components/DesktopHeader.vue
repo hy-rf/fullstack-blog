@@ -1,38 +1,10 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const route = useRoute();
 
+const userStore = useUserStore();
+
 const headerOpaque = ref(false);
-let rafId: number | null = null;
-let lastScrollY = ref(0);
-
-function onScroll() {
-  if (rafId) cancelAnimationFrame(rafId);
-  rafId = requestAnimationFrame(() => {
-    const currentY = window.scrollY || 0;
-    const delta = currentY - lastScrollY.value;
-    const threshold = 5;
-
-    if (currentY <= 10) {
-      headerOpaque.value = false;
-    } else if (delta > threshold) {
-      headerOpaque.value = true;
-    } else if (delta < -threshold) {
-      headerOpaque.value = false;
-    }
-
-    lastScrollY.value = currentY;
-  });
-}
-
-onMounted(() => {
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", onScroll);
-  if (rafId) cancelAnimationFrame(rafId);
-});
 </script>
 
 <template>
@@ -45,26 +17,31 @@ onUnmounted(() => {
       <li :class="{ active: route.path == '/' }">
         <NuxtLink to="/">
           <Icon name="mdi-light:home" size="36" />
+          <span>{{ t("nav.home") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/search' }">
         <NuxtLink to="/search">
           <Icon name="mdi-light:magnify" size="36" />
+          <span>{{ t("nav.search") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/new' }">
         <NuxtLink to="/new">
           <Icon name="mdi-light:plus" size="36" />
+          <span>{{ t("nav.new") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/follow' }">
         <NuxtLink to="/follow">
           <Icon name="mdi-light:heart" size="36" />
+          <span>{{ t("nav.follow") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/me' }">
         <NuxtLink to="/me">
           <Icon name="mdi-light:account" size="36" />
+          <span>{{ t("nav.me") }}</span>
         </NuxtLink>
       </li>
     </ul>
@@ -74,52 +51,41 @@ onUnmounted(() => {
 <style lang="css" scoped>
 header {
   position: fixed;
-  bottom: 0 !important;
-  height: 50px;
   width: 100vw;
+  top: 0;
+  right: 0;
+  height: 4rem;
   padding-inline: 0;
   background-color: rgba(233, 233, 233, 0.5);
   backdrop-filter: blur(1px);
   opacity: 1;
-  transition:
-    opacity 400ms ease,
-    backdrop-filter 1s ease;
   z-index: 99;
 }
 a {
   display: block;
-  padding-top: 0.5rem;
   height: 100%;
+  padding-block: 0.8rem;
 }
 a:active {
   color: #000;
 }
 ul {
   display: flex;
-  width: 100%;
+  height: 100%;
   list-style: none;
   height: 100%;
   li {
     width: 20%;
     text-align: center;
     span {
+      padding-left: 1rem;
       color: #000;
+      display: inline-block;
+      transform: translateY(-0.7rem);
     }
   }
 }
 .active {
   background-color: #ddddddee;
-}
-.icon {
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
-}
-.header-hide {
-  opacity: 0.3;
-  backdrop-filter: blur(1px);
-  transition:
-    opacity 400ms ease,
-    backdrop-filter 1s ease;
 }
 </style>
