@@ -22,6 +22,7 @@
     "username": "用户名",
     "your_permissions": "您的权限",
     "admin_link": "Admin",
+    "avatar_upload_success_message": "成功",
     "saved": {
       "delete_button": "刪除"
     }
@@ -35,7 +36,8 @@
     "posts": "帖子",
     "register": "注册",
     "search": "搜索帖子",
-    "users": "用户"
+    "users": "用户",
+    "follow": "Follows"
   },
   "new": {
     "title": "新帖子"

@@ -21,6 +21,7 @@
     "username": "Username",
     "your_permissions": "Your permissions",
     "admin_link": "Admin",
+    "avatar_upload_success_message": "Success",
     "saved": {
       "delete_button": "Delete"
     }
@@ -34,7 +35,8 @@
     "posts": "Posts",
     "register": "Register",
     "search": "Search Posts",
-    "users": "Users"
+    "users": "Users",
+    "follow": "Follows"
   },
   "new": {
     "title": "New post"

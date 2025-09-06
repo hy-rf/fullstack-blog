@@ -21,6 +21,7 @@
     "username": "ユーザー名",
     "your_permissions": "あなたの権限",
     "admin_link": "Admin",
+    "avatar_upload_success_message": "おっけ",
     "saved": {
       "delete_button": "削除"
     }
@@ -34,7 +35,8 @@
     "posts": "投稿",
     "register": "登録",
     "search": "投稿を検索",
-    "users": "ユーザー"
+    "users": "ユーザー",
+    "follow": "Follows"
   },
   "new": {
     "title": "新規投稿"

@@ -21,6 +21,7 @@
     "username": "使用者名稱",
     "your_permissions": "您的權限",
     "admin_link": "Admin",
+    "avatar_upload_success_message": "成功",
     "saved": {
       "delete_button": "刪除"
     }
@@ -34,7 +35,8 @@
     "posts": "文章專區",
     "register": "註冊",
     "search": "搜尋文章",
-    "users": "用戶管理"
+    "users": "用戶管理",
+    "follow": "追隨"
   },
   "new": {
     "title": "新文章"
