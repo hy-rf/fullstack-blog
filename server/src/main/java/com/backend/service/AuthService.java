@@ -70,7 +70,16 @@ public class AuthService {
     List<Role> roles = new ArrayList<>();
     roles.add(userRole);
     user.setRoles(roles);
-    userRepository.save(user);
+    User newUser = userRepository.save(user);
+    if (newUser.getId().equals(1)) {
+      Optional<Role> adminRoleOpt = roleRepository.findByName("admin");
+      if (adminRoleOpt.isEmpty()) {
+        return new RegisterResult(RegisterStatus.ERROR);
+      }
+      Role adminRole = adminRoleOpt.get();
+      newUser.getRoles().add(adminRole);
+      userRepository.save(newUser);
+    }
     return new RegisterResult(RegisterStatus.SUCCESS);
   }
 
