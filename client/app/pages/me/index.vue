@@ -14,12 +14,16 @@ const userStore = useUserStore();
             <span>{{ userStore.user.username }}</span>
           </div>
           <span class="role-list-title">{{ t("me.your_permissions") }}</span
-          ><br />
-          <span class="role-names" v-for="(r, i) in userStore.user.roles">
-            {{ i + 1 + ": " + r.split("_")[1] + " " }} <br />
+          ><br >
+          <span
+            v-for="(r, i) in userStore.user.roles"
+            :key="r"
+            class="role-names"
+          >
+            {{ i + 1 + ": " + r.split("_")[1] + " " }} <br >
           </span>
         </div>
-        <img src="/favicon.ico" alt="" sizes="80 80" />
+        <img src="/favicon.ico" alt="" sizes="80 80" >
       </div>
       <AvatarUploader />
     </li>

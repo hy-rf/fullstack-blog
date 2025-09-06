@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, getQuery } from "h3";
+import { defineEventHandler, readBody } from "h3";
 import { API_BASE_URL } from "~/constants/api_constants";
 
 export default defineEventHandler(async (event) => {

@@ -7,7 +7,6 @@ definePageMeta({
     return typeof route.params.id === "string" && /^\d+$/.test(route.params.id);
   },
 });
-const { t, locale } = useI18n();
 const { gtag } = useGtag();
 
 const route = useRoute();
@@ -21,25 +20,21 @@ onMounted(() => {
   }
 });
 
-const {
-  data: posts,
-  status,
-  error,
-} = await useAsyncData<PostPage[]>(`post-${postId}`, () =>
+const { data: posts } = await useAsyncData<PostPage[]>(`post-${postId}`, () =>
   $fetch(`/api/post/${route.params.id}`),
 );
 
 const userStore = useUserStore();
 const postsToShow = ref<PostPage[]>(posts.value || []);
 
-const isPostEditable = computed(() => {
-  const currentUser = userStore.user;
-  const currentPost = posts.value?.findLast(
-    (post) => String(post.id) === postId,
-  );
-  if (!currentUser || !currentPost) return false;
-  return Number(currentUser.id) === Number(currentPost.authorId);
-});
+// const isPostEditable = computed(() => {
+//   const currentUser = userStore.user;
+//   const currentPost = posts.value?.findLast(
+//     (post) => String(post.id) === postId,
+//   );
+//   if (!currentUser || !currentPost) return false;
+//   return Number(currentUser.id) === Number(currentPost.authorId);
+// });
 async function refresh() {
   const p = await fetch(`/api/post/${route.params.id}`).then((r) => r.json());
   postsToShow.value = p;
@@ -50,11 +45,10 @@ async function refresh() {
   <section class="post-list" aria-label="Posts list">
     <PostCard
       v-for="post in postsToShow"
+      :id="'post-card-' + post.id"
       :key="post.id"
       :post="post"
-      :id="'post-card-' + post.id"
-    >
-    </PostCard>
+    />
     <div v-if="userStore.isUser" style="margin-top: 1rem">
       <PostEditor
         :post-to-edit="{ id: null, content: '' }"

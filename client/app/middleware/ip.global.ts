@@ -1,7 +1,7 @@
 import { defineNuxtRouteMiddleware, useCookie } from "#app";
 import type { User } from "~/types/User";
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.client) {
     const userStore = useUserStore();
     if (

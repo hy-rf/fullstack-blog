@@ -37,19 +37,21 @@ async function login() {
 </script>
 
 <template>
-  <h1>Login</h1>
-  <div class="login-container">
-    <form @submit.prevent="login">
-      <label>
-        Username:
-        <input v-model="username" type="text" required />
-      </label>
-      <label>
-        Password:
-        <input id="password" v-model="password" type="password" required />
-      </label>
-      <button type="submit">Login</button>
-    </form>
+  <div>
+    <h1>Login</h1>
+    <div class="login-container">
+      <form @submit.prevent="login">
+        <label>
+          Username:
+          <input v-model="username" type="text" required >
+        </label>
+        <label>
+          Password:
+          <input id="password" v-model="password" type="password" required >
+        </label>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   </div>
 </template>
 

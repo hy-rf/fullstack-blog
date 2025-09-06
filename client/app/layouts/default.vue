@@ -25,16 +25,14 @@ const { data: user } = await useAsyncData<User>("user", async () => {
 userStore.init(user.value!);
 
 if (import.meta.client) {
-  console.log(userStore.user);
-
-  try {
-    window.localStorage;
-  } catch (err) {}
+  console.table(userStore.user);
 }
 </script>
 
 <template>
-  <slot />
+  <div>
+    <slot />
+  </div>
 </template>
 
 <style lang="css" scoped></style>

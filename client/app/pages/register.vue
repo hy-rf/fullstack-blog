@@ -36,7 +36,7 @@ const register = async () => {
       message.value = text;
     }
   } catch (err) {
-    message.value = "Network error";
+    message.value = `${err}`;
   }
 };
 </script>
@@ -44,27 +44,27 @@ const register = async () => {
 <template>
   <div class="register-container">
     <h1>Register</h1>
-    <form @submit.prevent="register" autocomplete="off">
+    <form autocomplete="off" @submit.prevent="register">
       <label for="username"
         >Username:
         <input
-          type="text"
           id="username"
           v-model="username"
+          type="text"
           required
           autocomplete="off"
-        />
+        >
       </label>
 
       <label for="password"
         >Password:
         <input
-          type="password"
           id="password"
           v-model="password"
+          type="password"
           required
           autocomplete="off"
-        />
+        >
       </label>
 
       <button type="submit">Register</button>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const config = useRuntimeConfig();
 
 const postStore = useHomePostsStore();
@@ -86,15 +86,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <h1>{{ t("home.feed") }}</h1>
-  <section ref="listRef" class="post-list" aria-label="Posts list">
-    <PostCard
-      v-for="post in postStore.posts || postsRef"
-      :key="post.id"
-      :post="post"
-      hydrate-on-visible
-    ></PostCard>
-  </section>
+  <div>
+    <h1>{{ t("home.feed") }}</h1>
+    <section ref="listRef" class="post-list" aria-label="Posts list">
+      <PostCard
+        v-for="post in postStore.posts || postsRef"
+        :key="post.id"
+        :post="post"
+        hydrate-on-visible
+      />
+    </section>
+  </div>
 </template>
 
 <style scoped>

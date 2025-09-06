@@ -55,39 +55,43 @@ const tagInputRef = ref<HTMLInputElement | null>(null);
 </script>
 
 <template>
-  <h1>{{ t("new.title") }}</h1>
-  <form @submit.prevent="submitPost">
-    <textarea v-model="content" placeholder="Enter post content" />
-    <div>
-      <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
-      <button type="button" @click="addTag" id="add-tag-button">Add Tag</button>
-    </div>
-    <div>
-      <span v-for="tag in tags" class="tags">
-        <span :key="tag" class="tag-name">
-          {{ tag }}
-        </span>
-        <button
-          type="button"
-          @click="removeTag(tag)"
-          class="remove-tag-buttons"
-        >
-          <Icon
-            name="material-symbols:close-rounded"
-            style="
-              color: black;
-              position: absolute;
-              margin: auto;
-              left: 0;
-              bottom: 0;
-            "
-            size="24"
-          />
+  <div>
+    <h1>{{ t("new.title") }}</h1>
+    <form @submit.prevent="submitPost">
+      <textarea v-model="content" placeholder="Enter post content" />
+      <div>
+        <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
+        <button id="add-tag-button" type="button" @click="addTag">
+          Add Tag
         </button>
-      </span>
-    </div>
-    <button type="submit" id="submit-button">Submit Post</button>
-  </form>
+      </div>
+      <div>
+        <span v-for="tag in tags" :key="tag" class="tags">
+          <span :key="tag" class="tag-name">
+            {{ tag }}
+          </span>
+          <button
+            type="button"
+            class="remove-tag-buttons"
+            @click="removeTag(tag)"
+          >
+            <Icon
+              name="material-symbols:close-rounded"
+              style="
+                color: black;
+                position: absolute;
+                margin: auto;
+                left: 0;
+                bottom: 0;
+              "
+              size="24"
+            />
+          </button>
+        </span>
+      </div>
+      <button id="submit-button" type="submit">Submit Post</button>
+    </form>
+  </div>
 </template>
 
 <style lang="css" scoped>

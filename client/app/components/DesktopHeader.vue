@@ -2,8 +2,6 @@
 const { t } = useI18n();
 const route = useRoute();
 
-const userStore = useUserStore();
-
 const headerOpaque = ref(false);
 </script>
 

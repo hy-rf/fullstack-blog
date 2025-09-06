@@ -309,10 +309,10 @@
 //   });
 // }
 
-const device = useDevice();
-const { gtag } = useGtag();
 import { useUserStore } from "~/stores/user";
 import useDevice from "./composables/useDevice";
+const device = useDevice();
+const { gtag } = useGtag();
 const userStore = useUserStore();
 watch(
   () => userStore.loaded,

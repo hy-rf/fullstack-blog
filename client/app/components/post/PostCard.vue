@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type PostSummary from "~/types/PostSummary";
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const userStore = useUserStore();
 
@@ -78,7 +78,7 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
             <Icon name="mdi-light:bookmark" size="20" />
           </button>
           <div class="save-count">
-            <span>{{ saveCount }}</span>
+            <span>{{ saveCount }} {{ isSaved }}</span>
           </div>
         </div>
         <div>
@@ -100,7 +100,7 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
         </div>
       </div>
     </div>
-    <slot></slot>
+    <slot />
   </article>
 </template>
 

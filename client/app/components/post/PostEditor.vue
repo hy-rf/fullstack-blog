@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import type PostToEditViewModel from "./PostToEditViewModel";
 
-const { t } = useI18n();
-const route = useRoute();
-const router = useRouter();
-
 const props = defineProps<{
   postToEdit: PostToEditViewModel;
   rootPostId: number;
   postId: number;
   refresh: () => void;
 }>();
-
-const formRef = ref<HTMLFormElement | null>(null);
 
 const content = ref("");
 const tagInput = ref("");
@@ -72,18 +66,18 @@ console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
   <form @submit.prevent="submitPost">
     <textarea v-model="content" placeholder="Enter post content" />
     <div>
-      <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
-      <button type="button" @click="addTag" id="add-tag-button">Add Tag</button>
+      <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" >
+      <button id="add-tag-button" type="button" @click="addTag">Add Tag</button>
     </div>
     <div>
-      <span v-for="tag in tags" class="tags">
+      <span v-for="tag in tags" :key="tag" class="tags">
         <span :key="tag" class="tag-name">
           {{ tag }}
         </span>
         <button
           type="button"
-          @click="removeTag(tag)"
           class="remove-tag-buttons"
+          @click="removeTag(tag)"
         >
           <Icon
             name="material-symbols:close-rounded"
@@ -99,7 +93,7 @@ console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
         </button>
       </span>
     </div>
-    <button type="submit" id="submit-button">Submit Post</button>
+    <button id="submit-button" type="submit">Submit Post</button>
   </form>
 </template>
 

@@ -3,7 +3,7 @@ const route = useRoute();
 
 const headerOpaque = ref(false);
 let rafId: number | null = null;
-let lastScrollY = ref(0);
+const lastScrollY = ref(0);
 
 function onScroll() {
   if (rafId) cancelAnimationFrame(rafId);

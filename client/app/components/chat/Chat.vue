@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="chat-container"></div>
+  <div class="chat-container">test</div>
 </template>
 
 <style scoped>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const userStore = useUserStore();
-const { gtag } = useGtag();
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();

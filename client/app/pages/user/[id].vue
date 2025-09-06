@@ -12,13 +12,15 @@ definePageMeta({
 const route = useRoute();
 const userId = route.params.id as string;
 
-const { data, pending } = useFetch<User>(`/api/user/${userId}`);
+const { data } = useFetch<User>(`/api/user/${userId}`);
 </script>
 
 <template>
-  <h1>{{ data!.username }}{{ t("user.title") }}</h1>
   <div>
-    <p>{{ userId }}</p>
+    <h1>{{ data!.username }}{{ t("user.title") }}</h1>
+    <div>
+      <p>{{ userId }}</p>
+    </div>
   </div>
 </template>
 

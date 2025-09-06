@@ -15,14 +15,14 @@ async function deleteSavedPost(postId: number) {
 
 <template>
   <div>
-    <div v-for="post in postsToShow">
+    <div v-for="post in postsToShow" :key="post.id">
       <PostCard :post="post" />
       <button @click="deleteSavedPost(post.id)">
         {{ t("me.saved.delete_button") }}
       </button>
     </div>
+    <div v-if="pending">Loading</div>
   </div>
-  <div v-if="pending">Loading</div>
 </template>
 
 <style lang="css" scoped></style>

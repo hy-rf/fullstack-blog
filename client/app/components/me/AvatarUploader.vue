@@ -38,7 +38,7 @@ const uploadAvatar = async () => {
 
 <template>
   <form @submit.prevent="uploadAvatar">
-    <input type="file" @change="handleFileChange" />
+    <input type="file" @change="handleFileChange" >
     <button type="submit">Upload Avatar</button>
   </form>
 </template>

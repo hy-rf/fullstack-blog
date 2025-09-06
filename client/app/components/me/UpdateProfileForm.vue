@@ -30,13 +30,13 @@ async function updateMyProfile() {
       type="text"
       placeholder="New Username"
       required
-    />
+    >
     <input
       v-model="newPassword"
       type="password"
       placeholder="New Password"
       required
-    />
+    >
     <button type="submit">Update Profile</button>
   </form>
 </template>
