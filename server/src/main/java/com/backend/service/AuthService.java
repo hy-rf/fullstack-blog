@@ -29,16 +29,16 @@ public class AuthService {
   private final PasswordUtils passwordUtils;
 
   @Value("${auth.token.age.days}")
-  private int tokenAgeDays;
+  private int TOKEN_AGE_IN_DAYS;
 
   @Value("${auth.refresh.age.days}")
-  private int refreshAgeDays;
+  private int REFRESH_TOKEN_AGE_IN_DAYS;
 
   @Value("${jwt.secret}")
-  private String jwtSecret;
+  private String JWT_SECRET;
 
   @Value("${jwt.secret.refresh}")
-  private String jwtSecretRefresh;
+  private String REFRESH_JWT_SECRET;
 
   public AuthService(
     UserRepository userRepository,
@@ -111,15 +111,15 @@ public class AuthService {
     String token = jwtUtils.generateToken(
       userId,
       roleNames,
-      jwtSecret,
-      tokenAgeDays,
+      JWT_SECRET,
+      TOKEN_AGE_IN_DAYS,
       username
     );
     String refreshToken = jwtUtils.generateToken(
       userId,
       roleNames,
-      jwtSecretRefresh,
-      refreshAgeDays,
+      REFRESH_JWT_SECRET,
+      REFRESH_TOKEN_AGE_IN_DAYS,
       username
     );
     return new LoginResult(
@@ -135,12 +135,15 @@ public class AuthService {
   }
 
   public RefreshResult refreshToken(String token, String refreshToken) {
-    JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
+    JwtData refreshData = jwtUtils.verifyToken(
+      refreshToken,
+      REFRESH_JWT_SECRET
+    );
     String newToken = jwtUtils.generateToken(
       refreshData.getUserId(),
       refreshData.getRoleNames(),
-      jwtSecret,
-      tokenAgeDays,
+      JWT_SECRET,
+      TOKEN_AGE_IN_DAYS,
       refreshData.getUserName()
     );
     return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
