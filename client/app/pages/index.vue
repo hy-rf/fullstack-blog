@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import PostCard from "~/components/post/PostCard.vue";
 import type PostSummary from "~/types/PostSummary";
-const postStore = useHomePostsStore();
 const { t, locale } = useI18n();
+const config = useRuntimeConfig();
 
+const postStore = useHomePostsStore();
 const initialOffset = postStore.offset || 0;
 const postsRef = ref<PostSummary[] | null>(null);
 const pending = ref(false);
@@ -20,13 +21,14 @@ if (import.meta.server) {
     pending.value = false;
   }
 } else {
+  // This block only runs on client(browser)
   if (postStore.posts && postStore.posts.length > 0) {
     //postsRef.value = postStore.posts;
   } else {
     pending.value = true;
     try {
       const data = await $fetch<PostSummary[]>(
-        `/api/post?offset=${initialOffset}`,
+        `${config.public.GATEWAY_URL}/post?offset=${initialOffset}`,
       );
       postStore.posts = data;
       postsRef.value = data;
@@ -44,9 +46,9 @@ const loadMorePosts = async () => {
   isFetchingMore.value = true;
   postStore.offset += 50;
   try {
-    const data = await fetch(`/api/post?offset=${postStore.offset}`).then((r) =>
-      r.json(),
-    );
+    const data = await fetch(
+      `${config.public.GATEWAY_URL}/post?offset=${postStore.offset}`,
+    ).then((r) => r.json());
     console.log(postStore);
 
     postStore.append(data);
