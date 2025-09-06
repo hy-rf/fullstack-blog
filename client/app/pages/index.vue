@@ -46,7 +46,7 @@ const threshold = 3000;
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
   isFetchingMore.value = true;
-  postStore.offset += 30;
+  postStore.offset += 50;
   try {
     const data = await fetch(
       `${config.public.GATEWAY_URL}/post?offset=${postStore.offset}`,
@@ -57,13 +57,17 @@ const loadMorePosts = async () => {
   }
 };
 const listRef = ref<HTMLElement | null>(null);
-const onScroll = () => {
+const onScroll = async () => {
   const el = listRef.value;
+  console.log(window.scrollY);
+  if (window.scrollY - 80 > 100) {
+    postStore.posts.shift();
+  }
   // should not fetch while fetching
   if (isFetchingMore.value || !el) return;
   const { scrollHeight } = el;
   if (window.scrollY >= scrollHeight - threshold) {
-    loadMorePosts();
+    await loadMorePosts();
   }
 };
 
@@ -87,12 +91,7 @@ onBeforeUnmount(() => {
   <div>
     <h1>{{ t("home.feed") }}</h1>
     <section ref="listRef" class="post-list" aria-label="Posts list">
-      <PostCard
-        v-for="post in postStore.posts || postsRef"
-        :key="post.id"
-        :post="post"
-        hydrate-on-visible
-      />
+      <PostCard v-for="post in postStore.posts" :key="post.id" :post="post" />
     </section>
   </div>
 </template>
