@@ -31,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class UserController {
 
+  private final long MAX_FILE_SIZE = 5 * 1024 * 1024;
+
   private final UserService userService;
   private final UploadService uploadService;
 
@@ -44,13 +46,26 @@ public class UserController {
   public ResponseEntity<String> uploadAvatar(
     @RequestParam("file") MultipartFile file
   ) {
+    if (file.getSize() > MAX_FILE_SIZE) {
+      return ResponseEntity.badRequest().body("Too big");
+    }
+    String contentType = file.getContentType();
+    if (contentType == null) {
+      return ResponseEntity.badRequest().body("Unknown file");
+    }
+    if (!contentType.startsWith("image/")) {
+      return ResponseEntity.badRequest().body("Not image");
+    }
     try {
       File tempFile = File.createTempFile(
         "upload-",
         file.getOriginalFilename()
       );
       file.transferTo(tempFile);
-      uploadService.save(tempFile, "avatar", 1);
+      Integer userId =
+        ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+
+      uploadService.save(file, "avatar", Integer.valueOf(userId));
       tempFile.delete();
 
       return ResponseEntity.ok("File uploaded successfully.");
@@ -99,6 +114,7 @@ public class UserController {
    * @return
    */
   @PutMapping("/user")
+  @PreAuthorize("hasRole('admin')")
   public ResponseEntity<UpdateUserResult> updateUser(
     @Valid @RequestBody UpdateUserRequest updateUserRequest
   ) {

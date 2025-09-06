@@ -1,13 +1,14 @@
 package com.backend.service;
 
 import jakarta.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -20,35 +21,41 @@ public class UploadService {
 
   @PostConstruct
   public void init() {
-    try {
-      log.info("Initializing upload path with rawPath: {}", rawPath);
-      if (rawPath == null || rawPath.isBlank()) {
-        throw new RuntimeException(
-          "The 'file.upload.path' property is not set or is empty."
-        );
-      }
-      // Use Path.of directly for file paths
-      rootPath = Path.of(rawPath).toAbsolutePath().normalize();
-      Files.createDirectories(rootPath); // Ensure the directory exists
-      log.info("Upload path initialized to: {}", rootPath);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to initialize upload path", e);
-    }
+    rootPath = Path.of(rawPath).toAbsolutePath().normalize();
   }
 
-  public void save(File file, String type, Integer id) throws IOException {
-    if (!file.exists()) {
-      throw new RuntimeException(
-        "The file does not exist: " + file.getAbsolutePath()
-      );
+  public void save(MultipartFile file, String type, Integer id)
+    throws IOException {
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("Uploaded file is empty or null.");
     }
 
+    String originalFilename = file.getOriginalFilename();
+    if (originalFilename == null || originalFilename.isBlank()) {
+      throw new RuntimeException("Uploaded file has no original filename.");
+    }
+
+    Path filenamePath = Path.of(originalFilename).getFileName();
+    String safeFilename = filenamePath.toString();
+
+    safeFilename = id != null ? id + "-" + safeFilename : safeFilename;
+
     Path targetDir = this.rootPath.resolve(type);
-    Files.createDirectories(targetDir); // Ensure the subdirectory exists
+    Files.createDirectories(targetDir);
 
-    Path targetPath = targetDir.resolve(file.getName());
-    Files.copy(file.toPath(), targetPath); // Copy the file to the target directory
+    Path targetPath = targetDir
+      .resolve(safeFilename)
+      .toAbsolutePath()
+      .normalize();
 
-    log.info("File saved to: {}", targetPath);
+    if (!targetPath.startsWith(rootPath)) {
+      throw new RuntimeException("Invalid destination path: " + targetPath);
+    }
+
+    try (var in = file.getInputStream()) {
+      Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    log.info("Multipart file saved to: {}", targetPath);
   }
 }
