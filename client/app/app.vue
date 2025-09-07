@@ -370,8 +370,10 @@ html {
   background-color: #ffffff;
   /* This prevent horizontal scrolling on iOS */
   overflow-x: hidden;
-
   background: #eeeeee;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 ul {
   list-style: none;
