@@ -57,17 +57,22 @@ const loadMorePosts = async () => {
   }
 };
 const listRef = ref<HTMLElement | null>(null);
-const onScroll = async () => {
+const onScroll = () => {
   const el = listRef.value;
   console.log(window.scrollY);
-  if (window.scrollY - 80 > 100) {
-    postStore.posts.shift();
-  }
   // should not fetch while fetching
   if (isFetchingMore.value || !el) return;
+  if (navigator.userAgent.includes("chrome")) {
+    if (window.scrollY > 250) {
+      isFetchingMore.value = true;
+      postStore.posts.shift();
+      isFetchingMore.value = false;
+      return;
+    }
+  }
   const { scrollHeight } = el;
   if (window.scrollY >= scrollHeight - threshold) {
-    await loadMorePosts();
+    loadMorePosts();
   }
 };
 
@@ -76,6 +81,7 @@ onMounted(async () => {
   const options: ScrollToOptions = {
     top: postStore.scrollY,
   };
+  // some times it simply not work on safari
   setTimeout(() => {
     window.scrollTo(options);
   }, 0);
