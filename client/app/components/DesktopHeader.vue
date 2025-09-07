@@ -49,11 +49,11 @@ const headerOpaque = ref(false);
 <style lang="css" scoped>
 header {
   position: fixed;
+  display: flex;
   width: 100vw;
+  margin-inline: auto;
   top: 0;
-  right: 0;
   height: 4rem;
-  padding-inline: 0;
   background-color: rgba(233, 233, 233, 0.5);
   backdrop-filter: blur(1px);
   opacity: 1;
@@ -71,7 +71,8 @@ ul {
   display: flex;
   height: 100%;
   list-style: none;
-  height: 100%;
+  width: 768px;
+  margin-inline: auto;
   li {
     width: 20%;
     text-align: center;
