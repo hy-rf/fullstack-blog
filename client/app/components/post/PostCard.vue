@@ -78,7 +78,7 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
             <Icon name="mdi-light:bookmark" size="20" />
           </button>
           <div class="save-count">
-            <span>{{ saveCount }} {{ isSaved }}</span>
+            <span>{{ saveCount }}</span>
           </div>
         </div>
         <div>

@@ -2,37 +2,37 @@
 const route = useRoute();
 
 const headerOpaque = ref(false);
-let rafId: number | null = null;
-const lastScrollY = ref(0);
+// let rafId: number | null = null;
+// const lastScrollY = ref(0);
 
-function onScroll() {
-  if (rafId) cancelAnimationFrame(rafId);
-  rafId = requestAnimationFrame(() => {
-    const currentY = window.scrollY || 0;
-    const delta = currentY - lastScrollY.value;
-    const threshold = 5;
+// function onScroll() {
+//   if (rafId) cancelAnimationFrame(rafId);
+//   rafId = requestAnimationFrame(() => {
+//     const currentY = window.scrollY || 0;
+//     const delta = currentY - lastScrollY.value;
+//     const threshold = 5;
 
-    if (currentY <= 10) {
-      headerOpaque.value = false;
-    } else if (delta > threshold) {
-      headerOpaque.value = true;
-    } else if (delta < -threshold) {
-      headerOpaque.value = false;
-    }
+//     if (currentY <= 10) {
+//       headerOpaque.value = false;
+//     } else if (delta > threshold) {
+//       headerOpaque.value = true;
+//     } else if (delta < -threshold) {
+//       headerOpaque.value = false;
+//     }
 
-    lastScrollY.value = currentY;
-  });
-}
+//     lastScrollY.value = currentY;
+//   });
+// }
 
-onMounted(() => {
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-});
+// onMounted(() => {
+//   window.addEventListener("scroll", onScroll, { passive: true });
+//   onScroll();
+// });
 
-onUnmounted(() => {
-  window.removeEventListener("scroll", onScroll);
-  if (rafId) cancelAnimationFrame(rafId);
-});
+// onUnmounted(() => {
+//   window.removeEventListener("scroll", onScroll);
+//   if (rafId) cancelAnimationFrame(rafId);
+// });
 </script>
 
 <template>
@@ -121,5 +121,11 @@ ul {
   transition:
     opacity 400ms ease,
     backdrop-filter 1s ease;
+}
+
+@media screen and (min-width: 768px) {
+  header {
+    display: none;
+  }
 }
 </style>

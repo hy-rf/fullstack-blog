@@ -87,4 +87,10 @@ ul {
 .active {
   background-color: #ddddddee;
 }
+
+@media screen and (max-width: 767px) {
+  header {
+    display: none;
+  }
+}
 </style>

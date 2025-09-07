@@ -310,8 +310,6 @@
 // }
 
 import { useUserStore } from "~/stores/user";
-import useDevice from "./composables/useDevice";
-const device = useDevice();
 const { gtag } = useGtag();
 const userStore = useUserStore();
 watch(
@@ -327,8 +325,8 @@ console.log();
 </script>
 
 <template>
-  <MobileHeader v-if="device.isMobile.value" />
-  <DesktopHeader v-if="device.isDesktop.value" />
+  <MobileHeader />
+  <DesktopHeader />
   <main>
     <NuxtLayout>
       <NuxtPage />

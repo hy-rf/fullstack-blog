@@ -15,9 +15,8 @@ if (import.meta.server) {
     const data = await $fetch<PostSummary[]>(
       `/api/post?offset=${initialOffset}`,
     );
-    console.log(postStore.posts);
 
-    // postStore.posts = data;
+    postStore.posts = data; // This line prevents hydration mismatch
     postsRef.value = data;
   } finally {
     pending.value = false;
@@ -59,8 +58,6 @@ const loadMorePosts = async () => {
 const listRef = ref<HTMLElement | null>(null);
 const onScroll = () => {
   const el = listRef.value;
-  console.log(window.scrollY);
-  // should not fetch while fetching
   if (isFetchingMore.value || !el) return;
   if (navigator.userAgent.includes("chrome")) {
     if (window.scrollY > 250) {
@@ -97,7 +94,11 @@ onBeforeUnmount(() => {
   <div>
     <h1>{{ t("home.feed") }}</h1>
     <section ref="listRef" class="post-list" aria-label="Posts list">
-      <PostCard v-for="post in postStore.posts" :key="post.id" :post="post" />
+      <PostCard
+        v-for="post in postStore.posts || postsRef"
+        :key="post.id"
+        :post="post"
+      />
     </section>
   </div>
 </template>
@@ -125,5 +126,11 @@ select {
 button {
   padding-block: 0.1rem;
   width: 6rem;
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    display: none;
+  }
 }
 </style>
