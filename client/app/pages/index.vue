@@ -9,7 +9,12 @@ const initialOffset = postStore.offset || 0;
 const postsRef = ref<PostSummary[] | null>(null); // This is used in ssr for SEO
 const pending = ref(false);
 
+const testMsg = import.meta.server ? "server: " : "client: ";
+console.log(testMsg + postStore.posts.length + " posts in post store");
+
 if (import.meta.server) {
+  console.log("run at server that call api");
+
   pending.value = true;
   try {
     const data = await $fetch<PostSummary[]>(
@@ -21,9 +26,14 @@ if (import.meta.server) {
   } finally {
     pending.value = false;
   }
-} else {
-  // This block only runs on client(browser)
-  if (!postStore.posts || postStore.posts.length == 0) {
+}
+
+if (import.meta.client) {
+  if (postStore.posts.length == 0) {
+    // Its 1st time visit home page through csr in a page lifecycle, because no post in postStore.
+    console.info(
+      "1st time visit home page through csr in a page lifecycle, call Upstream API.",
+    );
     pending.value = true;
     try {
       const data = await $fetch<PostSummary[]>(
@@ -38,9 +48,8 @@ if (import.meta.server) {
   }
 }
 
-// Related to Load more feature
+// Load more feature
 const isFetchingMore = ref(false);
-const threshold = 3000;
 
 const loadMorePosts = async () => {
   if (isFetchingMore.value) return;
@@ -67,8 +76,10 @@ const onScroll = () => {
       return;
     }
   }
+  const THRESHOLD = window.innerHeight + 500 + 51;
   const { scrollHeight } = el;
-  if (window.scrollY >= scrollHeight - threshold) {
+  if (window.scrollY >= scrollHeight - THRESHOLD) {
+    // console.log(`fetch, ${window.scrollY}, ${scrollHeight}, ${THRESHOLD}`);
     loadMorePosts();
   }
 };

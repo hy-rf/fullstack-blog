@@ -59,14 +59,16 @@ const submitPost = async () => {
     alert("Error creating post");
   }
 };
-console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
+onMounted(async () => {
+  console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
+});
 </script>
 
 <template>
   <form @submit.prevent="submitPost">
     <textarea v-model="content" placeholder="Enter post content" />
     <div>
-      <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" >
+      <input ref="tagInputRef" v-model="tagInput" placeholder="Enter tag" />
       <button id="add-tag-button" type="button" @click="addTag">Add Tag</button>
     </div>
     <div>

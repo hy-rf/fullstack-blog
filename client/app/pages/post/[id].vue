@@ -20,8 +20,8 @@ onMounted(() => {
   }
 });
 
-const { data: posts } = await useAsyncData<PostPage[]>(`post-${postId}`, () =>
-  $fetch(`/api/post/${route.params.id}`),
+const { data: posts } = await useFetch<PostPage[]>(
+  `/api/post/${route.params.id}`,
 );
 
 const userStore = useUserStore();
