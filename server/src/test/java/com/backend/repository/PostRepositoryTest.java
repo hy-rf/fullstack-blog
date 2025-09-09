@@ -25,6 +25,7 @@ public class PostRepositoryTest {
     Long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
     List<PostSummary> postSummaries =
       postRepository.findAllByPostSummariesAndOffset(0, 1000000);
+    System.out.println(postSummaries);
     Long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
     System.out.println(Long.toString(runtime.totalMemory()));
     System.out.println(Long.toString(memoryBefore));
