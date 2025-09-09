@@ -29,6 +29,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -110,7 +111,7 @@ public class PostController {
 
   // 3 db queries
   @GetMapping("/posts/search")
-  public Page<PostSummary> getPosts(
+  public PageImpl<PostSummary> getPosts(
     @RequestParam(required = false) String keyword,
     @RequestParam(required = false) String authorName,
     @RequestParam(required = false) @DateTimeFormat(
@@ -125,7 +126,7 @@ public class PostController {
     @RequestParam(defaultValue = "10") int size
   ) {
     if (size > 50) size = 50;
-    Page<Post> postPage = postService.getPosts(
+    PageImpl<PostSummary> postPage = postService.getPosts(
       keyword,
       authorName,
       createdAfter,
@@ -135,8 +136,7 @@ public class PostController {
       page,
       size
     );
-    Page<PostSummary> postListPage = postPage.map(postMapper::toPostSummary);
-    return postListPage;
+    return postPage;
   }
 
   /**

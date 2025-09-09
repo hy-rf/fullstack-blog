@@ -4,7 +4,6 @@ import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
-import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.CreateLikeCommand;
@@ -16,14 +15,17 @@ import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
 import com.backend.service.dto.post.UpdatePostResultStatus;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,13 +35,16 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final UserRepository userRepository;
+  private final NamedParameterJdbcTemplate jdbc;
 
   public PostService(
     PostRepository postRepository,
-    UserRepository userRepository
+    UserRepository userRepository,
+    NamedParameterJdbcTemplate jdbc
   ) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
+    this.jdbc = jdbc;
   }
 
   /**
@@ -105,7 +110,7 @@ public class PostService {
     return posts;
   }
 
-  public Page<Post> getPosts(
+  public PageImpl<PostSummary> getPosts(
     String keyword,
     String authorName,
     LocalDateTime createdAfter,
@@ -115,22 +120,115 @@ public class PostService {
     int page,
     int size
   ) {
-    Specification<Post> spec = PostSpecification.hasTitleOrContentLike(keyword)
-      .and(PostSpecification.parentPostIsNull())
-      .and(PostSpecification.hasAuthorNameLike(authorName))
-      .and(PostSpecification.createdAfter(createdAfter))
-      .and(PostSpecification.createdBefore(createdBefore));
+    String baseSelect = """
+          SELECT
+        p.id,
+        p.content,
+        p.created_at,
+        p.author_id,
+        u.username,
+        (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+        (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
+        (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
+        (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
+      FROM posts p
+      JOIN users u ON u.id = p.author_id
+          """;
+    List<String> where = new ArrayList<>();
+    MapSqlParameterSource params = new MapSqlParameterSource();
 
-    Sort.Direction direction = order.equalsIgnoreCase("asc")
-      ? Sort.Direction.ASC
-      : Sort.Direction.DESC;
+    if (keyword != null && !keyword.isBlank()) {
+      where.add("LOWER(p.content) LIKE :contentKeyword ESCAPE ''");
+      params.addValue("contentKeyword", "%" + keyword.toLowerCase() + "%");
+    }
+    if (authorName != null && !authorName.isBlank()) {
+      where.add("LOWER(u.username) LIKE :authorNameKeyword ESCAPE ''");
+      params.addValue(
+        "authorNameKeyword",
+        "%" + authorName.toLowerCase() + "%"
+      );
+    }
+
+    if (createdAfter != null) {
+      where.add("p.created_at >= :createdAfter");
+      params.addValue("createdAfter", java.sql.Timestamp.valueOf(createdAfter));
+    }
+
+    if (createdBefore != null) {
+      where.add("p.created_at <= :createdBefore");
+      params.addValue(
+        "createdBefore",
+        java.sql.Timestamp.valueOf(createdBefore)
+      );
+    }
+
+    StringBuilder sql = new StringBuilder(baseSelect);
+    if (!where.isEmpty()) {
+      sql.append(" WHERE ").append(String.join(" AND ", where));
+    }
+    String sortColumn = "p.created_at";
+    if (
+      "createdAt".equalsIgnoreCase(sortBy) ||
+      "created_at".equalsIgnoreCase(sortBy)
+    ) {
+      sortColumn = "p.created_at";
+    } else if (
+      "likeCount".equalsIgnoreCase(sortBy) ||
+      "like_count".equalsIgnoreCase(sortBy)
+    ) {
+      sortColumn = "like_count";
+    } else if (
+      "saveCount".equalsIgnoreCase(sortBy) ||
+      "save_count".equalsIgnoreCase(sortBy)
+    ) {
+      sortColumn = "save_count";
+    } else if (
+      "postCount".equalsIgnoreCase(sortBy) ||
+      "post_count".equalsIgnoreCase(sortBy)
+    ) {
+      sortColumn = "post_count";
+    }
+    String sqlOrder = "DESC";
+    if (order != null && order.equalsIgnoreCase("asc")) sqlOrder = "ASC";
+    int safePage = Math.max(1, page);
+    int safeSize = Math.max(1, size);
+    int offset = (safePage - 1) * safeSize;
+    params.addValue("limit", safeSize);
+    params.addValue("offset", offset);
+
+    sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder);
+    sql.append(" LIMIT :limit OFFSET :offset");
+
+    String countSql =
+      "SELECT COUNT(*) FROM posts p JOIN users u ON u.id = p.author_id";
+    if (!where.isEmpty()) {
+      countSql += " WHERE " + String.join(" AND ", where);
+    }
+    RowMapper<PostSummary> mapper = (rs, rowNum) -> {
+      // adjust according to your PostSummary constructor / setters
+      PostSummary dto = new PostSummary();
+      dto.setId(rs.getInt("id"));
+      dto.setContent(rs.getString("content"));
+      java.sql.Timestamp ts = rs.getTimestamp("created_at");
+      if (ts != null) dto.setCreatedAt(ts.toInstant());
+      dto.setAuthorId(rs.getInt("author_id"));
+      dto.setAuthorName(rs.getString("username"));
+      dto.setPostCount(rs.getLong("post_count"));
+      dto.setLikeCount(rs.getLong("like_count"));
+      dto.setSaveCount(rs.getLong("save_count"));
+      dto.setTags(rs.getString("tags"));
+      return dto;
+    };
+    List<PostSummary> items = jdbc.query(sql.toString(), params, mapper);
+    Number total = jdbc.queryForObject(countSql, params, Long.class);
+    long totalCount = total == null ? 0L : total.longValue();
+
     Pageable pageable = PageRequest.of(
-      page - 1,
-      size,
-      Sort.by(direction, sortBy)
+      safePage - 1,
+      safeSize,
+      Sort.by(Sort.Direction.fromString(sqlOrder), sortColumn)
     );
-    Page<Post> postPage = postRepository.findAll(spec, pageable);
-    return postPage;
+    return new PageImpl<PostSummary>(items, pageable, totalCount);
   }
 
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {

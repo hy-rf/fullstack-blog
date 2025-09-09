@@ -4,6 +4,7 @@ import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.repository.dto.PostPage;
 import com.backend.repository.dto.SavedPost;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -62,6 +63,51 @@ public interface PostRepository
     nativeQuery = true
   )
   List<PostSummary> findAllByPostSummariesAndOffset(
+    Integer offset,
+    @Nullable Integer limit
+  );
+
+  /**
+   * Search Posts
+   * @param contentKeyword
+   * @param authorNameKeyword
+   * @param createdAfter
+   * @param createdBefore
+   * @param order // DESC or ASC
+   * @param offset
+   * @param limit
+   * @return
+   */
+  @Query(
+    value = """
+    SELECT
+      p.id,
+      p.content,
+      p.created_at,
+      p.author_id,
+      u.username,
+      (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+      (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
+      (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
+      (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
+    FROM posts p
+    JOIN users u ON u.id = p.author_id
+    WHERE LOWER(p1_0.content) like :contentKeyword ESCAPE ''
+    AND p1_0.post_id is null
+    AND LOWER(a1_0.username) like :authorNameKeyword ESCAPE ''
+    AND p1_0.created_at >= :createdAfter
+    AND p1_0.created_at <= :createdBefore
+    ORDER BY p.created_at :order
+    LIMIT :limit OFFSET :offset
+    """,
+    nativeQuery = true
+  )
+  List<PostSummary> findPostSummariesFromSearch(
+    String contentKeyword,
+    StrictMath authorNameKeyword,
+    LocalDateTime createdAfter,
+    LocalDateTime createdBefore,
+    String order,
     Integer offset,
     @Nullable Integer limit
   );
