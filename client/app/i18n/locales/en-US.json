@@ -8,8 +8,6 @@
     "title": "Follows"
   },
   "home": {
-    "asc": "Older",
-    "desc": "Newer",
     "feed": "Feed"
   },
   "me": {
@@ -52,25 +50,18 @@
     "username": "User name: "
   },
   "posts": {
-    "author": "By ",
-    "created_at": "Created at",
-    "filter": {
+    "search": {
+      "button": "Search Posts",
       "author": "Author",
       "created_at_end": "Created end",
       "created_at_start": "Created start",
+      "created_at": "Date",
       "title_content": "Title or Content",
-      "updated_at": "Updated at"
-    },
-    "page_size": "Page Size",
-    "reply_count": "Replies: ",
-    "search": "Search Posts",
-    "title": "Posts"
-  },
-  "reply": {
-    "author": "Author"
-  },
-  "user": {
-    "title": ""
-  },
-  "welcome": "Welcome"
+      "likes_count": "Number of Likes",
+      "posts_count": "Number of Posts",
+      "saves_count": "Number of Saves",
+      "descending": "Descending",
+      "ascending": "Ascending"
+    }
+  }
 }

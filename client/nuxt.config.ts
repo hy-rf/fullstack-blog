@@ -43,10 +43,8 @@ export default defineNuxtConfig({
     strategy: "no_prefix",
     langDir: "../app/i18n/locales",
     locales: [
-      { code: "en-US", name: "English(US)", file: "en-US.json" },
-      { code: "jp-JP", name: "日本語", file: "jp-JP.json" },
+      { code: "en-US", name: "English", file: "en-US.json" },
       { code: "zh-TW", name: "繁體中文", file: "zh-TW.json" },
-      { code: "zh-CN", name: "中文", file: "zh-CN.json" },
     ],
     defaultLocale: "en-US",
   },

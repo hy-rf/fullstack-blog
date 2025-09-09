@@ -147,37 +147,45 @@ function prevPage() {
         <div class="search-fields">
           <input
             v-model="form.keyword"
-            :placeholder="t('posts.filter.title_content')"
-          >
+            :placeholder="t('posts.search.title_content')"
+          />
           <input
             v-model="form.authorName"
-            :placeholder="t('posts.filter.author')"
-          >
+            :placeholder="t('posts.search.author')"
+          />
         </div>
-        <br >
+        <br />
         <div class="date-filters">
           <label
-            >{{ t("posts.filter.created_at_start") }}
-            <input v-model="form.createdAfter" type="datetime-local" >
+            >{{ t("posts.search.created_at_start") }}
+            <input v-model="form.createdAfter" type="datetime-local" />
           </label>
           <label
-            >{{ t("posts.filter.created_at_end") }}
-            <input v-model="form.createdBefore" type="datetime-local" >
+            >{{ t("posts.search.created_at_end") }}
+            <input v-model="form.createdBefore" type="datetime-local" />
           </label>
         </div>
         <div class="sort-options">
-          <div>
-            <select v-model="form.sortBy">
-              <option value="createdAt">Created At</option>
-              <option value="updatedAt">Updated At</option>
-            </select>
-            <select v-model="form.order">
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
-          </div>
+          <select v-model="form.sortBy">
+            <option value="createdAt">
+              {{ t("posts.search.created_at") }}
+            </option>
+            <option value="postCount">
+              {{ t("posts.search.posts_count") }}
+            </option>
+            <option value="likeCount">
+              {{ t("posts.search.likes_count") }}
+            </option>
+            <option value="saveCount">
+              {{ t("posts.search.saves_count") }}
+            </option>
+          </select>
+          <select v-model="form.order">
+            <option value="desc">{{ t("posts.search.descending") }}</option>
+            <option value="asc">{{ t("posts.search.ascending") }}</option>
+          </select>
         </div>
-        <button type="submit">{{ t("posts.search") }}</button>
+        <button type="submit">{{ t("posts.search.button") }}</button>
       </form>
     </div>
     <label for="pagesize">{{ t("posts.page_size") }}</label>
@@ -245,5 +253,9 @@ function prevPage() {
 }
 .search-result {
   padding-bottom: 5rem;
+}
+.sort-options {
+  display: flex;
+  gap: 1rem;
 }
 </style>
