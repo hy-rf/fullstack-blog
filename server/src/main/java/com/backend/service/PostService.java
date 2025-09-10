@@ -138,8 +138,8 @@ public class PostService {
     MapSqlParameterSource params = new MapSqlParameterSource();
 
     if (keyword != null && !keyword.isBlank()) {
-      where.add("LOWER(p.content) LIKE :contentKeyword ESCAPE ''");
-      params.addValue("contentKeyword", "%" + keyword.toLowerCase() + "%");
+      where.add("tsv @@ plainto_tsquery('english', :contentKeyword)");
+      params.addValue("contentKeyword", keyword.toLowerCase());
     }
     if (authorName != null && !authorName.isBlank()) {
       where.add("LOWER(u.username) LIKE :authorNameKeyword ESCAPE ''");
@@ -196,16 +196,16 @@ public class PostService {
     params.addValue("limit", safeSize);
     params.addValue("offset", offset);
 
-    sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder);
+    // sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder);
     sql.append(" LIMIT :limit OFFSET :offset");
 
-    String countSql =
-      "SELECT COUNT(*) FROM posts p JOIN users u ON u.id = p.author_id";
-    if (!where.isEmpty()) {
-      countSql += " WHERE " + String.join(" AND ", where);
-    }
+    // String countSql = "SELECT COUNT(*) FROM posts p";
+    // if (!where.isEmpty()) {
+    //   countSql += " WHERE " + String.join(" AND ", where);
+    // }
+    // Number total = jdbc.queryForObject(countSql, params, Long.class);
+    // long totalCount = total == null ? 0L : total.longValue();
     RowMapper<PostSummary> mapper = (rs, rowNum) -> {
-      // adjust according to your PostSummary constructor / setters
       PostSummary dto = new PostSummary();
       dto.setId(rs.getInt("id"));
       dto.setContent(rs.getString("content"));
@@ -220,15 +220,13 @@ public class PostService {
       return dto;
     };
     List<PostSummary> items = jdbc.query(sql.toString(), params, mapper);
-    Number total = jdbc.queryForObject(countSql, params, Long.class);
-    long totalCount = total == null ? 0L : total.longValue();
 
     Pageable pageable = PageRequest.of(
       safePage - 1,
       safeSize,
       Sort.by(Sort.Direction.fromString(sqlOrder), sortColumn)
     );
-    return new PageImpl<PostSummary>(items, pageable, totalCount);
+    return new PageImpl<PostSummary>(items, pageable, 9999999);
   }
 
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {

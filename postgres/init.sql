@@ -83,6 +83,8 @@ CREATE TABLE avatars (
   
 INSERT INTO roles (name) VALUES ('admin'), ('user');
 
+CREATE UNIQUE INDEX IF NOT EXISTS unique_username ON users(username); -- WHERE (is_active = 'Y');
+
 CREATE INDEX IF NOT EXISTS idx_posts_post_id ON posts(post_id);
 
 CREATE INDEX IF NOT EXISTS idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
@@ -101,3 +103,7 @@ CREATE INDEX IF NOT EXISTS idx_users_username_lower ON users (lower(username));
 --  ?
 CREATE INDEX IF NOT EXISTS idx_user_saved_posts_post_id ON user_saved_posts (post_id);
 CREATE INDEX IF NOT EXISTS idx_post_tags_post_id ON post_tags (post_id);
+
+-- for search
+alter table posts add column tsv tsvector generated always as (to_tsvector('english', content)) stored;
+create index idx_content_tsv on posts using gin (tsv) WITH (fastupdate = off);
