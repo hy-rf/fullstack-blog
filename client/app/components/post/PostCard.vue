@@ -65,29 +65,29 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
         </NuxtLink>
       </div>
       <div class="post-other-right">
-        <div>
+        <div class="post-other-right-item">
           <button class="like-button" @click="likePost(post.id)">
             <Icon name="mdi-light:heart" size="20" />
           </button>
-          <div class="like-count">
+          <div class="count-numbers like-count">
             <span>{{ likeCount }}</span>
           </div>
         </div>
-        <div>
+        <div class="post-other-right-item">
           <button class="save-button" @click="savePost(post.id)">
             <Icon name="mdi-light:bookmark" size="20" />
           </button>
-          <div class="save-count">
+          <div class="count-numbers save-count">
             <span>{{ saveCount }}</span>
           </div>
         </div>
-        <div>
+        <div class="post-other-right-item">
           <button class="reply-button">
             <Icon name="mdi-light:comment" size="20" />
           </button>
-          <div class="reply-count">
+          <div class="count-numbers reply-count">
             <span>
-              {{ " " + post.postCount }}
+              {{ post.postCount }}
             </span>
           </div>
         </div>
@@ -145,6 +145,11 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
       padding-top: 0.5rem;
       font-size: 0.9rem;
     }
+  }
+}
+.post-other-right-item {
+  .count-numbers {
+    padding-bottom: 0.2rem;
   }
 }
 button {

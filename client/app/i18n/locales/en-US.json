@@ -50,13 +50,18 @@
     "username": "User name: "
   },
   "posts": {
+    "page_size": "Posts per page",
     "search": {
+      "title": "Search Posts",
+      "time": "Now: ",
+      "total_posts_1": "Total: ",
+      "total_posts_2": " Posts",
       "button": "Search Posts",
       "author": "Author",
       "created_at_end": "Created end",
       "created_at_start": "Created start",
       "created_at": "Date",
-      "title_content": "Title or Content",
+      "keyword_content": "Keyword",
       "likes_count": "Number of Likes",
       "posts_count": "Number of Posts",
       "saves_count": "Number of Saves",

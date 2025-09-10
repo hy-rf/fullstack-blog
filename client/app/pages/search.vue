@@ -135,8 +135,30 @@ function prevPage() {
 
 <template>
   <div>
-    <h1>{{ t("posts.search") }}</h1>
-    <p>Total: {{ posts?.totalElements }} Posts</p>
+    <h1>{{ t("posts.search.title") }}</h1>
+    <div class="top-toolbar">
+      <p>
+        <ClientOnly>
+          <span>{{ t("posts.search.time") }}</span>
+          <time datetime="">{{ new Date().toLocaleString() }}</time>
+        </ClientOnly>
+      </p>
+      <p>
+        {{
+          t("posts.search.total_posts_1") + (posts == null)
+            ? ""
+            : posts!.totalElements + t("posts.search.total_posts_2")
+        }}
+      </p>
+      <label for="pagesize">{{ t("posts.page_size") }}</label>
+      <select id="pagesize" v-model="searchStore.size" @change="changeSize">
+        <option :value="1">1</option>
+        <option :value="5">5</option>
+        <option :value="10">10</option>
+        <option :value="20">20</option>
+        <option :value="50">50</option>
+      </select>
+    </div>
     <!-- Filters bound to form state, not store, except  -->
     <div class="filters-container">
       <form
@@ -147,7 +169,7 @@ function prevPage() {
         <div class="search-fields">
           <input
             v-model="form.keyword"
-            :placeholder="t('posts.search.title_content')"
+            :placeholder="t('posts.search.keyword_content')"
           />
           <input
             v-model="form.authorName"
@@ -155,7 +177,7 @@ function prevPage() {
           />
         </div>
         <br />
-        <div class="date-filters">
+        <!-- <div class="date-filters">
           <label
             >{{ t("posts.search.created_at_start") }}
             <input v-model="form.createdAfter" type="datetime-local" />
@@ -164,7 +186,7 @@ function prevPage() {
             >{{ t("posts.search.created_at_end") }}
             <input v-model="form.createdBefore" type="datetime-local" />
           </label>
-        </div>
+        </div> -->
         <div class="sort-options">
           <select v-model="form.sortBy">
             <option value="createdAt">
@@ -188,43 +210,62 @@ function prevPage() {
         <button type="submit">{{ t("posts.search.button") }}</button>
       </form>
     </div>
-    <label for="pagesize">{{ t("posts.page_size") }}</label>
-    <select id="pagesize" v-model="searchStore.size" @change="changeSize">
-      <option :value="1">1</option>
-      <option :value="5">5</option>
-      <option :value="10">10</option>
-      <option :value="20">20</option>
-      <option :value="50">50</option>
-    </select>
+    <div class="pagination" aria-label="Posts pagination">
+      <button :disabled="searchStore.page <= 1" @click="prevPage">
+        <Icon name="mdi-light:chevron-left" />
+      </button>
+      <span>{{ searchStore.page }}</span>
+      <button
+        :disabled="posts?.totalPages == searchStore.page"
+        @click="nextPage"
+      >
+        <Icon name="mdi-light:chevron-right" />
+      </button>
+    </div>
 
-    <!-- Results -->
     <div v-if="pending">Loading...</div>
-    <div v-else-if="error">Error loading posts</div>
-    <div v-else-if="posts?.numberOfElements === 0">No posts available</div>
+    <div v-if="error">Error loading posts</div>
+    <div v-if="posts?.numberOfElements === 0">No posts available</div>
 
     <div v-else class="search-result">
       <section aria-label="Posts list">
         <PostCard v-for="post in posts?.content" :key="post.id" :post="post" />
       </section>
-
-      <!-- Pagination -->
-      <div class="pagination" aria-label="Posts pagination">
-        <button :disabled="searchStore.page <= 1" @click="prevPage">
-          Prev
-        </button>
-        <span>Page {{ searchStore.page }}</span>
-        <button
-          :disabled="posts?.totalPages == searchStore.page"
-          @click="nextPage"
-        >
-          Next
-        </button>
-      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.top-toolbar {
+  display: flex;
+  padding-bottom: 0.5rem;
+  & > p:nth-child(2) {
+    margin-left: auto;
+    color: #555555;
+  }
+}
+.pagination {
+  justify-content: center;
+  display: flex;
+  gap: 0.5rem;
+  span {
+    margin-block: auto;
+  }
+  button {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid #333333;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    svg {
+      margin: auto;
+      position: relative;
+      vertical-align: baseline;
+    }
+  }
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;

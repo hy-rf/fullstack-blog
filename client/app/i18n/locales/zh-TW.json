@@ -50,13 +50,18 @@
     "username": "使用者名稱："
   },
   "posts": {
+    "page_size": "每頁文章數",
     "search": {
+      "title": "搜尋文章",
+      "time": "搜尋時間：",
+      "total_posts_1": "總共",
+      "total_posts_2": "篇文章",
       "button": "搜尋",
       "author": "作者",
       "created_at_end": "建立時間：結束",
       "created_at_start": "建立時間：開始",
       "created_at": "時間",
-      "title_content": "標題或內容",
+      "keyword_content": "關鍵字",
       "likes_count": "喜愛數",
       "posts_count": "回覆數",
       "saves_count": "保存數",
