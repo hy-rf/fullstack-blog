@@ -144,11 +144,12 @@ function prevPage() {
         </ClientOnly>
       </p>
       <p>
-        {{
+        {{ posts!.totalElements }}
+        <!-- {{
           t("posts.search.total_posts_1") + (posts == null)
             ? ""
             : posts!.totalElements + t("posts.search.total_posts_2")
-        }}
+        }} -->
       </p>
       <label for="pagesize">{{ t("posts.page_size") }}</label>
       <select id="pagesize" v-model="searchStore.size" @change="changeSize">
@@ -159,7 +160,6 @@ function prevPage() {
         <option :value="50">50</option>
       </select>
     </div>
-    <!-- Filters bound to form state, not store, except  -->
     <div class="filters-container">
       <form
         class="filters"
