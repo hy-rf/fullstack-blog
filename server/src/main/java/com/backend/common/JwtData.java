@@ -12,6 +12,5 @@ public class JwtData {
 
   private Integer userId;
   private String userName;
-  private List<Integer> roleIds;
   private List<String> roleNames;
 }

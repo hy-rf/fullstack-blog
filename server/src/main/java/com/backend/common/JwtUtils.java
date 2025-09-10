@@ -2,17 +2,15 @@ package com.backend.common;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -42,64 +40,42 @@ public class JwtUtils {
   }
 
   public JwtData verifyToken(String token, String secretKey) {
-    try {
-      Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
-      Jws<Claims> jws = Jwts.parserBuilder()
-        .setSigningKey(key)
-        .build()
-        .parseClaimsJws(token);
+    Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    Jws<Claims> jws = Jwts.parserBuilder()
+      .setSigningKey(key)
+      .build()
+      .parseClaimsJws(token);
 
-      Claims claims = jws.getBody();
-      Integer userId = null;
-      Object userIdObj = claims.get("userId");
-      if (userIdObj instanceof Number) {
-        userId = ((Number) userIdObj).intValue();
-      }
+    Claims claims = jws.getBody();
 
-      // be permissive about username type to avoid RequiredTypeException
-      Object usernameObj = claims.get("username");
-      String userName = usernameObj instanceof String
-        ? (String) usernameObj
-        : "";
-
-      Object roleIdsObj = claims.get("roleIds");
-      List<Integer> roleIds = Collections.emptyList();
-      if (roleIdsObj instanceof List) {
-        roleIds = ((List<?>) roleIdsObj).stream()
-          .filter(Objects::nonNull)
-          .map(val -> {
-            if (val instanceof Number) {
-              return ((Number) val).intValue();
-            } else {
-              try {
-                return Integer.parseInt(val.toString());
-              } catch (Exception e) {
-                return null;
-              }
-            }
-          })
-          .filter(Objects::nonNull)
-          .collect(Collectors.toList());
-      }
-
-      Object roleNamesObj = claims.get("roleNames");
-      List<String> roleNames = Collections.emptyList();
-      if (roleNamesObj instanceof List) {
-        roleNames = ((List<?>) roleNamesObj).stream()
-          .filter(Objects::nonNull)
-          .map(Object::toString)
-          .collect(Collectors.toList());
-      }
-
-      return new JwtData(userId, userName, roleIds, roleNames);
-    } catch (JwtException | IllegalArgumentException e) {
+    Object userIdObj = claims.get("userId");
+    if (!(userIdObj instanceof Number)) {
       return null;
     }
+    Integer userId = ((Number) userIdObj).intValue();
+
+    Object usernameObj = claims.get("username");
+    if (!(usernameObj instanceof String)) {
+      return null;
+    }
+    String userName = ((String) usernameObj).toString();
+
+    Object roleNamesObj = claims.get("roleNames");
+    if (!(roleNamesObj instanceof List)) {
+      return null;
+    }
+    List<String> roleNames = ((List<?>) roleNamesObj).stream()
+      .filter(Objects::nonNull)
+      .map(Object::toString)
+      .toList();
+
+    return new JwtData(userId, userName, roleNames);
   }
 
   public String resolveToken(HttpServletRequest request) {
-    if (request.getCookies() != null) {
-      for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
         if ("token".equals(cookie.getName())) {
           return cookie.getValue();
         }
@@ -113,8 +89,9 @@ public class JwtUtils {
   }
 
   public String resolveRefreshToken(HttpServletRequest request) {
-    if (request.getCookies() != null) {
-      for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
         if ("refresh".equals(cookie.getName())) {
           return cookie.getValue();
         }
