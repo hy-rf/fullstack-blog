@@ -18,10 +18,24 @@
     "update_link": "更新帳戶",
     "username": "使用者名稱",
     "your_permissions": "您的權限",
-    "admin_link": "Admin",
+    "admin_link": "管理者頁面",
     "avatar_upload_success_message": "成功",
+    "update": {
+      "avatar": {
+        "error": "請選擇頭像！"
+      },
+      "choose_file_label": "選擇頭像",
+      "update_avatar_button": "更新頭像",
+
+      "username": "新名稱：",
+      "password": "新密碼：",
+      "update_button": "更新"
+    },
     "saved": {
       "delete_button": "刪除"
+    },
+    "settings": {
+      "locale": "語言"
     }
   },
   "nav": {

@@ -2,6 +2,8 @@
 import type PostSummary from "~/types/PostSummary";
 
 const { locale } = useI18n();
+const route = useRoute();
+const postId = route.params.id as string;
 
 const userStore = useUserStore();
 
@@ -52,11 +54,15 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
   <article class="post-card">
     <div class="post-main">
       <p style="font-size: smaller; padding-bottom: 0.3rem">#{{ post.id }}</p>
-      <NuxtLink :to="`/post/${post.id}`">
+
+      <NuxtLink v-if="post.id.toString() !== postId" :to="`/post/${post.id}`">
         <p>
           {{ post.content }}
         </p>
       </NuxtLink>
+      <p v-else>
+        {{ post.content }}
+      </p>
     </div>
     <div class="post-other">
       <div class="author-info">

@@ -9,12 +9,7 @@ const initialOffset = postStore.offset || 0;
 const postsRef = ref<PostSummary[] | null>(null); // This is used in ssr for SEO
 const pending = ref(false);
 
-const testMsg = import.meta.server ? "server: " : "client: ";
-console.log(testMsg + postStore.posts.length + " posts in post store");
-
 if (import.meta.server) {
-  console.log("run at server that call api");
-
   pending.value = true;
   try {
     const data = await $fetch<PostSummary[]>(

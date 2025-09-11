@@ -30,7 +30,7 @@ if (import.meta.client) {
 </script>
 
 <template>
-  <div>
+  <div style="position: relative; height: 100%">
     <slot />
   </div>
 </template>

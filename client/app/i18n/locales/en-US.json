@@ -20,8 +20,21 @@
     "your_permissions": "Your permissions",
     "admin_link": "Admin",
     "avatar_upload_success_message": "Success",
+    "update": {
+      "avatar": {
+        "error": "Please select a file."
+      },
+      "choose_file_label": "New file",
+      "update_avatar_button": "Update Avatar",
+      "username": "Username: ",
+      "password": "Password: ",
+      "update_button": "Update"
+    },
     "saved": {
       "delete_button": "Delete"
+    },
+    "settings": {
+      "locale": "Locale"
     }
   },
   "nav": {

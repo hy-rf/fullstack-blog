@@ -143,22 +143,24 @@ function prevPage() {
           <time datetime="">{{ new Date().toLocaleString() }}</time>
         </ClientOnly>
       </p>
-      <p>
+      <!-- <p class="total-elements">
         {{ posts!.totalElements }}
-        <!-- {{
+        {{
           t("posts.search.total_posts_1") + (posts == null)
             ? ""
             : posts!.totalElements + t("posts.search.total_posts_2")
-        }} -->
-      </p>
-      <label for="pagesize">{{ t("posts.page_size") }}</label>
-      <select id="pagesize" v-model="searchStore.size" @change="changeSize">
-        <option :value="1">1</option>
-        <option :value="5">5</option>
-        <option :value="10">10</option>
-        <option :value="20">20</option>
-        <option :value="50">50</option>
-      </select>
+        }}
+      </p> -->
+      <div id="page-size-tool">
+        <label for="pagesize">{{ t("posts.page_size") }}</label>
+        <select id="pagesize" v-model="searchStore.size" @change="changeSize">
+          <option :value="1">1</option>
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
     </div>
     <div class="filters-container">
       <form
@@ -242,6 +244,9 @@ function prevPage() {
   & > p:nth-child(2) {
     margin-left: auto;
     color: #555555;
+  }
+  #page-size-tool {
+    margin-left: auto;
   }
 }
 .pagination {

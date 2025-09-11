@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AvatarUploader from "~/components/me/AvatarUploader.vue";
 const { t } = useI18n();
 const userStore = useUserStore();
 </script>
@@ -14,18 +13,17 @@ const userStore = useUserStore();
             <span>{{ userStore.user.username }}</span>
           </div>
           <span class="role-list-title">{{ t("me.your_permissions") }}</span
-          ><br >
+          ><br />
           <span
             v-for="(r, i) in userStore.user.roles"
             :key="r"
             class="role-names"
           >
-            {{ i + 1 + ": " + r.split("_")[1] + " " }} <br >
+            {{ i + 1 + ": " + r.split("_")[1] + " " }} <br />
           </span>
         </div>
-        <img src="/favicon.ico" alt="" sizes="80 80" >
+        <img src="/favicon.ico" alt="" sizes="80 80" />
       </div>
-      <AvatarUploader />
     </li>
     <li>
       <NuxtLink to="/me/update">{{ t("me.update_link") }}</NuxtLink>
@@ -39,13 +37,18 @@ const userStore = useUserStore();
     <li>
       <NuxtLink to="/me/settings">{{ t("me.settings_link") }}</NuxtLink>
     </li>
-    <li v-if="userStore.isAdmin">
+    <li v-if="userStore.isAdmin" style="margin-top: auto">
       <NuxtLink to="/admin">{{ t("me.admin_link") }}</NuxtLink>
     </li>
   </ul>
 </template>
 
 <style lang="css" scoped>
+ul {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 li {
   padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;

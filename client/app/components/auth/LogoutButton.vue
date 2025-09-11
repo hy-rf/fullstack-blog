@@ -16,15 +16,24 @@ async function handleLogout() {
 </script>
 
 <template>
-  <button v-if="userStore.isUser" class="logout-button" @click="handleLogout">
+  <a
+    v-if="userStore.isUser"
+    class="logout-button"
+    @click.prevent="handleLogout"
+  >
+    <Icon
+      name="material-symbols-light:logout-rounded"
+      size="20"
+      style="vertical-align: sub"
+    />
     {{ t("nav.logout") }}
-  </button>
+  </a>
 </template>
 
 <style lang="css" scoped>
 .logout-button {
   /* height: 25px; */
-  padding: 0 0.5rem;
+  padding-left: 0.3rem;
   border: 0;
   background-color: transparent;
   cursor: pointer;
@@ -33,7 +42,7 @@ async function handleLogout() {
   font-family: "Hiragino Kaku Gothic ProN, sans-serif";
 
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 }
 </style>

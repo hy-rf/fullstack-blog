@@ -1,8 +1,14 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
 const newUserName = ref("");
 const newPassword = ref("");
 
 async function updateMyProfile() {
+  if (newUserName.value == "" || newPassword.value == "") {
+    alert();
+    return;
+  }
   const response = await fetch("/api/user", {
     method: "PUT",
     headers: {
@@ -25,20 +31,42 @@ async function updateMyProfile() {
 
 <template>
   <form @submit.prevent="updateMyProfile">
-    <input
-      v-model="newUserName"
-      type="text"
-      placeholder="New Username"
-      required
-    >
-    <input
-      v-model="newPassword"
-      type="password"
-      placeholder="New Password"
-      required
-    >
-    <button type="submit">Update Profile</button>
+    <label>
+      <span>{{ t("me.update.username") }}</span>
+      <input
+        v-model="newUserName"
+        type="text"
+        placeholder="New Username"
+        required
+    /></label>
+    <label>
+      <span>{{ t("me.update.password") }}</span>
+      <input
+        v-model="newPassword"
+        type="password"
+        placeholder="New Password"
+        required
+    /></label>
+    <button type="submit">
+      {{ t("me.update.update_button") }}
+    </button>
   </form>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  label {
+    display: inline-flex;
+    justify-content: space-between;
+  }
+
+  button {
+    width: 10rem;
+    align-self: self-end;
+  }
+}
+</style>
