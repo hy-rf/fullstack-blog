@@ -17,6 +17,17 @@
       ]
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Angular client",
+      "cwd": "${workspaceFolder}/ng-client",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
       "type": "java",
       "name": "Server",
       "request": "launch",
