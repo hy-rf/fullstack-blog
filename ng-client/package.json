@@ -9,18 +9,6 @@
     "test": "ng test",
     "serve:ssr:ng-client": "node dist/ng-client/server/server.mjs"
   },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": false,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
-  },
   "private": true,
   "dependencies": {
     "@angular/common": "^20.3.0",
