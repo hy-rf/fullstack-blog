@@ -1,5 +1,6 @@
 {
   "java.configuration.updateBuildConfiguration": "interactive",
   "prettier.prettierPath": "node_modules/prettier",
-  "prettier.configPath": ".prettierrc.yaml"
+  "prettier.configPath": ".prettierrc.yaml",
+  "cSpell.words": ["followee"]
 }

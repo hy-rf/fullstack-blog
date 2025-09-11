@@ -82,6 +82,14 @@ CREATE TABLE avatars (
     url VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES users
   );
+
+CREATE TABLE
+  followings (
+    follower_id INTEGER NOT NULL,
+    followee_id INTEGER NOT NULL,
+    FOREIGN KEY (follower_id) REFERENCES users,
+    FOREIGN KEY (followee_id) REFERENCES users
+  );
   
 INSERT INTO roles (name) VALUES ('admin'), ('user');
 
