@@ -16,6 +16,8 @@ CREATE TABLE
     author_id INTEGER,
     root_post_id INTEGER,
     post_id INTEGER,
+    like_count INTEGER NOT NULL DEFAULT 0,
+    save_count INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (author_id) REFERENCES users,
     FOREIGN KEY (root_post_id) REFERENCES posts,
@@ -107,3 +109,5 @@ CREATE INDEX IF NOT EXISTS idx_post_tags_post_id ON post_tags (post_id);
 -- for search
 alter table posts add column tsv tsvector generated always as (to_tsvector('english', content)) stored;
 create index idx_content_tsv on posts using gin (tsv) WITH (fastupdate = off);
+CREATE INDEX IF NOT EXISTS idx_posts_like_count ON posts(like_count);
+CREATE INDEX IF NOT EXISTS idx_posts_save_count ON posts(save_count);

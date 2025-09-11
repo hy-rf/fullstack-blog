@@ -54,6 +54,9 @@ public class Post {
   @JoinColumn(name = "post_id")
   private Post parentPost;
 
+  private Integer likeCount;
+  private Integer saveCount;
+
   @JsonIgnore
   @OneToMany(mappedBy = "rootPost", cascade = CascadeType.PERSIST)
   private List<Post> posts = new ArrayList<>();

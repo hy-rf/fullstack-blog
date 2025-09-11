@@ -128,10 +128,10 @@ public class PostService {
         p.author_id,
         u.username,
         (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
-        (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
-        (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
+        p.like_count,
+        p.save_count,
         (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
-      FROM posts p
+        FROM posts p
       JOIN users u ON u.id = p.author_id
           """;
     List<String> where = new ArrayList<>();
@@ -196,7 +196,7 @@ public class PostService {
     params.addValue("limit", safeSize);
     params.addValue("offset", offset);
 
-    // sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder);
+    sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder); // this slows down query
     sql.append(" LIMIT :limit OFFSET :offset");
 
     // String countSql = "SELECT COUNT(*) FROM posts p";
@@ -255,6 +255,7 @@ public class PostService {
     User user = userRepository.findById(userId).orElseThrow();
     Post post = postRepository.findById(postId).orElseThrow();
     post.getLikes().add(user);
+    post.setLikeCount(post.getLikeCount() + 1);
     postRepository.save(post);
   }
 
@@ -264,6 +265,7 @@ public class PostService {
     User user = userRepository.findById(userId).orElseThrow();
     Post post = postRepository.findById(postId).orElseThrow();
     post.getLikes().remove(user);
+    post.setLikeCount(post.getLikeCount() - 1);
     postRepository.save(post);
   }
 }
