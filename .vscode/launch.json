@@ -4,22 +4,22 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Client",
-      "cwd": "${workspaceFolder}/client",
+      "name": "Nuxt Client",
+      "cwd": "${workspaceFolder}/nuxt-client",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**",
-        "${workspaceFolder}/client/node_modules/**",
-        "${workspaceFolder}/client/.nuxt/**"
+        "${workspaceFolder}/nuxt-client/node_modules/**",
+        "${workspaceFolder}/nuxt-client/.nuxt/**"
       ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Angular client",
+      "name": "Angular Client",
       "cwd": "${workspaceFolder}/ng-client",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
@@ -48,7 +48,7 @@
   "compounds": [
     {
       "name": "Debug",
-      "configurations": ["Server", "Client"]
+      "configurations": ["Server", "Nuxt Client"]
     }
   ]
 }
