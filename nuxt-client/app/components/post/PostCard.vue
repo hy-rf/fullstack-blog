@@ -30,6 +30,7 @@ const likePost = async (postId: number) => {
   if (res.status == 200) {
     likeCount.value++;
   }
+  userStore.loadLikedPosts();
 };
 
 const savePost = async (postId: number) => {
@@ -47,7 +48,12 @@ const savePost = async (postId: number) => {
   userStore.loadSavedPosts();
 };
 
-const isSaved = userStore.savedPosts.includes(props.post.id);
+const replyToPost = async (postId: number) => {
+  alert("Reply popup");
+};
+
+const isLiked = computed(() => userStore.likedPosts.includes(props.post.id));
+const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
 </script>
 
 <template>
@@ -67,13 +73,23 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
     <div class="post-other">
       <div class="author-info">
         <NuxtLink :to="`/user/${post.authorId}`">
-          {{ post.authorName }}
+          <span>
+            {{ post.authorName }}
+          </span>
         </NuxtLink>
       </div>
       <div class="post-other-right">
         <div class="post-other-right-item">
           <button class="like-button" @click="likePost(post.id)">
-            <Icon name="mdi-light:heart" size="20" />
+            <ClientOnly>
+              <Icon v-if="!isLiked" name="mdi-light:heart" size="18" />
+              <Icon
+                v-if="isLiked"
+                name="mdi-light:heart"
+                size="18"
+                style="color: red"
+              />
+            </ClientOnly>
           </button>
           <div class="count-numbers like-count">
             <span>{{ likeCount }}</span>
@@ -81,15 +97,27 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
         </div>
         <div class="post-other-right-item">
           <button class="save-button" @click="savePost(post.id)">
-            <Icon name="mdi-light:bookmark" size="20" />
+            <ClientOnly>
+              <Icon
+                v-if="isSaved == false"
+                name="mdi-light:bookmark"
+                size="18"
+              />
+              <Icon
+                v-if="isSaved == true"
+                name="mdi-light:bookmark"
+                size="18"
+                style="color: green"
+              />
+            </ClientOnly>
           </button>
           <div class="count-numbers save-count">
             <span>{{ saveCount }}</span>
           </div>
         </div>
         <div class="post-other-right-item">
-          <button class="reply-button">
-            <Icon name="mdi-light:comment" size="20" />
+          <button class="reply-button" @click="replyToPost(post.id)">
+            <Icon name="mdi-light:comment" size="18" />
           </button>
           <div class="count-numbers reply-count">
             <span>
@@ -136,6 +164,9 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
     padding-top: 0.1rem;
     text-decoration: none;
     color: #000;
+    span {
+      font-size: smaller;
+    }
   }
 }
 .post-other-right {
@@ -160,7 +191,7 @@ const isSaved = userStore.savedPosts.includes(props.post.id);
 }
 button {
   border: 0;
-  padding-top: 0.2rem;
+  padding-top: 0.4rem;
   background-color: transparent;
 }
 .created-at {

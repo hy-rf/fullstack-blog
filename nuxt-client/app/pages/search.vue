@@ -173,10 +173,10 @@ function prevPage() {
             v-model="form.keyword"
             :placeholder="t('posts.search.keyword_content')"
           />
-          <input
+          <!-- <input
             v-model="form.authorName"
             :placeholder="t('posts.search.author')"
-          />
+          /> -->
         </div>
         <br />
         <!-- <div class="date-filters">
@@ -191,14 +191,14 @@ function prevPage() {
         </div> -->
         <div class="sort-options">
           <select v-model="form.sortBy">
-            <option value="createdAt">
-              {{ t("posts.search.created_at") }}
-            </option>
-            <option value="postCount">
-              {{ t("posts.search.posts_count") }}
-            </option>
             <option value="likeCount">
               {{ t("posts.search.likes_count") }}
+            </option>
+            <!-- <option value="createdAt">
+              {{ t("posts.search.created_at") }}
+            </option> -->
+            <option value="postCount">
+              {{ t("posts.search.posts_count") }}
             </option>
             <option value="saveCount">
               {{ t("posts.search.saves_count") }}

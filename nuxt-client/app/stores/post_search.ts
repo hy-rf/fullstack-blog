@@ -6,7 +6,7 @@ export const usePostSearchStore = defineStore("postSearch", {
     authorName: "",
     createdAfter: "",
     createdBefore: "",
-    sortBy: "createdAt",
+    sortBy: "likeCount",
     order: "desc",
     page: 1,
     size: 10,
@@ -29,7 +29,7 @@ export const usePostSearchStore = defineStore("postSearch", {
       this.authorName = query.authorName || "";
       this.createdAfter = query.createdAfter || "";
       this.createdBefore = query.createdBefore || "";
-      this.sortBy = query.sortBy || "createdAt";
+      this.sortBy = query.sortBy || "likeCount";
       this.order = query.order || "desc";
       this.page = Number(query.page) || 1;
       this.size = Number(query.size) || 10;
