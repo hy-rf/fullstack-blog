@@ -11,7 +11,7 @@ services:
   frontend:
     image: forum-frontend
     build:
-      context: client
+      context: nuxt-client
     restart: always
 
   backend:
