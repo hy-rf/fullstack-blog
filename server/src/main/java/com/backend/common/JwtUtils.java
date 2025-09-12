@@ -2,17 +2,21 @@ package com.backend.common;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtUtils {
 
@@ -41,10 +45,14 @@ public class JwtUtils {
 
   public JwtData verifyToken(String token, String secretKey) {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
-    Jws<Claims> jws = Jwts.parserBuilder()
-      .setSigningKey(key)
-      .build()
-      .parseClaimsJws(token);
+    JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
+    Jws<Claims> jws;
+    try {
+      jws = jwtParser.parseClaimsJws(token);
+    } catch (SecurityException e) {
+      log.info("Fail to parse jwt");
+      return null;
+    }
 
     Claims claims = jws.getBody();
 
