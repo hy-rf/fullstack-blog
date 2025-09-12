@@ -81,5 +81,7 @@ public class Post {
   @PrePersist
   public void onCreate() {
     createdAt = OffsetDateTime.now();
+    likeCount = 0;
+    saveCount = 0;
   }
 }
