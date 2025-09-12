@@ -2,6 +2,8 @@ package com.backend.controller;
 
 import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
+import com.backend.controller.dto.user.UserBasicDto;
+import com.backend.mapper.UserMapper;
 import com.backend.model.User;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UploadService;
@@ -12,6 +14,7 @@ import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
 import java.io.File;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
   private final long MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -36,10 +40,7 @@ public class UserController {
   private final UserService userService;
   private final UploadService uploadService;
 
-  public UserController(UserService userService, UploadService uploadService) {
-    this.userService = userService;
-    this.uploadService = uploadService;
-  }
+  private final UserMapper userMapper;
 
   @PostMapping("/user/avatar")
   @PreAuthorize("hasRole('user')")
@@ -101,8 +102,9 @@ public class UserController {
   }
 
   @GetMapping("/user/{id}")
-  public User getUserById(@PathVariable Integer id) {
-    return userService.getUserById(id);
+  public ResponseEntity<UserBasicDto> getUserById(@PathVariable Integer id) {
+    UserBasicDto user = userMapper.selectBasicById(id);
+    return ResponseEntity.ok(user);
   }
 
   /**

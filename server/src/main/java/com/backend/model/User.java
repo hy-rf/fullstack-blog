@@ -36,7 +36,6 @@ public class User {
   @Column(unique = true, length = 50)
   private String username;
 
-  @JsonIgnore
   @Column(unique = true, length = 100)
   private String email;
 
@@ -67,21 +66,5 @@ public class User {
   @PrePersist
   public void onCreate() {
     createdAt = OffsetDateTime.now();
-  }
-
-  public AuthorDto toAuthorDto() {
-    AuthorDto authorDto = new AuthorDto();
-    authorDto.setId(this.getId());
-    authorDto.setUsername(this.getUsername());
-    authorDto.setRoles(this.getRoles());
-    return authorDto;
-  }
-
-  public AuthorViewModel toAuthorViewModel() {
-    AuthorViewModel authorViewModel = new AuthorViewModel();
-    authorViewModel.setId(this.getId());
-    authorViewModel.setUsername(this.getUsername());
-    authorViewModel.setRoles(this.getRoles());
-    return authorViewModel;
   }
 }

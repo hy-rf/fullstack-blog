@@ -53,9 +53,6 @@ public class AuthService {
   }
 
   public RegisterResult registerUser(String username, String password) {
-    if (userRepository.findByUsername(username).isPresent()) {
-      return new RegisterResult(RegisterStatus.USERNAME_TAKEN);
-    }
     String hash = passwordUtils.hashPassword(password);
 
     User user = new User();
