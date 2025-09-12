@@ -135,37 +135,42 @@ public class PostService {
       JOIN users u ON u.id = p.author_id
           """;
     List<String> where = new ArrayList<>();
+
     MapSqlParameterSource params = new MapSqlParameterSource();
 
     if (keyword != null && !keyword.isBlank()) {
       where.add("tsv @@ plainto_tsquery('english', :contentKeyword)");
       params.addValue("contentKeyword", keyword.toLowerCase());
     }
-    if (authorName != null && !authorName.isBlank()) {
-      where.add("LOWER(u.username) LIKE :authorNameKeyword ESCAPE ''");
-      params.addValue(
-        "authorNameKeyword",
-        "%" + authorName.toLowerCase() + "%"
-      );
-    }
+    // Its not open to the public right now
+    // if (authorName != null && !authorName.isBlank()) {
+    //   where.add("LOWER(u.username) LIKE :authorNameKeyword ESCAPE ''");
+    //   params.addValue(
+    //     "authorNameKeyword",
+    //     "%" + authorName.toLowerCase() + "%"
+    //   );
+    // }
 
-    if (createdAfter != null) {
-      where.add("p.created_at >= :createdAfter");
-      params.addValue("createdAfter", java.sql.Timestamp.valueOf(createdAfter));
-    }
+    // Sort by time range and not open to public
+    // if (createdAfter != null) {
+    //   where.add("p.created_at >= :createdAfter");
+    //   params.addValue("createdAfter", java.sql.Timestamp.valueOf(createdAfter));
+    // }
 
-    if (createdBefore != null) {
-      where.add("p.created_at <= :createdBefore");
-      params.addValue(
-        "createdBefore",
-        java.sql.Timestamp.valueOf(createdBefore)
-      );
-    }
+    // if (createdBefore != null) {
+    //   where.add("p.created_at <= :createdBefore");
+    //   params.addValue(
+    //     "createdBefore",
+    //     java.sql.Timestamp.valueOf(createdBefore)
+    //   );
+    // }
 
     StringBuilder sql = new StringBuilder(baseSelect);
     if (!where.isEmpty()) {
       sql.append(" WHERE ").append(String.join(" AND ", where));
     }
+
+    // Shit start
     String sortColumn = "p.created_at";
     if (
       "createdAt".equalsIgnoreCase(sortBy) ||
@@ -189,7 +194,10 @@ public class PostService {
       sortColumn = "post_count";
     }
     String sqlOrder = "DESC";
-    if (order != null && order.equalsIgnoreCase("asc")) sqlOrder = "ASC";
+    // Customers don't want to search in ascending order because massive only cares about recent shit
+    // if (order != null && order.equalsIgnoreCase("asc")) sqlOrder = "ASC";
+    // Shit end
+
     int safePage = Math.max(1, page);
     int safeSize = Math.max(1, size);
     int offset = (safePage - 1) * safeSize;
@@ -199,12 +207,12 @@ public class PostService {
     sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder); // this slows down query
     sql.append(" LIMIT :limit OFFSET :offset");
 
-    // String countSql = "SELECT COUNT(*) FROM posts p";
-    // if (!where.isEmpty()) {
-    //   countSql += " WHERE " + String.join(" AND ", where);
-    // }
-    // Number total = jdbc.queryForObject(countSql, params, Long.class);
-    // long totalCount = total == null ? 0L : total.longValue();
+    String countSql = "SELECT COUNT(*) FROM posts p";
+    if (!where.isEmpty()) {
+      countSql += " WHERE " + String.join(" AND ", where);
+    }
+    Number total = jdbc.queryForObject(countSql, params, Long.class);
+    long totalCount = total == null ? 0L : total.longValue();
     RowMapper<PostSummary> mapper = (rs, rowNum) -> {
       PostSummary dto = new PostSummary();
       dto.setId(rs.getInt("id"));
@@ -226,7 +234,7 @@ public class PostService {
       safeSize,
       Sort.by(Sort.Direction.fromString(sqlOrder), sortColumn)
     );
-    return new PageImpl<PostSummary>(items, pageable, 9999999);
+    return new PageImpl<PostSummary>(items, pageable, totalCount);
   }
 
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {

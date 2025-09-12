@@ -1,7 +1,5 @@
 package com.backend.model;
 
-import com.backend.service.dto.post.AuthorDto;
-import com.backend.service.dto.post.AuthorViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
