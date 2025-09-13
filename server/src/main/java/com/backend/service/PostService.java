@@ -207,12 +207,12 @@ public class PostService {
     sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sqlOrder); // this slows down query
     sql.append(" LIMIT :limit OFFSET :offset");
 
-    String countSql = "SELECT COUNT(*) FROM posts p";
-    if (!where.isEmpty()) {
-      countSql += " WHERE " + String.join(" AND ", where);
-    }
-    Number total = jdbc.queryForObject(countSql, params, Long.class);
-    long totalCount = total == null ? 0L : total.longValue();
+    // String countSql = "SELECT COUNT(*) FROM posts p";
+    // if (!where.isEmpty()) {
+    //   countSql += " WHERE " + String.join(" AND ", where);
+    // }
+    // Number total = jdbc.queryForObject(countSql, params, Long.class);
+
     RowMapper<PostSummary> mapper = (rs, rowNum) -> {
       PostSummary dto = new PostSummary();
       dto.setId(rs.getInt("id"));
@@ -234,7 +234,7 @@ public class PostService {
       safeSize,
       Sort.by(Sort.Direction.fromString(sqlOrder), sortColumn)
     );
-    return new PageImpl<PostSummary>(items, pageable, totalCount);
+    return new PageImpl<PostSummary>(items, pageable, 9999999);
   }
 
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {
