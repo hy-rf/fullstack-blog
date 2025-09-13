@@ -30,13 +30,7 @@ public class UserService {
     this.passwordUtils = passwordUtils;
   }
 
-  // Implement methods for user management, such as creating, updating, and
-  // deleting users.
-  // This class will interact with the UserRepository to perform database
-  // operations.
-
-  // Example method:
-  public void createUser(String username, String password) {
+  public void createUser(String username, String password, List<String> roles) {
     // Logic to create a new user
   }
 
