@@ -18,6 +18,7 @@ CREATE TABLE
     post_id INTEGER,
     like_count INTEGER NOT NULL DEFAULT 0,
     save_count INTEGER NOT NULL DEFAULT 0,
+    post_count INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (author_id) REFERENCES users,
     FOREIGN KEY (root_post_id) REFERENCES posts,
@@ -71,13 +72,15 @@ CREATE TABLE
   );
 
 
-CREATE TABLE post_images (
+CREATE TABLE 
+  post_images (
     post_id INTEGER,
     url VARCHAR(255),
     FOREIGN KEY (post_id) REFERENCES posts
   );
 
-CREATE TABLE avatars (
+CREATE TABLE 
+  avatars (
     user_id INTEGER,
     url VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES users
@@ -93,29 +96,29 @@ CREATE TABLE
   
 INSERT INTO roles (name) VALUES ('admin'), ('user');
 
-CREATE UNIQUE INDEX IF NOT EXISTS unique_username ON users(username); -- WHERE (is_active = 'Y');
+CREATE UNIQUE INDEX unique_username ON users(username); -- WHERE (is_active = 'Y');
 
-CREATE INDEX IF NOT EXISTS idx_posts_post_id ON posts(post_id);
+CREATE INDEX idx_posts_post_id ON posts(post_id);
 
-CREATE INDEX IF NOT EXISTS idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
+CREATE INDEX idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
 
-CREATE INDEX IF NOT EXISTS index_saved_posts ON user_saved_posts(user_id, post_id);
+CREATE INDEX idx_saved_posts ON user_saved_posts(user_id, post_id);
 
-CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts (created_at);
+CREATE INDEX idx_posts_created_at ON posts (created_at);
 
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION pg_trgm;
 
-CREATE INDEX IF NOT EXISTS idx_posts_content_trgm ON posts USING gin (lower(content) gin_trgm_ops);
+CREATE INDEX idx_posts_content_trgm ON posts USING gin (lower(content) gin_trgm_ops);
 
-CREATE INDEX IF NOT EXISTS idx_users_username_lower ON users (lower(username));
+CREATE INDEX idx_users_username_lower ON users (lower(username));
 
 
 --  ?
-CREATE INDEX IF NOT EXISTS idx_user_saved_posts_post_id ON user_saved_posts (post_id);
-CREATE INDEX IF NOT EXISTS idx_post_tags_post_id ON post_tags (post_id);
+CREATE INDEX idx_user_saved_posts_post_id ON user_saved_posts (post_id);
+CREATE INDEX idx_post_tags_post_id ON post_tags (post_id);
 
 -- for search
-alter table posts add column tsv tsvector generated always as (to_tsvector('english', content)) stored;
-create index idx_content_tsv on posts using gin (tsv) WITH (fastupdate = off);
-CREATE INDEX IF NOT EXISTS idx_posts_like_count ON posts(like_count);
-CREATE INDEX IF NOT EXISTS idx_posts_save_count ON posts(save_count);
+ALTER TABLE posts ADD column tsv tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) stored;
+CREATE INDEX idx_content_tsv ON posts USING gin (tsv) WITH (fastupdate = ON);
+CREATE INDEX idx_posts_like_count ON posts(like_count);
+CREATE INDEX idx_posts_save_count ON posts(save_count);
