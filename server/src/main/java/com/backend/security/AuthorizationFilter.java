@@ -31,6 +31,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
   private final JwtUtils jwtUtils;
   private final AuthenticationManager authenticationManager;
 
+  /**
+   * @see com.backend.security.JwtAuthenticationProvider
+   */
   public AuthorizationFilter(
     JwtUtils jwtUtils,
     AuthenticationManager authenticationManager
@@ -49,6 +52,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     if (token != null) {
       try {
         Authentication authRequest = new JwtAuthenticationToken(token);
+
         Authentication authResult = authenticationManager.authenticate(
           authRequest
         );
@@ -57,7 +61,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         SecurityContextHolder.clearContext();
         log.warn("JWT authentication failed: {}", ex.getMessage());
       }
-    }
+    } else {}
     filterChain.doFilter(request, response);
   }
 }
