@@ -5,7 +5,12 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - type: bind
+        source: "./nginx/nginx.conf"
+        target: "/etc/nginx/nginx.conf"
+    depends_on:
+      - frontend
+      - backend
     restart: always
 
   frontend:
@@ -21,7 +26,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./data/files:/files
+      - files:/files
     restart: always
 
   postgres:
@@ -33,5 +38,9 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
-      - ./data/postgresql:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
     restart: always
+
+volumes:
+  database:
+  files:
