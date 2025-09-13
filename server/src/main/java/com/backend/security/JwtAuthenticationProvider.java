@@ -30,7 +30,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
   @Override
   public Authentication authenticate(Authentication authentication)
-    throws AuthenticationException {
+    throws AuthenticationException, BadCredentialsException {
     String token = ((JwtAuthenticationToken) authentication).getToken();
 
     if (jwtUtils.verifyToken(token, jwtSecret) == null) {
