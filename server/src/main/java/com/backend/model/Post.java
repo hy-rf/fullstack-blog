@@ -56,6 +56,7 @@ public class Post {
 
   private Integer likeCount;
   private Integer saveCount;
+  private Integer postCount;
 
   @JsonIgnore
   @OneToMany(mappedBy = "rootPost", cascade = CascadeType.PERSIST)
@@ -83,5 +84,6 @@ public class Post {
     createdAt = OffsetDateTime.now();
     likeCount = 0;
     saveCount = 0;
+    postCount = 0;
   }
 }
