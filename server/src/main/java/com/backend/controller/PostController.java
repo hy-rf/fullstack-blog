@@ -148,11 +148,8 @@ public class PostController {
   public ResponseEntity<UpdatePostResponse> updatePost(
     @Valid @RequestBody UpdatePostRequest updatePostRequest
   ) {
-    Authentication authentication =
-      SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails =
-      (CustomUserDetails) authentication.getPrincipal();
-    Integer userId = userDetails.getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     UpdatePostDto updatePostDto = new UpdatePostDto(
       updatePostRequest.getPostId(),
       userId,
@@ -214,11 +211,8 @@ public class PostController {
     @RequestBody AddLikeRequest addLikeRequest
   ) {
     Integer postId = addLikeRequest.getPostId();
-    Authentication authentication =
-      SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails =
-      (CustomUserDetails) authentication.getPrincipal();
-    Integer userId = userDetails.getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
   }

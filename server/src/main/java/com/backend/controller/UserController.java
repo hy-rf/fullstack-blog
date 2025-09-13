@@ -120,11 +120,8 @@ public class UserController {
   public ResponseEntity<UpdateUserResult> updateUser(
     @Valid @RequestBody UpdateUserRequest updateUserRequest
   ) {
-    Authentication authentication =
-      SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails =
-      (CustomUserDetails) authentication.getPrincipal();
-    Integer userId = userDetails.getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     updateUserRequest.setId(userId);
     UpdateUserCommand updateCommand = new UpdateUserCommand(
       userId,
