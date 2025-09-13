@@ -24,8 +24,6 @@ onMounted(async () => {
           <th>ID</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Full Name</th>
-          <th>Is Active</th>
           <th>Roles</th>
         </tr>
       </thead>
@@ -34,8 +32,6 @@ onMounted(async () => {
           <td>{{ user.id }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.fullName }}</td>
-          <td>{{ user.isActive ? "Yes" : "No" }}</td>
           <td>
             <ul>
               <li v-for="role in user.roles" :key="role.id">{{ role.name }}</li>
