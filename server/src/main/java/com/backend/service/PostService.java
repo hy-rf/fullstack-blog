@@ -127,7 +127,7 @@ public class PostService {
         p.created_at,
         p.author_id,
         u.username,
-        (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+        p.post_count,
         p.like_count,
         p.save_count,
         (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
@@ -195,7 +195,7 @@ public class PostService {
     }
     String sqlOrder = "DESC";
     // Customers don't want to search in ascending order because massive only cares about recent shit
-    // if (order != null && order.equalsIgnoreCase("asc")) sqlOrder = "ASC";
+    if (order != null && order.equalsIgnoreCase("asc")) sqlOrder = "ASC";
     // Shit end
 
     int safePage = Math.max(1, page);
