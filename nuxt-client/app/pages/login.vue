@@ -51,6 +51,7 @@ async function login() {
         </label>
         <button type="submit">Login</button>
       </form>
+      <nuxt-link to="/register">{{ t("nav.register") }}</nuxt-link>
     </div>
   </div>
 </template>
