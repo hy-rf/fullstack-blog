@@ -17,7 +17,7 @@ const { data } = useFetch<User>(`/api/user/${userId}`);
 
 <template>
   <div>
-    <h1>{{ data!.username }}{{ t("user.title") }}</h1>
+    <h1 class="title">{{ data!.username }}{{ t("user.title") }}</h1>
     <div>
       <p>{{ userId }}</p>
     </div>

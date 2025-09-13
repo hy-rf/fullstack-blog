@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div style="height: 100%">
-    <h1>{{ t("me.title") }}</h1>
+    <h1 class="title">{{ t("me.title") }}</h1>
     <slot />
   </div>
 </template>

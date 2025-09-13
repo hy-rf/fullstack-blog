@@ -38,16 +38,16 @@ async function login() {
 
 <template>
   <div>
-    <h1>Login</h1>
+    <h1 class="title">Login</h1>
     <div class="login-container">
       <form @submit.prevent="login">
         <label>
           Username:
-          <input v-model="username" type="text" required >
+          <input v-model="username" type="text" required />
         </label>
         <label>
           Password:
-          <input id="password" v-model="password" type="password" required >
+          <input id="password" v-model="password" type="password" required />
         </label>
         <button type="submit">Login</button>
       </form>

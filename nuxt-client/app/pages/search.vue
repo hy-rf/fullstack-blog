@@ -135,7 +135,7 @@ function prevPage() {
 
 <template>
   <div>
-    <h1>{{ t("posts.search.title") }}</h1>
+    <h1 class="title">{{ t("posts.search.title") }}</h1>
     <div class="top-toolbar">
       <p>
         <ClientOnly>

@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <h1>{{ t("follow.title") }}</h1>
+    <h1 class="title">{{ t("follow.title") }}</h1>
     <div>follow</div>
   </div>
 </template>

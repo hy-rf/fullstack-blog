@@ -10,7 +10,6 @@ watch(
     });
   },
 );
-console.log();
 </script>
 
 <template>
@@ -37,7 +36,7 @@ main {
 
 @media screen and (min-width: 768px) {
   main {
-    padding-top: 4rem;
+    padding-top: 4.5rem;
   }
 }
 </style>
@@ -59,13 +58,21 @@ html {
   overflow-x: hidden;
   background: #eeeeee;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
+
 ul {
   list-style: none;
 }
 h1 {
   margin-top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  h1.title {
+    display: none;
+  }
 }
 </style>

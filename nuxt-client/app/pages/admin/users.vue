@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <h1>User List</h1>
+    <h1 class="title">User List</h1>
     <table>
       <thead>
         <tr>

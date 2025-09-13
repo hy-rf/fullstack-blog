@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h1>Admin</h1>
+    <h1 class="title">Admin</h1>
     <slot />
   </div>
 </template>

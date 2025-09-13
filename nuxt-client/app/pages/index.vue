@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <h1>{{ t("home.feed") }}</h1>
+    <h1 class="title">{{ t("home.feed") }}</h1>
     <section ref="listRef" class="post-list" aria-label="Posts list">
       <PostCard
         v-for="post in postStore.posts || postsRef"
@@ -132,11 +132,5 @@ select {
 button {
   padding-block: 0.1rem;
   width: 6rem;
-}
-
-@media screen and (min-width: 768px) {
-  h1 {
-    display: none;
-  }
 }
 </style>

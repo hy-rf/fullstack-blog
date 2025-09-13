@@ -43,7 +43,7 @@ const register = async () => {
 
 <template>
   <div class="register-container">
-    <h1>Register</h1>
+    <h1 class="title">Register</h1>
     <form autocomplete="off" @submit.prevent="register">
       <label for="username"
         >Username:
@@ -53,7 +53,7 @@ const register = async () => {
           type="text"
           required
           autocomplete="off"
-        >
+        />
       </label>
 
       <label for="password"
@@ -64,7 +64,7 @@ const register = async () => {
           type="password"
           required
           autocomplete="off"
-        >
+        />
       </label>
 
       <button type="submit">Register</button>
