@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
   UserBasicDto selectBasicById(Integer id);
+  UserBasicDto selectAll(Integer offset, Integer limit);
 }
