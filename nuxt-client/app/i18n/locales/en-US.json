@@ -1,4 +1,7 @@
 {
+  "admin": {
+    "users_link": "Users"
+  },
   "auth": {
     "loading": "Loading",
     "login_success": "Login Success!",
@@ -11,36 +14,37 @@
     "feed": "Feed"
   },
   "me": {
+    "admin_link": "Admin",
     "liked_posts_link": "Liked Posts",
+    "saved": {
+      "delete_button": "Delete"
+    },
     "saved_posts_link": "Saved Posts",
+    "settings": {
+      "locale": "Locale"
+    },
     "settings_link": "Settings",
     "title": "Profile",
-    "update_link": "Update Account",
-    "username": "Username",
-    "your_permissions": "Your permissions",
-    "admin_link": "Admin",
     "update": {
       "avatar": {
         "error": "Error",
         "null_error": "Please select a file.",
-        "type_error": "File must be image",
         "size_error": "File must be smaller than 1MB",
-        "success_message": "Success"
+        "success_message": "Success",
+        "type_error": "File must be image"
       },
       "choose_file_label": "New file",
-      "update_avatar_button": "Update Avatar",
-      "username": "Username: ",
       "password": "Password: ",
-      "update_button": "Update"
+      "update_avatar_button": "Update Avatar",
+      "update_button": "Update",
+      "username": "Username: "
     },
-    "saved": {
-      "delete_button": "Delete"
-    },
-    "settings": {
-      "locale": "Locale"
-    }
+    "update_link": "Update Account",
+    "username": "Username",
+    "your_permissions": "Your permissions"
   },
   "nav": {
+    "follow": "Follows",
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
@@ -49,8 +53,7 @@
     "posts": "Posts",
     "register": "Register",
     "search": "Search",
-    "users": "Users",
-    "follow": "Follows"
+    "users": "Users"
   },
   "new": {
     "title": "New post"
@@ -68,21 +71,24 @@
   "posts": {
     "page_size": "Posts per page",
     "search": {
-      "title": "Search Posts",
-      "time": "Now: ",
-      "total_posts_1": "Total: ",
-      "total_posts_2": " Posts",
-      "button": "Search Posts",
+      "ascending": "Ascending",
       "author": "Author",
+      "button": "Search Posts",
+      "created_at": "Date",
       "created_at_end": "Created end",
       "created_at_start": "Created start",
-      "created_at": "Date",
+      "descending": "Descending",
       "keyword_content": "Keyword",
       "likes_count": "Number of Likes",
       "posts_count": "Number of Posts",
       "saves_count": "Number of Saves",
-      "descending": "Descending",
-      "ascending": "Ascending"
+      "time": "Now: ",
+      "title": "Search Posts",
+      "total_posts_1": "Total: ",
+      "total_posts_2": " Posts"
     }
+  },
+  "user": {
+    "date_joined": "Date registered: "
   }
 }
