@@ -5,6 +5,7 @@ const { t } = useI18n();
 const content = ref("");
 const tagInput = ref("");
 const tags = ref<string[]>([]);
+const images = ref<File[]>([]);
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
@@ -18,6 +19,15 @@ const addTag = () => {
 
 const removeTag = (tag: string) => {
   tags.value = tags.value.filter((t) => t !== tag);
+};
+
+const handleImageUpload = (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
+  if (files) {
+    for (const file of files) {
+      images.value.push(file);
+    }
+  }
 };
 
 const submitPost = async () => {
@@ -52,6 +62,8 @@ const submitPost = async () => {
 };
 
 const tagInputRef = ref<HTMLInputElement | null>(null);
+
+const getObjectURL = (file: File) => window.URL.createObjectURL(file);
 </script>
 
 <template>
@@ -88,6 +100,21 @@ const tagInputRef = ref<HTMLInputElement | null>(null);
             />
           </button>
         </span>
+      </div>
+      <div>
+        <label
+          >Upload
+          <input type="file" multiple @change="handleImageUpload" />
+        </label>
+        <div class="image-preview-container">
+          <div
+            v-for="(img, index) in images"
+            :key="index"
+            class="image-wrapper"
+          >
+            <img :src="getObjectURL(img)" alt="Uploaded Image" />
+          </div>
+        </div>
       </div>
       <button id="submit-button" type="submit">Submit Post</button>
     </form>
@@ -183,5 +210,52 @@ button.remove-tag-buttons {
   top: 0.5px;
   border-top-right-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
+}
+
+label {
+  display: block;
+  width: 15rem;
+  margin-inline: auto;
+  text-align: center;
+  border: 1px solid #888888;
+  padding: 0.3rem 1rem;
+  span {
+    display: block;
+    padding-block: 0.3rem;
+  }
+  span:hover {
+    background-color: #888888;
+    color: #eeeeee;
+  }
+  input {
+    display: none;
+  }
+}
+label:hover {
+  background-color: #0000004a;
+}
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.image-wrapper {
+  width: 200px;
+  height: 200px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 </style>
