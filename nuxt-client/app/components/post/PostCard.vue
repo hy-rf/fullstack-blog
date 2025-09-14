@@ -71,7 +71,10 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
       </p>
     </div>
 
-    <div v-if="post.imageUrls.length" class="image-preview-container">
+    <div
+      v-if="post.imageUrls && post.imageUrls.length"
+      class="image-preview-container"
+    >
       <div
         v-for="(url, index) in post.imageUrls"
         :key="index"
