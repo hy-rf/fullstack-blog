@@ -49,7 +49,7 @@ const savePost = async (postId: number) => {
 };
 
 const replyToPost = async (postId: number) => {
-  alert("Reply popup");
+  alert("Reply popup" + postId);
 };
 
 const isLiked = computed(() => userStore.likedPosts.includes(props.post.id));
@@ -70,6 +70,17 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
         {{ post.content }}
       </p>
     </div>
+
+    <div v-if="post.imageUrls.length" class="image-preview-container">
+      <div
+        v-for="(url, index) in post.imageUrls"
+        :key="index"
+        class="image-wrapper"
+      >
+        <img :src="url" alt="Post Image" />
+      </div>
+    </div>
+
     <div class="post-other">
       <div class="author-info">
         <NuxtLink :to="`/user/${post.authorId}`">
@@ -205,5 +216,31 @@ button {
     color: gray;
     text-align-last: end;
   }
+}
+
+/* Images style */
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.image-wrapper {
+  width: 200px;
+  height: 200px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 </style>
