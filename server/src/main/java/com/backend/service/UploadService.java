@@ -1,10 +1,13 @@
 package com.backend.service;
 
+import com.backend.model.Avatar;
+import com.backend.repository.AvatarRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UploadService {
+
+  private final AvatarRepository avatarRepository;
 
   @Value("${file.upload.path}")
   private String rawPath;
@@ -38,8 +44,6 @@ public class UploadService {
     Path filenamePath = Path.of(originalFilename).getFileName();
     String safeFilename = filenamePath.toString();
 
-    safeFilename = id != null ? id + "-" + safeFilename : safeFilename;
-
     Path targetDir = this.rootPath.resolve(type);
     Files.createDirectories(targetDir);
 
@@ -52,9 +56,17 @@ public class UploadService {
       throw new RuntimeException("Invalid destination path: " + targetPath);
     }
 
-    try (var in = file.getInputStream()) {
+    try {
+      var in = file.getInputStream();
       Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
+      log.error(safeFilename, e.getMessage());
     }
+
+    Avatar avatar = new Avatar();
+    avatar.setUserId(id);
+    avatar.setUrl(targetPath.toString());
+    avatarRepository.save(avatar);
 
     log.info("Multipart file saved to: {}", targetPath);
   }
