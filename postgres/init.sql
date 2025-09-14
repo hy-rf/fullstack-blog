@@ -83,6 +83,7 @@ CREATE TABLE
   avatars (
     user_id INTEGER,
     url VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
     FOREIGN KEY (user_id) REFERENCES users
   );
 
