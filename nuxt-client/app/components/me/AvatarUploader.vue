@@ -89,6 +89,24 @@ form {
   opacity: 0;
   cursor: pointer;
 }
+label {
+  width: 10rem;
+  margin-inline: auto;
+  text-align: center;
+  border: 1px solid #888888;
+  span {
+    display: block;
+    padding-block: 0.3rem;
+  }
+  span:hover {
+    background-color: #888888;
+    color: #eeeeee;
+  }
+  input {
+    display: none;
+  }
+  margin-bottom: 1rem;
+}
 button {
   width: 10rem;
   margin-left: auto;
