@@ -19,10 +19,13 @@
     "username": "Username",
     "your_permissions": "Your permissions",
     "admin_link": "Admin",
-    "avatar_upload_success_message": "Success",
     "update": {
       "avatar": {
-        "error": "Please select a file."
+        "error": "Error",
+        "null_error": "Please select a file.",
+        "type_error": "File must be image",
+        "size_error": "File must be smaller than 1MB",
+        "success_message": "Success"
       },
       "choose_file_label": "New file",
       "update_avatar_button": "Update Avatar",

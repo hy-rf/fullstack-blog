@@ -19,10 +19,13 @@
     "username": "使用者名稱",
     "your_permissions": "您的權限",
     "admin_link": "管理者頁面",
-    "avatar_upload_success_message": "成功",
     "update": {
       "avatar": {
-        "error": "請選擇頭像！"
+        "error": "錯誤！",
+        "null_error": "請選擇頭像！",
+        "type_error": "檔案必須是圖片！",
+        "size_error": "檔案必須小於1MB！",
+        "success_message": "成功"
       },
       "choose_file_label": "選擇頭像",
       "update_avatar_button": "更新頭像",
