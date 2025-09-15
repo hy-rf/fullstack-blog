@@ -223,9 +223,9 @@ public class PostService {
       if (ts != null) dto.setCreatedAt(ts.toInstant());
       dto.setAuthorId(rs.getInt("author_id"));
       dto.setAuthorName(rs.getString("username"));
-      dto.setPostCount(rs.getLong("post_count"));
-      dto.setLikeCount(rs.getLong("like_count"));
-      dto.setSaveCount(rs.getLong("save_count"));
+      dto.setPostCount(rs.getInt("post_count"));
+      dto.setLikeCount(rs.getInt("like_count"));
+      dto.setSaveCount(rs.getInt("save_count"));
       dto.setTags(rs.getString("tags"));
       return dto;
     };

@@ -15,8 +15,8 @@ public class PostSummary {
   private Instant createdAt;
   private Integer authorId;
   private String authorName;
-  private Long postCount;
-  private Long likeCount;
-  private Long saveCount;
+  private Integer postCount;
+  private Integer likeCount;
+  private Integer saveCount;
   private String tags;
 }
