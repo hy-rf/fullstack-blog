@@ -4,7 +4,6 @@ import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.controller.dto.user.UserBasicDto;
 import com.backend.mapper.UserMapper;
-import com.backend.model.User;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
@@ -14,8 +13,8 @@ import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
 import java.io.File;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +75,11 @@ public class UserController {
     }
   }
 
+  /**
+   *
+   * @param createUserRequest
+   * @return
+   */
   @PreAuthorize("hasRole('admin')")
   @PostMapping("/user")
   public ResponseEntity<CreateUserResult> createUser(
@@ -88,16 +92,20 @@ public class UserController {
     );
   }
 
+  /**
+   * List Users
+   * @param page
+   * @param size
+   * @return
+   */
   @PreAuthorize("hasRole('admin')")
   @GetMapping("/users")
-  public ResponseEntity<Page<User>> getUsers(
+  public ResponseEntity<List<UserBasicDto>> getUsers(
     @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "100") int size
   ) {
-    page = Math.max(1, page);
-    size = Math.max(1, Math.min(size, 1000));
-    Page<User> user = userService.getUsers(page, size);
-    return ResponseEntity.ok().body(user);
+    List<UserBasicDto> users = userMapper.selectAll((page - 1) * size, size);
+    return ResponseEntity.ok().body(users);
   }
 
   @GetMapping("/user/{id}")
