@@ -139,8 +139,10 @@ public class PostService {
     MapSqlParameterSource params = new MapSqlParameterSource();
 
     if (keyword != null && !keyword.isBlank()) {
-      where.add("tsv @@ plainto_tsquery('english', :contentKeyword)");
-      params.addValue("contentKeyword", keyword.toLowerCase());
+      // where.add("tsv @@ plainto_tsquery('english', :contentKeyword)");
+      // params.addValue("contentKeyword", keyword.toLowerCase());
+      where.add("content LIKE :contentKeyword");
+      params.addValue("contentKeyword", "%" + keyword.toLowerCase() + "%");
     }
     // Its not open to the public right now
     // if (authorName != null && !authorName.isBlank()) {

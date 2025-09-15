@@ -124,9 +124,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     p.created_at,
     p.author_id,
     u.username,
-    COUNT(pc.id) AS post_count,
-    COUNT(DISTINCT l.user_id) AS like_count,
-    COUNT(DISTINCT usp.user_id) AS save_count
+    p.post_count,
+    p.like_count,
+    p.save_count,
+    (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
     FROM posts p
     LEFT JOIN posts pc ON p.id = pc.post_id
     LEFT JOIN users u ON u.id = p.author_id

@@ -118,9 +118,15 @@ CREATE INDEX idx_users_username_lower ON users (lower(username));
 CREATE INDEX idx_user_saved_posts_post_id ON user_saved_posts (post_id);
 CREATE INDEX idx_post_tags_post_id ON post_tags (post_id);
 
--- for search
+-- for search tsv
 ALTER TABLE posts ADD column tsv tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) stored;
 CREATE INDEX idx_content_tsv ON posts USING gin (tsv) WITH (fastupdate = ON);
 CREATE INDEX idx_posts_like_count ON posts(like_count);
 CREATE INDEX idx_posts_save_count ON posts(save_count);
+
+-- for search fast
+CREATE index CONCURRENTLY idx_posts_content ON posts (content);
+CREATE INDEX CONCURRENTLY idx_created_at_desc ON posts(created_at DESC);
+CREATE INDEX CONCURRENTLY idx_posts_like_count_desc ON posts(like_count DESC);
+CREATE INDEX CONCURRENTLY idx_posts_save_count_desc ON posts(save_count DESC);
 CREATE INDEX CONCURRENTLY idx_post_count_desc ON posts(post_count DESC);
