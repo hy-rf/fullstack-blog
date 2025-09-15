@@ -97,26 +97,17 @@ CREATE TABLE
   
 INSERT INTO roles (name) VALUES ('admin'), ('user');
 
-CREATE UNIQUE INDEX unique_username ON users(username); -- WHERE (is_active = 'Y');
+CREATE UNIQUE INDEX unique_username ON users(username);
 
-CREATE INDEX idx_posts_post_id ON posts(post_id);
+CREATE INDEX CONCURRENTLY idx_posts_id ON posts(id);
+CREATE INDEX CONCURRENTLY idx_posts_post_id ON posts(post_id);
 
-CREATE INDEX idx_post_likes_post_id_user_id ON post_likes(post_id, user_id);
 
-CREATE INDEX idx_saved_posts ON user_saved_posts(user_id, post_id);
-
-CREATE INDEX idx_posts_created_at ON posts (created_at);
 
 CREATE EXTENSION pg_trgm;
-
 CREATE INDEX idx_posts_content_trgm ON posts USING gin (lower(content) gin_trgm_ops);
 
 CREATE INDEX idx_users_username_lower ON users (lower(username));
-
-
---  ?
-CREATE INDEX idx_user_saved_posts_post_id ON user_saved_posts (post_id);
-CREATE INDEX idx_post_tags_post_id ON post_tags (post_id);
 
 -- for search tsv
 ALTER TABLE posts ADD column tsv tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) stored;
