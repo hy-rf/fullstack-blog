@@ -1,5 +1,7 @@
 {
   "admin": {
+    "title": "Admin",
+    "dashboard_link": "Dashboard",
     "users_link": "Users"
   },
   "auth": {

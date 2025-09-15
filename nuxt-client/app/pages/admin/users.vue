@@ -8,7 +8,7 @@ onMounted(async () => {
     const res = await fetch("/api/users");
     if (!res.ok) throw new Error("Failed to fetch users");
     const data = await res.json();
-    users.value = data.content;
+    users.value = data;
   } catch (err) {
     console.error(err);
   }
@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <h1 class="title">User List</h1>
+    <h2 class="title">User List</h2>
     <table>
       <thead>
         <tr>
@@ -33,8 +33,8 @@ onMounted(async () => {
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <ul>
-              <li v-for="role in user.roles" :key="role.id">{{ role.name }}</li>
+            <ul class="role-list">
+              <li v-for="role in user.roles" :key="role.id">{{ role }}</li>
             </ul>
           </td>
         </tr>
@@ -45,15 +45,7 @@ onMounted(async () => {
 
 <style scoped>
 .container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 10px;
-  font-family: sans-serif;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 5rem;
 }
 
 table {
@@ -79,6 +71,10 @@ ul {
 }
 
 li {
-  list-style-type: disc;
+  list-style-type: decimal;
+}
+
+.role-list {
+  list-style: none;
 }
 </style>

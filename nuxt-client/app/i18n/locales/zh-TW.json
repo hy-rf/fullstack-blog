@@ -1,5 +1,7 @@
 {
   "admin": {
+    "title": "管理者",
+    "dashboard_link": "管理中心",
     "users_link": "帳戶管理"
   },
   "auth": {
