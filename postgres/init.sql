@@ -123,3 +123,4 @@ ALTER TABLE posts ADD column tsv tsvector GENERATED ALWAYS AS (to_tsvector('engl
 CREATE INDEX idx_content_tsv ON posts USING gin (tsv) WITH (fastupdate = ON);
 CREATE INDEX idx_posts_like_count ON posts(like_count);
 CREATE INDEX idx_posts_save_count ON posts(save_count);
+CREATE INDEX CONCURRENTLY idx_post_count_desc ON posts(post_count DESC);
