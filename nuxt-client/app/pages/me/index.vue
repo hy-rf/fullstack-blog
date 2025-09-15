@@ -50,10 +50,10 @@ ul {
   display: flex;
   flex-direction: column;
   height: 100%;
+  gap: 0.5rem;
 }
 li {
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid #cccccc;
 }
 .role-list-title {
@@ -66,7 +66,7 @@ li {
 a {
   color: black;
   text-decoration: none;
-  display: inline-block;
+  display: block;
   padding-left: 0.3rem;
 }
 .user-brief {
