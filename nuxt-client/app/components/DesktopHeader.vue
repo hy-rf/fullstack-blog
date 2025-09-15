@@ -14,31 +14,31 @@ const headerOpaque = ref(false);
     <ul>
       <li :class="{ active: route.path == '/' }">
         <NuxtLink to="/">
-          <Icon name="mdi-light:home" size="36" />
+          <Icon name="material-symbols:house-outline" size="36" />
           <span>{{ t("nav.home") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/search' }">
         <NuxtLink to="/search">
-          <Icon name="mdi-light:magnify" size="36" />
+          <Icon name="material-symbols:search" size="36" />
           <span>{{ t("nav.search") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/new' }">
         <NuxtLink to="/new">
-          <Icon name="mdi-light:plus" size="36" />
+          <Icon name="material-symbols:add-2" size="36" />
           <span>{{ t("nav.new") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/follow' }">
         <NuxtLink to="/follow">
-          <Icon name="mdi-light:heart" size="36" />
+          <Icon name="material-symbols:favorite-outline" size="36" />
           <span>{{ t("nav.follow") }}</span>
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/me' }">
         <NuxtLink to="/me">
-          <Icon name="mdi-light:account" size="36" />
+          <Icon name="material-symbols:account-circle-outline" size="36" />
           <span>{{ t("nav.me") }}</span>
         </NuxtLink>
       </li>
@@ -60,9 +60,11 @@ header {
   z-index: 99;
 }
 a {
-  display: block;
+  display: flex;
   height: 100%;
   padding-block: 0.8rem;
+  align-content: space-between;
+  text-decoration: none;
 }
 a:active {
   color: #000;
@@ -76,11 +78,15 @@ ul {
   li {
     width: 20%;
     text-align: center;
+    padding-inline: 0.5rem;
+
     span {
-      padding-left: 1rem;
+      padding-top: 0.5rem;
+      margin-inline: auto;
       color: #000;
       display: inline-block;
-      transform: translateY(-0.7rem);
+      transform: translateY(0);
+      vertical-align: super;
     }
   }
 }

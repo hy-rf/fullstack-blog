@@ -44,27 +44,27 @@ const headerOpaque = ref(false);
     <ul>
       <li :class="{ active: route.path == '/' }">
         <NuxtLink to="/">
-          <Icon name="mdi-light:home" size="36" />
+          <Icon name="material-symbols:house-outline" size="36" />
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/search' }">
         <NuxtLink to="/search">
-          <Icon name="mdi-light:magnify" size="36" />
+          <Icon name="material-symbols:search" size="36" />
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/new' }">
         <NuxtLink to="/new">
-          <Icon name="mdi-light:plus" size="36" />
+          <Icon name="material-symbols:add-2" size="36" />
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/follow' }">
         <NuxtLink to="/follow">
-          <Icon name="mdi-light:heart" size="36" />
+          <Icon name="material-symbols:favorite-outline" size="36" />
         </NuxtLink>
       </li>
       <li :class="{ active: route.path == '/me' }">
         <NuxtLink to="/me">
-          <Icon name="mdi-light:account" size="36" />
+          <Icon name="material-symbols:account-circle-outline" size="36" />
         </NuxtLink>
       </li>
     </ul>
