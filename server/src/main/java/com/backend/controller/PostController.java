@@ -249,24 +249,10 @@ public class PostController {
     }
   }
 
-  @GetMapping("/saved-posts")
+  @GetMapping("/saved")
   public ResponseEntity<List<PostSummary>> getSavedPosts() {
     Integer userId =
       ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     return ResponseEntity.ok(postRepository.getSavedPostsByUserId(userId));
-  }
-
-  @GetMapping("/saved-posts-summary")
-  public ResponseEntity<List<SavedPost>> getSavedPostsSummary() {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    return ResponseEntity.ok(postRepository.findSavedPostIdsByUserId(userId));
-  }
-
-  @GetMapping("/liked-posts-summary")
-  public ResponseEntity<List<SavedPost>> getLikedPostsSummary() {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    return ResponseEntity.ok(postRepository.findLikedPostIdsByUserId(userId));
   }
 }

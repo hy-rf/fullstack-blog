@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type PostSummary from "~/types/PostSummary";
 const { t } = useI18n();
-const { data, pending } = useFetch<PostSummary[]>("/api/saved-posts");
+const { data, pending } = useFetch<PostSummary[]>("/api/saved");
 const postsToShow = ref(data);
 async function deleteSavedPost(postId: number) {
-  const r = await fetch("/api/saved-post" + "?postId=" + postId, {
+  const r = await fetch("/api/save-post" + "?postId=" + postId, {
     method: "delete",
   });
   if (r.ok) {
-    postsToShow.value = postsToShow.value?.filter((e) => e.id != postId)!;
+    postsToShow.value = (postsToShow.value ?? []).filter((e) => e.id != postId);
   }
 }
 </script>
