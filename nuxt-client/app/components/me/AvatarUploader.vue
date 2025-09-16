@@ -31,7 +31,7 @@ const uploadAvatar = async () => {
   }
   const fileToUpload: File = new File(
     [file.value],
-    `${userStore.user.username}_${file.value.lastModified.toString()}`,
+    `${userStore.user.username}_${file.value.lastModified.toString()}.${file.value.name.split(".")[1]}`,
     { type: file.value.type },
   );
 
