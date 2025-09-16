@@ -13,6 +13,7 @@ import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class UserController {
   @PreAuthorize("hasRole('user')")
   public ResponseEntity<String> uploadAvatar(
     @RequestParam("file") MultipartFile file
-  ) {
+  ) throws IOException {
     if (file.getSize() > MAX_FILE_SIZE) {
       return ResponseEntity.badRequest().body("Too big");
     }
@@ -55,24 +56,12 @@ public class UserController {
     if (!contentType.startsWith("image/")) {
       return ResponseEntity.badRequest().body("Not image");
     }
-    try {
-      File tempFile = File.createTempFile(
-        "upload-",
-        file.getOriginalFilename()
-      );
-      file.transferTo(tempFile);
-      Integer userId =
-        ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    Integer userId =
+      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
 
-      uploadService.save(file, "avatar", Integer.valueOf(userId));
-      tempFile.delete();
+    uploadService.save(file, "avatar", Integer.valueOf(userId));
 
-      return ResponseEntity.ok("File uploaded successfully.");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-        e.getMessage()
-      );
-    }
+    return ResponseEntity.ok("File uploaded successfully.");
   }
 
   /**

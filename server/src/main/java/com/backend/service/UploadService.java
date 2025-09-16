@@ -60,7 +60,8 @@ public class UploadService {
       var in = file.getInputStream();
       Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
-      log.error(safeFilename, e.getMessage());
+      log.error(safeFilename, e);
+      return;
     }
 
     Avatar avatar = new Avatar();
