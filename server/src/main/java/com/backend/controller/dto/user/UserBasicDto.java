@@ -16,4 +16,5 @@ public class UserBasicDto {
   private String username;
   private OffsetDateTime createdAt;
   private List<String> roles = new ArrayList<>();
+  private List<String> avatarUrls = new ArrayList<>();
 }

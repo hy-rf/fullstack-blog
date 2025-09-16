@@ -108,6 +108,11 @@ public class UserController {
     return ResponseEntity.ok().body(users);
   }
 
+  /**
+   * for user main page
+   * @param id
+   * @return
+   */
   @GetMapping("/user/{id}")
   public ResponseEntity<UserBasicDto> getUserById(@PathVariable Integer id) {
     UserBasicDto user = userMapper.selectBasicById(id);

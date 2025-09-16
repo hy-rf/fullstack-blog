@@ -65,7 +65,7 @@ public class UploadService {
 
     Avatar avatar = new Avatar();
     avatar.setUserId(id);
-    avatar.setUrl(targetPath.toString());
+    avatar.setUrl("/" + type + "/" + filenamePath.toString());
     avatarRepository.save(avatar);
 
     log.info("Multipart file saved to: {}", targetPath);
