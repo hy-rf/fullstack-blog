@@ -8,6 +8,7 @@ services:
       - type: bind
         source: "./nginx/nginx.conf"
         target: "/etc/nginx/nginx.conf"
+      - files:/var/www/files
     depends_on:
       - frontend
       - backend
