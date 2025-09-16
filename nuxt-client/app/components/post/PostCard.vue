@@ -4,6 +4,7 @@ import type PostSummary from "~/types/PostSummary";
 const { locale } = useI18n();
 const route = useRoute();
 const postId = route.params.id as string;
+const config = useRuntimeConfig();
 
 const userStore = useUserStore();
 
@@ -71,18 +72,20 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
       </p>
     </div>
 
-    <div
-      v-if="post.imageUrls && post.imageUrls.length"
-      class="image-preview-container"
-    >
+    <ClientOnly>
       <div
-        v-for="(url, index) in post.imageUrls"
-        :key="index"
-        class="image-wrapper"
+        v-if="post.imageUrls && post.imageUrls.length"
+        class="image-preview-container"
       >
-        <img :src="url" alt="Post Image" />
+        <div
+          v-for="(url, index) in post.imageUrls"
+          :key="index"
+          class="image-wrapper"
+        >
+          <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
+        </div>
       </div>
-    </div>
+    </ClientOnly>
 
     <div class="post-other">
       <div class="author-info">
