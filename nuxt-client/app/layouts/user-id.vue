@@ -14,7 +14,9 @@ definePageMeta({
 const route = useRoute();
 const userId = route.params.id as string;
 
-const { data, pending } = useFetch<UserBasicDto>(`/api/user/${userId}`);
+const { data, pending } = useFetch<UserBasicDto>(
+  `${config.public.GATEWAY_URL}/user/${userId}`,
+);
 </script>
 
 <template>
