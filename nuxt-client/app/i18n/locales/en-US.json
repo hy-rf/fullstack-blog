@@ -7,7 +7,15 @@
   "auth": {
     "loading": "Loading",
     "login_success": "Login Success!",
-    "username_guest": "Guest"
+    "username_guest": "Guest",
+    "login": {
+      "no_account": "No account? ",
+      "submit_button": "Login"
+    },
+    "register": {
+      "already_have_account": "Have an account? ",
+      "submit_button": "Register"
+    }
   },
   "follow": {
     "title": "Follows"

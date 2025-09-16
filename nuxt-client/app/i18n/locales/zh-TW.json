@@ -7,7 +7,15 @@
   "auth": {
     "loading": "載入中",
     "login_success": "登入成功！",
-    "username_guest": "訪客"
+    "username_guest": "訪客",
+    "login": {
+      "no_account": "沒有帳號？",
+      "submit_button": "登入"
+    },
+    "register": {
+      "already_have_account": "已有帳號？",
+      "submit_button": "註冊"
+    }
   },
   "follow": {
     "title": "追蹤"

@@ -49,9 +49,14 @@ async function login() {
           Password:
           <input id="password" v-model="password" type="password" required />
         </label>
-        <button type="submit">Login</button>
+        <div class="bottom-toolbar">
+          <p>
+            <span>{{ t("auth.login.no_account") }}</span>
+            <nuxt-link to="/register">{{ t("nav.register") }}</nuxt-link>
+          </p>
+          <button type="submit">{{ t("auth.login.submit_button") }}</button>
+        </div>
       </form>
-      <nuxt-link to="/register">{{ t("nav.register") }}</nuxt-link>
     </div>
   </div>
 </template>
@@ -79,5 +84,25 @@ button {
   padding: 0.5rem 1rem;
   max-width: 5rem;
   align-self: end;
+}
+.bottom-toolbar {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-around;
+  p {
+    padding-top: 0.5rem;
+    a {
+      text-decoration: none;
+      display: inline-block;
+      border: 1px solid #aaaaaa;
+      padding: 0.5rem 1rem;
+      margin-left: 1rem;
+      border-radius: 16px;
+    }
+    a:visited {
+      color: #000;
+    }
+  }
 }
 </style>
