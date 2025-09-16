@@ -2,6 +2,7 @@
 import type UserBasicDto from "~/types/UserBasicDto";
 
 const { t } = useI18n();
+const config = useRuntimeConfig();
 
 definePageMeta({
   validate: async (route) => {
@@ -27,6 +28,10 @@ const { data, pending } = useFetch<UserBasicDto>(`/api/user/${userId}`);
           <time :datetime="data.createdAt">
             {{ new Date(data.createdAt).toLocaleDateString() }}
           </time>
+          <img
+            :src="`${config.public.FILES_PREFIX}${data.avatarUrls[0]}`"
+            alt=""
+          />
         </client-only>
       </div>
       <div>

@@ -3,4 +3,5 @@ export default interface UserBasicDto {
   username: string;
   createdAt: string;
   roles: string[];
+  avatarUrls: string[];
 }
