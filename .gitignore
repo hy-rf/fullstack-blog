@@ -3,6 +3,7 @@ target/
 .nuxt
 node_modules
 /.angular/cache
+nuxt-client/app/public/files
 
 .DS_Store
 
