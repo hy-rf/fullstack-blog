@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -52,32 +53,37 @@ public class AuthService {
     this.passwordUtils = passwordUtils;
   }
 
+  @Transactional
   public RegisterResult registerUser(String username, String password) {
-    String hash = passwordUtils.hashPassword(password);
+    try {
+      String hash = passwordUtils.hashPassword(password);
 
-    User user = new User();
-    user.setUsername(username);
-    user.setPasswordHash(hash);
+      User user = new User();
+      user.setUsername(username);
+      user.setPasswordHash(hash);
 
-    Optional<Role> userRoleOpt = roleRepository.findByName("user");
-    if (userRoleOpt.isEmpty()) {
-      return new RegisterResult(RegisterStatus.ERROR);
-    }
-    Role userRole = userRoleOpt.get();
-    List<Role> roles = new ArrayList<>();
-    roles.add(userRole);
-    user.setRoles(roles);
-    User newUser = userRepository.save(user);
-    if (newUser.getId().equals(1)) {
-      Optional<Role> adminRoleOpt = roleRepository.findByName("admin");
-      if (adminRoleOpt.isEmpty()) {
+      Optional<Role> userRoleOpt = roleRepository.findByName("user");
+      if (userRoleOpt.isEmpty()) {
         return new RegisterResult(RegisterStatus.ERROR);
       }
-      Role adminRole = adminRoleOpt.get();
-      newUser.getRoles().add(adminRole);
-      userRepository.save(newUser);
+      Role userRole = userRoleOpt.get();
+      List<Role> roles = new ArrayList<>();
+      roles.add(userRole);
+      user.setRoles(roles);
+      User newUser = userRepository.save(user);
+      if (newUser.getId().equals(1)) {
+        Optional<Role> adminRoleOpt = roleRepository.findByName("admin");
+        if (adminRoleOpt.isEmpty()) {
+          return new RegisterResult(RegisterStatus.ERROR);
+        }
+        Role adminRole = adminRoleOpt.get();
+        newUser.getRoles().add(adminRole);
+        userRepository.save(newUser);
+      }
+      return new RegisterResult(RegisterStatus.SUCCESS);
+    } catch (Exception e) {
+      throw new RuntimeException("Registration failed: " + e.getMessage(), e);
     }
-    return new RegisterResult(RegisterStatus.SUCCESS);
   }
 
   public LoginResult loginUser(String username, String password) {
