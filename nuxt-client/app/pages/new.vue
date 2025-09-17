@@ -7,6 +7,7 @@ const content = ref("");
 const tagInput = ref("");
 const tags = ref<string[]>([]);
 const images = ref<File[]>([]);
+const MAX_IMAGE_SIZE = 25 * 1024 * 1024;
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
