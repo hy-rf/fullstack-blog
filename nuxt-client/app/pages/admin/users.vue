@@ -29,8 +29,12 @@ onMounted(async () => {
       </thead>
       <tbody>
         <tr v-for="user in users" :key="user.id">
-          <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
+          <td>
+            {{ user.id }}
+          </td>
+          <td>
+            <nuxt-link :to="`/user/${user.id}`">{{ user.username }}</nuxt-link>
+          </td>
           <td>{{ user.email }}</td>
           <td>
             <ul class="role-list">

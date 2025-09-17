@@ -9,4 +9,5 @@ export default interface PostPage {
   postCount: number;
   likeCount: number;
   saveCount: number;
+  urls: string;
 }
