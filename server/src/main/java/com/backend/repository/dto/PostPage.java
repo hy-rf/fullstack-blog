@@ -15,8 +15,9 @@ public class PostPage {
   private String authorName;
   private Integer rootPostId;
   private Integer parentPostId;
-  private Long postCount;
-  private Long likeCount;
-  private Long saveCount;
+  private Integer postCount;
+  private Integer likeCount;
+  private Integer saveCount;
   private String tags;
+  private String urls;
 }

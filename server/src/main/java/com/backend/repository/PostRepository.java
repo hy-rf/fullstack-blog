@@ -24,6 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
   /**
    * Get feed posts on home page
+   * Field of data type MUST be same order as in sql
    * @param offset
    * @param limit
    * @return
@@ -67,7 +68,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     p.post_count,
     p.like_count,
     p.save_count,
-    (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
+    (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags,
+    (SELECT STRING_AGG(pi.url, ',') FROM post_images pi WHERE pi.post_id = p.id) AS urls
     FROM posts p
     LEFT JOIN users u ON u.id = p.author_id
     WHERE p.post_id = :id OR p.id = :id

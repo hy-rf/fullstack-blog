@@ -1,6 +1,6 @@
 package com.backend.mapper;
 
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
-@Repository
-public class PostMapper {}
+@Mapper
+public interface PostMapper {}
