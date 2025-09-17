@@ -1,7 +1,9 @@
 package com.backend.service;
 
 import com.backend.model.Avatar;
+import com.backend.model.PostImage;
 import com.backend.repository.AvatarRepository;
+import com.backend.repository.PostImageRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadService {
 
   private final AvatarRepository avatarRepository;
+  private final PostImageRepository postImageRepository;
 
   @Value("${file.upload.path}")
   private String rawPath;
@@ -64,10 +67,19 @@ public class UploadService {
       return;
     }
 
-    Avatar avatar = new Avatar();
-    avatar.setUserId(id);
-    avatar.setUrl(type + "/" + filenamePath.toString());
-    avatarRepository.save(avatar);
+    if (type.equals("avatar")) {
+      Avatar avatar = new Avatar();
+      avatar.setUserId(id);
+      avatar.setUrl(type + "/" + filenamePath.toString());
+      avatarRepository.save(avatar);
+    }
+
+    if (type.equals("post_image")) {
+      PostImage postImage = new PostImage();
+      postImage.setPostId(id);
+      postImage.setUrl(type + "/" + filenamePath.toString());
+      postImageRepository.save(postImage);
+    }
 
     log.info("Multipart file saved to: {}", targetPath);
   }

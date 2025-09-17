@@ -89,8 +89,8 @@ public class PostService {
       Post parentPost = postRepository.getReferenceById(parentPostId.get());
       post.setParentPost(parentPost);
     }
-    postRepository.save(post);
-    return new CreatePostCommandResult(true);
+    Post p = postRepository.save(post);
+    return new CreatePostCommandResult(true, p.getId());
   }
 
   /**

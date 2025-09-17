@@ -19,4 +19,5 @@ public class PostSummary {
   private Integer likeCount;
   private Integer saveCount;
   private String tags;
+  private String urls;
 }

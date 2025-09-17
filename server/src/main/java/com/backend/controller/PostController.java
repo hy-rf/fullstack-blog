@@ -10,6 +10,7 @@ import com.backend.repository.PostRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
+import com.backend.service.UploadService;
 import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -46,8 +49,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   private final PostRepository postRepository;
-
   private final PostService postService;
+  private final UploadService uploadService;
 
   /**
    * This is for getting feeds on home page and it gets different posts if page_token exists.
@@ -76,7 +79,7 @@ public class PostController {
    */
   @PostMapping("/post")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<String> createPost(
+  public ResponseEntity<Integer> createPost(
     @RequestBody CreatePostRequest createPostRequest,
     HttpServletResponse response
   ) {
@@ -89,8 +92,32 @@ public class PostController {
       createPostRequest.getPostId()
     );
     CreatePostCommandResult result = postService.createPost(createPostCommand);
-    if (!result.isSuccess()) return ResponseEntity.badRequest().body("Failed");
-    return ResponseEntity.ok().body("Successfully created post.");
+    if (!result.isSuccess()) return ResponseEntity.badRequest().body(
+      result.getId()
+    );
+    return ResponseEntity.ok().body(result.getId());
+  }
+
+  private final long MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+  @PostMapping("/post-image")
+  @PreAuthorize("hasRole('user')")
+  public ResponseEntity<String> uploadAvatar(
+    @RequestParam("file") MultipartFile file,
+    @RequestParam Integer postId
+  ) throws IOException {
+    if (file.getSize() > MAX_FILE_SIZE) {
+      return ResponseEntity.badRequest().body("Too big");
+    }
+    String contentType = file.getContentType();
+    if (contentType == null) {
+      return ResponseEntity.badRequest().body("Unknown file");
+    }
+    if (!contentType.startsWith("image/")) {
+      return ResponseEntity.badRequest().body("Not image");
+    }
+    uploadService.save(file, "post_image", Integer.valueOf(postId));
+    return ResponseEntity.ok("File uploaded successfully.");
   }
 
   @GetMapping("/post/{id}")

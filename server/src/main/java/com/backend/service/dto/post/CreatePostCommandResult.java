@@ -8,4 +8,5 @@ import lombok.Getter;
 public class CreatePostCommandResult {
 
   private boolean Success;
+  private Integer id;
 }
