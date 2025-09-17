@@ -7,5 +7,6 @@ export default interface PostSummary {
   postCount: number;
   likeCount: number;
   saveCount: number;
+  urls: string;
   imageUrls: string[];
 }

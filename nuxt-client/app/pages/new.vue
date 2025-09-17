@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const router = useRouter();
 const { t } = useI18n();
+const userStore = useUserStore();
 
 const content = ref("");
 const tagInput = ref("");
@@ -35,30 +36,51 @@ const submitPost = async () => {
     alert("Title or content is missing!");
     return;
   }
+  const response = await fetch("/api/post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content: content.value,
+      tags: tags.value,
+    }),
+  });
 
-  try {
-    const response = await fetch("/api/post", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: content.value,
-        tags: tags.value,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to post");
-    }
-
-    const result = await response.text();
-    alert(result);
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-    alert("Error creating post");
+  if (!response.ok) {
+    throw new Error("Failed to post");
   }
+
+  const result = await response.text();
+  uploadImages(parseInt(result));
+  alert(result);
+  router.push("/");
+};
+
+const uploadImages = async (postId: number) => {
+  images.value.forEach(async (file) => {
+    if (!file.type.startsWith("image")) {
+      alert(t("me.update.avatar.type_error"));
+      return;
+    }
+    if (file.size > 1024 * 1000) {
+      alert(t("me.update.avatar.size_error"));
+      return;
+    }
+    const fileToUpload: File = new File(
+      [file],
+      `${userStore.user.username}_${file.lastModified.toString()}.${file.name.split(".")[1]}`,
+      { type: file.type },
+    );
+    const formData = new FormData();
+    formData.append("file", fileToUpload);
+    formData.append("postId", postId.toString());
+    await fetch(`${useRuntimeConfig().public.GATEWAY_URL}/post-image`, {
+      method: "post",
+      body: formData,
+      credentials: "include",
+    });
+  });
 };
 
 const tagInputRef = ref<HTMLInputElement | null>(null);

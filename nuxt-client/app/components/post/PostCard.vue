@@ -73,6 +73,15 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
     </div>
 
     <ClientOnly>
+      <div v-if="post.urls && post.urls.length" class="image-preview-container">
+        <div
+          v-for="(url, index) in post.urls.split(',')"
+          :key="index"
+          class="image-wrapper"
+        >
+          <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
+        </div>
+      </div>
       <div
         v-if="post.imageUrls && post.imageUrls.length"
         class="image-preview-container"
