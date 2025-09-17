@@ -233,18 +233,23 @@ button {
   }
 }
 
-/* Images style */
+/* Image Preview Styles */
 .image-preview-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1rem;
+  gap: 20%;
+  margin-block: 1rem;
+  overflow-x: auto;
+  & > div:first-child {
+    margin-left: 10%;
+  }
+  & > div:last-child {
+    margin-right: 10%;
+  }
 }
 
 .image-wrapper {
-  width: 200px;
-  height: 200px;
+  min-width: 80%;
+  height: 50dvh;
   background-color: black;
   display: flex;
   align-items: center;
