@@ -64,7 +64,7 @@ const uploadImages = async (postId: number) => {
       alert(t("me.update.avatar.type_error"));
       return;
     }
-    if (file.size > 1024 * 1000) {
+    if (file.size > MAX_IMAGE_SIZE) {
       alert(t("me.update.avatar.size_error"));
       return;
     }
