@@ -98,7 +98,7 @@ public class PostController {
     return ResponseEntity.ok().body(result.getId());
   }
 
-  private final long MAX_FILE_SIZE = 5 * 1024 * 1024;
+  private final long MAX_FILE_SIZE = 25 * 1024 * 1024;
 
   @PostMapping("/post-image")
   @PreAuthorize("hasRole('user')")
