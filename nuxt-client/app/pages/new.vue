@@ -70,7 +70,7 @@ const uploadImages = async (postId: number) => {
     }
     const fileToUpload: File = new File(
       [file],
-      `${userStore.user.username}_${file.lastModified.toString()}.${file.name.split(".")[1]}`,
+      `${file.lastModified.toString()}.${file.name.split(".")[1]}`,
       { type: file.type },
     );
     const formData = new FormData();
