@@ -55,6 +55,24 @@ const replyToPost = async (postId: number) => {
 
 const isLiked = computed(() => userStore.likedPosts.includes(props.post.id));
 const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
+
+const imageScrollView = ref<HTMLDivElement>();
+const prev = () => {
+  const width = imageScrollView.value?.getBoundingClientRect().width;
+  const options: ScrollToOptions = {
+    left: -1 * width!,
+    behavior: "smooth",
+  };
+  imageScrollView.value?.scrollBy(options);
+};
+const next = () => {
+  const width = imageScrollView.value?.getBoundingClientRect().width;
+  const options: ScrollToOptions = {
+    left: width!,
+    behavior: "smooth",
+  };
+  imageScrollView.value?.scrollBy(options);
+};
 </script>
 
 <template>
@@ -72,29 +90,53 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
       </p>
     </div>
 
-    <ClientOnly>
-      <div v-if="post.urls && post.urls.length" class="image-preview-container">
-        <div
-          v-for="(url, index) in post.urls.split(',')"
-          :key="index"
-          class="image-wrapper"
+    <div style="position: relative">
+      <ClientOnly>
+        <button
+          v-if="post.urls && post.urls.length"
+          class="previous-image-button"
+          @click="prev"
         >
-          <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
-        </div>
-      </div>
-      <div
-        v-if="post.imageUrls && post.imageUrls.length"
-        class="image-preview-container"
-      >
-        <div
-          v-for="(url, index) in post.imageUrls"
-          :key="index"
-          class="image-wrapper"
+          prev
+        </button>
+        <button
+          v-if="post.urls && post.urls.length"
+          class="next-image-button"
+          @click="next"
         >
-          <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
+          next
+        </button>
+        <div
+          v-if="post.urls && post.urls.length"
+          class="image-preview-container"
+          ref="imageScrollView"
+        >
+          <div
+            v-for="(url, index) in post.urls.split(',')"
+            :key="index"
+            class="image-wrapper"
+          >
+            <img
+              :src="`${config.public.FILES_PREFIX}${url}`"
+              alt="Post Image"
+            />
+          </div>
         </div>
-      </div>
-    </ClientOnly>
+        <!-- <div
+          v-if="post.imageUrls && post.imageUrls.length"
+          class="image-preview-container"
+        >
+          
+          <div
+            v-for="(url, index) in post.imageUrls"
+            :key="index"
+            class="image-wrapper"
+          >
+            <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
+          </div>
+        </div> -->
+      </ClientOnly>
+    </div>
 
     <div class="post-other">
       <div class="author-info">
@@ -235,16 +277,18 @@ button {
 
 /* Image Preview Styles */
 .image-preview-container {
+  position: relative;
   display: flex;
   gap: 20%;
   margin-block: 1rem;
+  position: relative;
   overflow-x: auto;
-  & > div:first-child {
-    margin-left: 10%;
-  }
-  & > div:last-child {
-    margin-right: 10%;
-  }
+}
+.image-wrapper:first-child {
+  margin-left: 10%;
+}
+.image-wrapper:last-child {
+  margin-right: 10%;
 }
 
 .image-wrapper {
@@ -262,5 +306,17 @@ button {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.previous-image-button {
+  position: absolute;
+  height: 100%;
+  z-index: 99;
+}
+.next-image-button {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  z-index: 99;
 }
 </style>
