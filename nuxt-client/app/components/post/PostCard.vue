@@ -57,21 +57,25 @@ const isLiked = computed(() => userStore.likedPosts.includes(props.post.id));
 const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
 
 const imageScrollView = ref<HTMLDivElement>();
+
 const prev = () => {
   const width = imageScrollView.value?.getBoundingClientRect().width;
+  if (!width) return;
   const options: ScrollToOptions = {
-    left: -1 * width!,
+    left: -1 * width * 1.2,
     behavior: "smooth",
   };
   imageScrollView.value?.scrollBy(options);
 };
 const next = () => {
   const width = imageScrollView.value?.getBoundingClientRect().width;
-  const options: ScrollToOptions = {
-    left: width! + 1,
-    behavior: "smooth",
-  };
-  imageScrollView.value?.scrollBy(options);
+  if (width) {
+    const options: ScrollToOptions = {
+      left: width * 1.2 - 5,
+      behavior: "smooth",
+    };
+    imageScrollView.value?.scrollBy(options);
+  }
 };
 </script>
 
@@ -112,8 +116,8 @@ const next = () => {
         </button>
         <div
           v-if="post.urls && post.urls.length"
-          class="image-preview-container"
           ref="imageScrollView"
+          class="image-preview-container"
         >
           <div
             v-for="(url, index) in post.urls.split(',')"
@@ -283,20 +287,17 @@ button {
 .image-preview-container {
   position: relative;
   display: flex;
-  gap: 20%;
   margin-block: 1rem;
   position: relative;
   overflow-x: auto;
-}
-.image-wrapper:first-child {
-  margin-left: 10%;
-}
-.image-wrapper:last-child {
-  margin-right: calc(10% + 1px);
+  border-radius: 0.5rem;
+  border: 0;
+  background-color: black;
 }
 
 .image-wrapper {
   min-width: 80%;
+  margin-inline: 10%;
   height: 50dvh;
   background-color: black;
   display: flex;
@@ -309,24 +310,27 @@ button {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border: 0;
 }
 
 .previous-image-button {
   position: absolute;
+  padding: 0;
   height: 100%;
   z-index: 99;
   width: 10%;
-  background-color: #888888a8;
+  background-color: #999999aa;
   border-bottom-left-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
 }
 .next-image-button {
   position: absolute;
+  padding: 0;
   height: 100%;
   right: 0;
   z-index: 99;
   width: 10%;
-  background-color: #888888a8;
+  background-color: #999999aa;
   border-bottom-right-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 }
