@@ -68,7 +68,7 @@ const prev = () => {
 const next = () => {
   const width = imageScrollView.value?.getBoundingClientRect().width;
   const options: ScrollToOptions = {
-    left: width!,
+    left: width! + 1,
     behavior: "smooth",
   };
   imageScrollView.value?.scrollBy(options);
@@ -93,18 +93,22 @@ const next = () => {
     <div style="position: relative">
       <ClientOnly>
         <button
-          v-if="post.urls && post.urls.length"
+          v-if="
+            post.urls && post.urls.length && post.urls.split(',').length > 1
+          "
           class="previous-image-button"
           @click="prev"
         >
-          prev
+          <Icon name="mdi-light:chevron-left" />
         </button>
         <button
-          v-if="post.urls && post.urls.length"
+          v-if="
+            post.urls && post.urls.length && post.urls.split(',').length > 1
+          "
           class="next-image-button"
           @click="next"
         >
-          next
+          <Icon name="mdi-light:chevron-right" />
         </button>
         <div
           v-if="post.urls && post.urls.length"
@@ -288,7 +292,7 @@ button {
   margin-left: 10%;
 }
 .image-wrapper:last-child {
-  margin-right: 10%;
+  margin-right: calc(10% + 1px);
 }
 
 .image-wrapper {
@@ -299,7 +303,6 @@ button {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0.5rem;
 }
 
 .image-wrapper img {
@@ -312,11 +315,19 @@ button {
   position: absolute;
   height: 100%;
   z-index: 99;
+  width: 10%;
+  background-color: #888888a8;
+  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
 }
 .next-image-button {
   position: absolute;
   height: 100%;
   right: 0;
   z-index: 99;
+  width: 10%;
+  background-color: #888888a8;
+  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 </style>
