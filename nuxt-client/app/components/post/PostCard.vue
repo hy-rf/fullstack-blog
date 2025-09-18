@@ -288,17 +288,16 @@ button {
   position: relative;
   display: flex;
   margin-block: 1rem;
-  position: relative;
   overflow-x: auto;
   border-radius: 0.5rem;
   border: 0;
-  background-color: black;
+  /* background-color: black; */
 }
 
 .image-wrapper {
   min-width: 80%;
+  max-height: 50dvh;
   margin-inline: 10%;
-  height: 50dvh;
   background-color: black;
   display: flex;
   align-items: center;
