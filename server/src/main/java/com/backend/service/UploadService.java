@@ -23,6 +23,9 @@ public class UploadService {
   private final AvatarRepository avatarRepository;
   private final PostImageRepository postImageRepository;
 
+  /**
+   * Base raw path of root directory where files being stored
+   */
   @Value("${file.upload.path}")
   private String rawPath;
 
@@ -31,22 +34,19 @@ public class UploadService {
   @PostConstruct
   public void init() {
     rootPath = Path.of(rawPath).toAbsolutePath().normalize();
+    log.info(String.format("Initialized rootPath: %s", rawPath.toString()));
   }
 
   public void save(MultipartFile file, String type, Integer id)
     throws IOException {
-    if (file == null || file.isEmpty()) {
-      throw new RuntimeException("Uploaded file is empty or null.");
-    }
-
     String originalFilename = file.getOriginalFilename();
-    if (originalFilename == null || originalFilename.isBlank()) {
-      throw new RuntimeException("Uploaded file has no original filename.");
-    }
 
     Path filenamePath = Path.of(originalFilename).getFileName();
-    String safeFilename = filenamePath.toString();
+    String safeFilename = type.equals("post_image")
+      ? id.toString() + "_" + filenamePath.toString()
+      : filenamePath.toString();
 
+    // this make target dir rootpath/avatar or rootpath/post_image...
     Path targetDir = this.rootPath.resolve(type);
     Files.createDirectories(targetDir);
 
@@ -77,7 +77,7 @@ public class UploadService {
     if (type.equals("post_image")) {
       PostImage postImage = new PostImage();
       postImage.setPostId(id);
-      postImage.setUrl(type + "/" + filenamePath.toString());
+      postImage.setUrl(type + "/" + safeFilename);
       postImageRepository.save(postImage);
     }
 
