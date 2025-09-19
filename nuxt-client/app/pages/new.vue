@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const router = useRouter();
 const { t } = useI18n();
-const userStore = useUserStore();
 
 const content = ref("");
 const tagInput = ref("");
@@ -53,7 +52,7 @@ const submitPost = async () => {
   }
 
   const result = await response.text();
-  uploadImages(parseInt(result));
+  await uploadImages(parseInt(result));
   alert(result);
   router.push("/");
 };
@@ -124,7 +123,7 @@ const getObjectURL = (file: File) => window.URL.createObjectURL(file);
           </button>
         </span>
       </div>
-      <div>
+      <div id="image-upload-container">
         <label
           >Upload
           <input type="file" multiple @change="handleImageUpload" />
@@ -235,6 +234,7 @@ button.remove-tag-buttons {
   border-bottom-right-radius: 0.3rem;
 }
 
+/* File upload button */
 label {
   display: block;
   width: 15rem;
