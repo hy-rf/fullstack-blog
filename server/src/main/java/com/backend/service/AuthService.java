@@ -64,7 +64,9 @@ public class AuthService {
 
       Optional<Role> userRoleOpt = roleRepository.findByName("user");
       if (userRoleOpt.isEmpty()) {
-        return new RegisterResult(RegisterStatus.ERROR);
+        Role newUserRole = new Role();
+        newUserRole.setName("user");
+        roleRepository.save(newUserRole);
       }
       Role userRole = userRoleOpt.get();
       List<Role> roles = new ArrayList<>();
@@ -74,7 +76,9 @@ public class AuthService {
       if (newUser.getId().equals(1)) {
         Optional<Role> adminRoleOpt = roleRepository.findByName("admin");
         if (adminRoleOpt.isEmpty()) {
-          return new RegisterResult(RegisterStatus.ERROR);
+          Role newAdminRole = new Role();
+          newAdminRole.setName("admin");
+          roleRepository.save(newAdminRole);
         }
         Role adminRole = adminRoleOpt.get();
         newUser.getRoles().add(adminRole);
