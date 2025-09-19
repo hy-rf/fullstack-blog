@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserCard from "~/components/UserCard.vue";
 import type UserBasicDto from "~/types/UserBasicDto";
 
 const { t } = useI18n();
@@ -21,25 +22,8 @@ const { data, pending } = useFetch<UserBasicDto>(
 
 <template>
   <div>
-    <h1 class="title">User</h1>
-    <div id="user-main" v-if="data">
-      <div>
-        <h2>{{ data.username }}</h2>
-        <client-only>
-          <span>{{ t("user.date_joined") }}</span>
-          <time :datetime="data.createdAt">
-            {{ new Date(data.createdAt).toLocaleDateString() }}
-          </time>
-          <img
-            :src="`${config.public.FILES_PREFIX}${data.avatarUrls[0]}`"
-            alt=""
-          />
-        </client-only>
-      </div>
-      <div>
-        <nuxt-img />
-      </div>
-    </div>
+    <h1 class="title">{{ t("user.title") }}</h1>
+    <UserCard v-if="data" :user="data" />
     <div v-if="pending">
       <p>Loading</p>
     </div>

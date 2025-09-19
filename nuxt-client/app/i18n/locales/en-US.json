@@ -99,6 +99,7 @@
     }
   },
   "user": {
+    "title": "User",
     "date_joined": "Date registered: "
   }
 }
