@@ -8,3 +8,5 @@ nuxt-client/app/public/files
 .DS_Store
 
 deploy*.sh
+
+.VSCodeCounter
