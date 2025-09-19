@@ -41,16 +41,11 @@ public class UploadService {
     throws IOException {
     String originalFilename = file.getOriginalFilename();
 
-    Path filenamePath = Path.of(originalFilename).getFileName();
     String safeFilename = type.equals("post_image")
-      ? id.toString() + "_" + filenamePath.toString()
-      : filenamePath.toString();
+      ? id.toString() + "_" + originalFilename
+      : originalFilename;
 
-    // this make target dir rootpath/avatar or rootpath/post_image...
-    Path targetDir = this.rootPath.resolve(type);
-    Files.createDirectories(targetDir);
-
-    Path targetPath = targetDir
+    Path targetPath = this.rootPath.resolve(type)
       .resolve(safeFilename)
       .toAbsolutePath()
       .normalize();
@@ -70,7 +65,7 @@ public class UploadService {
     if (type.equals("avatar")) {
       Avatar avatar = new Avatar();
       avatar.setUserId(id);
-      avatar.setUrl(type + "/" + filenamePath.toString());
+      avatar.setUrl(type + "/" + safeFilename);
       avatarRepository.save(avatar);
     }
 
