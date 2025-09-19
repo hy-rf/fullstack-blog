@@ -6,7 +6,6 @@ const config = useRuntimeConfig();
 
 const postStore = useHomePostsStore();
 const initialOffset = postStore.offset || 0;
-const postsRef = ref<PostSummary[] | null>(null); // This is used in ssr for SEO
 const pending = ref(false);
 
 if (import.meta.server) {
@@ -16,8 +15,7 @@ if (import.meta.server) {
       `/api/post?offset=${initialOffset}`,
     );
 
-    postStore.posts = data; // This line prevents hydration mismatch
-    postsRef.value = data;
+    postStore.posts = data;
     pending.value = false;
   } catch {
     pending.value = true;
@@ -95,7 +93,6 @@ onMounted(async () => {
   setTimeout(() => {
     window.scrollTo(options);
   }, 0);
-  console.log(postStore.posts, postsRef.value);
 });
 
 onBeforeUnmount(() => {
