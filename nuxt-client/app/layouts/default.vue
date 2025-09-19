@@ -25,10 +25,7 @@ const { data: user } = await useAsyncData<User>("user", async () => {
 userStore.init(user.value!);
 
 if (import.meta.client) {
-  userStore.loadPreferences();
-  console.table(userStore.user);
-  console.table(userStore.likedPosts);
-  console.table(userStore.savedPosts);
+  console.log("Runs on client");
 }
 </script>
 
