@@ -62,7 +62,7 @@ const headerOpaque = ref(false);
           <Icon name="material-symbols:favorite-outline" size="36" />
         </NuxtLink>
       </li>
-      <li :class="{ active: route.path == '/me' }">
+      <li :class="{ active: route.path.startsWith('/me') }">
         <NuxtLink to="/me">
           <Icon name="material-symbols:account-circle-outline" size="36" />
         </NuxtLink>
