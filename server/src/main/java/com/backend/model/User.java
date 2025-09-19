@@ -53,6 +53,15 @@ public class User {
   )
   private List<Role> roles = new ArrayList<>();
 
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JsonManagedReference
+  @JoinTable(
+    name = "followings",
+    joinColumns = @JoinColumn(name = "follower_id"),
+    inverseJoinColumns = @JoinColumn(name = "followee_id")
+  )
+  private List<User> followings = new ArrayList<>();
+
   @ManyToMany
   @JoinTable(
     name = "user_saved_posts",
