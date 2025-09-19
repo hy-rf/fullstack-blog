@@ -38,6 +38,7 @@ async function updateMyProfile() {
         type="text"
         placeholder="New Username"
         required
+        autocomplete="off"
     /></label>
     <label>
       <span>{{ t("me.update.password") }}</span>
@@ -46,6 +47,7 @@ async function updateMyProfile() {
         type="password"
         placeholder="New Password"
         required
+        autocomplete="off"
     /></label>
     <button type="submit">
       {{ t("me.update.update_button") }}
@@ -58,7 +60,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 500px;
+  width: 100%;
   label {
     display: inline-flex;
     justify-content: space-between;
