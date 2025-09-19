@@ -9,4 +9,6 @@ export default interface PostSummary {
   saveCount: number;
   urls: string;
   imageUrls: string[];
+  rootPostId?: number;
+  postId?: number;
 }

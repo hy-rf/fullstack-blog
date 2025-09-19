@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type PostPage from "~/types/PostPage";
+import type PostSummary from "~/types/PostSummary";
 
 const { gtag } = useGtag();
 
@@ -14,12 +14,12 @@ onMounted(() => {
   }
 });
 
-const { data: posts } = await useFetch<PostPage[]>(
+const { data: posts } = await useFetch<PostSummary[]>(
   `/api/post/${route.params.id}`,
 );
 
 const userStore = useUserStore();
-const postsToShow = ref<PostPage[]>(posts.value || []);
+const postsToShow = ref<PostSummary[]>(posts.value || []);
 
 // const isPostEditable = computed(() => {
 //   const currentUser = userStore.user;
@@ -37,12 +37,7 @@ async function refresh() {
 
 <template>
   <section class="post-list" aria-label="Posts list">
-    <PostCard
-      v-for="post in postsToShow"
-      :id="'post-card-' + post.id"
-      :key="post.id"
-      :post="post"
-    />
+    <PostCard :key="postsToShow[0].id" :post="postsToShow[0]" />
     <div v-if="userStore.isUser" style="margin-top: 1rem">
       <PostEditor
         :post-to-edit="{ id: null, content: '' }"
@@ -51,6 +46,12 @@ async function refresh() {
         :refresh="refresh"
       />
     </div>
+    <PostCard
+      v-for="post in postsToShow.filter((_, i) => i > 0)"
+      :id="'post-card-' + post.id"
+      :key="post.id"
+      :post="post"
+    />
   </section>
 </template>
 
