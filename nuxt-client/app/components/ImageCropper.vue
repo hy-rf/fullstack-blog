@@ -75,7 +75,7 @@ onBeforeUnmount(() => {});
       @mousemove="handleDrag"
       @mouseout="handleOut"
     ></canvas>
-    <button type="button" @click="downloadImage">download image</button>
+    <!-- <button type="button" @click="downloadImage">download image</button> -->
   </div>
 </template>
 
