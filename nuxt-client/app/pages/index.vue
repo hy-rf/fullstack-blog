@@ -27,6 +27,7 @@ if (import.meta.server) {
 }
 
 if (import.meta.client) {
+  console.log("length of post in post store", postStore.posts.length);
   if (postStore.posts.length == 0) {
     // Its 1st time visit home page through csr in a page lifecycle, because no post in postStore.
     console.info(
@@ -38,11 +39,14 @@ if (import.meta.client) {
         `${config.public.GATEWAY_URL}/post?offset=${initialOffset}`,
       );
       postStore.posts = data;
-    } finally {
       pending.value = false;
+    } catch {
+      pending.value = true;
+    } finally {
+      console.log("Feed initialized client side");
     }
   } else {
-    console.log("Revisit feed");
+    console.log("PostStore is full, no need to get post feed.");
   }
 }
 
@@ -91,6 +95,7 @@ onMounted(async () => {
   setTimeout(() => {
     window.scrollTo(options);
   }, 0);
+  console.log(postStore.posts, postsRef.value);
 });
 
 onBeforeUnmount(() => {
@@ -103,11 +108,7 @@ onBeforeUnmount(() => {
   <div>
     <h1 class="title">{{ t("home.feed") }}</h1>
     <section ref="listRef" class="post-list" aria-label="Posts list">
-      <PostCard
-        v-for="post in postStore.posts || postsRef"
-        :key="post.id"
-        :post="post"
-      />
+      <PostCard v-for="post in postStore.posts" :key="post.id" :post="post" />
     </section>
   </div>
 </template>
