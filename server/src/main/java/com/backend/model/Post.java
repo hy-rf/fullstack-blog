@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,11 +45,11 @@ public class Post {
   @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "root_post_id")
   private Post rootPost;
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "post_id")
   private Post parentPost;
 
@@ -62,7 +61,7 @@ public class Post {
   @OneToMany(mappedBy = "rootPost", cascade = CascadeType.PERSIST)
   private List<Post> posts = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany
   @JsonManagedReference
   @JoinTable(
     name = "post_likes",
@@ -71,7 +70,7 @@ public class Post {
   )
   private Set<User> likes = new HashSet<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany
   @JoinTable(
     name = "post_tags",
     joinColumns = @JoinColumn(name = "post_id"),
