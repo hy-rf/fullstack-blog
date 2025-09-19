@@ -18,8 +18,11 @@ if (import.meta.server) {
 
     postStore.posts = data; // This line prevents hydration mismatch
     postsRef.value = data;
-  } finally {
     pending.value = false;
+  } catch {
+    pending.value = true;
+  } finally {
+    console.log("Feed initialized");
   }
 }
 
