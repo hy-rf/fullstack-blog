@@ -57,6 +57,7 @@ html {
   /* This prevent horizontal scrolling on iOS */
   overflow-x: hidden;
   background: #eeeeee;
+  overscroll-behavior-y: none;
 }
 
 ::-webkit-scrollbar {
