@@ -35,7 +35,7 @@ public class Post {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(length = 500)
+  @Column(length = 1000)
   private String content;
 
   @Column(name = "created_at")
@@ -45,11 +45,11 @@ public class Post {
   @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = true)
   @JoinColumn(name = "root_post_id")
   private Post rootPost;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = true)
   @JoinColumn(name = "post_id")
   private Post parentPost;
 
@@ -77,6 +77,9 @@ public class Post {
     inverseJoinColumns = @JoinColumn(name = "tag_id")
   )
   private Set<Tag> tags = new HashSet<>();
+
+  @OneToMany(mappedBy = "post")
+  private List<PostImage> postImages = new ArrayList<>();
 
   @PrePersist
   public void onCreate() {
