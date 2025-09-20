@@ -1,9 +1,11 @@
 package com.backend.service;
 
 import com.backend.model.Avatar;
+import com.backend.model.Post;
 import com.backend.model.PostImage;
 import com.backend.repository.AvatarRepository;
 import com.backend.repository.PostImageRepository;
+import com.backend.repository.PostRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +24,7 @@ public class UploadService {
 
   private final AvatarRepository avatarRepository;
   private final PostImageRepository postImageRepository;
+  private final PostRepository postRepository;
 
   /**
    * Base raw path of root directory where files being stored
@@ -70,8 +73,9 @@ public class UploadService {
     }
 
     if (type.equals("post_image")) {
+      Post post = postRepository.findById(id).get();
       PostImage postImage = new PostImage();
-      postImage.setPostId(id);
+      postImage.setPost(post);
       postImage.setUrl(type + "/" + safeFilename);
       postImageRepository.save(postImage);
     }
