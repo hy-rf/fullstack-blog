@@ -164,6 +164,7 @@ textarea {
   width: 100%;
   resize: vertical;
   border-radius: 0.3rem;
+  outline: none;
 }
 textarea::-webkit-resizer {
   background: transparent;
@@ -187,7 +188,6 @@ input {
   border: 1px solid grey;
   background-color: white;
   outline: none;
-  padding: 0.5rem;
 }
 
 #add-tag-button {
