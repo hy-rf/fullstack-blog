@@ -58,6 +58,7 @@ const uploadAvatar = async () => {
 
 <template>
   <form @submit.prevent="uploadAvatar">
+    <image-cropper :image="file!" />
     <label class="file-input">
       <input
         type="file"
@@ -67,7 +68,6 @@ const uploadAvatar = async () => {
       />
       <span class="file-label">{{ t("me.update.choose_file_label") }}</span>
     </label>
-    <image-cropper :image="file!" />
     <button type="submit">{{ t("me.update.update_avatar_button") }}</button>
   </form>
 </template>
@@ -76,6 +76,9 @@ const uploadAvatar = async () => {
 form {
   display: inline-flex;
   flex-direction: column;
+  border-radius: 0.5rem;
+  background-color: #dddddd;
+  padding: 0.5rem;
   & > button:nth-child(2) {
     max-width: fit-content;
     align-self: self-end;
