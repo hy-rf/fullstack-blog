@@ -95,42 +95,35 @@ const next = () => {
     </div>
 
     <div style="position: relative">
-      <ClientOnly>
-        <button
-          v-if="
-            post.urls && post.urls.length && post.urls.split(',').length > 1
-          "
-          class="previous-image-button"
-          @click="prev"
-        >
-          <Icon name="mdi-light:chevron-left" />
-        </button>
-        <button
-          v-if="
-            post.urls && post.urls.length && post.urls.split(',').length > 1
-          "
-          class="next-image-button"
-          @click="next"
-        >
-          <Icon name="mdi-light:chevron-right" />
-        </button>
+      <!-- <ClientOnly> -->
+      <button
+        v-if="post.urls && post.urls.length && post.urls.split(',').length > 1"
+        class="previous-image-button"
+        @click="prev"
+      >
+        <Icon name="mdi-light:chevron-left" />
+      </button>
+      <button
+        v-if="post.urls && post.urls.length && post.urls.split(',').length > 1"
+        class="next-image-button"
+        @click="next"
+      >
+        <Icon name="mdi-light:chevron-right" />
+      </button>
+      <div
+        v-if="post.urls && post.urls.length"
+        ref="imageScrollView"
+        class="image-preview-container"
+      >
         <div
-          v-if="post.urls && post.urls.length"
-          ref="imageScrollView"
-          class="image-preview-container"
+          v-for="(url, index) in post.urls.split(',')"
+          :key="index"
+          class="image-wrapper"
         >
-          <div
-            v-for="(url, index) in post.urls.split(',')"
-            :key="index"
-            class="image-wrapper"
-          >
-            <img
-              :src="`${config.public.FILES_PREFIX}${url}`"
-              alt="Post Image"
-            />
-          </div>
+          <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
         </div>
-        <!-- <div
+      </div>
+      <!-- <div
           v-if="post.imageUrls && post.imageUrls.length"
           class="image-preview-container"
         >
@@ -143,7 +136,7 @@ const next = () => {
             <img :src="`${config.public.FILES_PREFIX}${url}`" alt="Post Image" />
           </div>
         </div> -->
-      </ClientOnly>
+      <!-- </ClientOnly> -->
     </div>
 
     <div class="post-other">
