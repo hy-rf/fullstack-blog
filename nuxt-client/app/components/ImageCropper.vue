@@ -7,6 +7,7 @@ const props = defineProps<Props>();
 const imageRef = toRef(props, "image");
 
 const canvasRef = ref<HTMLCanvasElement>();
+const ctxRef = ref<CanvasRenderingContext2D>();
 
 const x = ref<number>(0);
 const y = ref<number>(0);
@@ -17,15 +18,33 @@ const offsetY = ref(0);
 
 watch(imageRef, async () => {
   const bitmap = await createImageBitmap(imageRef.value, 0, 0, 300, 300);
-  canvasRef.value?.getContext("2d")?.drawImage(bitmap, 0, 0);
+  if (ctxRef.value) {
+    ctxRef.value.drawImage(bitmap, 0, 0);
+    ctxRef.value.beginPath();
+    ctxRef.value.arc(0, 0, 300, 300, Math.PI * 2);
+    ctxRef.value.closePath();
+    ctxRef.value.fill();
+  }
 });
 
 function downloadImage() {
   const canvas = canvasRef.value;
   if (canvas) {
+    const settings: ImageDataSettings = {
+      colorSpace: "display-p3",
+    };
+    const data: ImageData = canvas
+      .getContext("2d")!
+      .getImageData(0, 0, 300, 300, settings);
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = data.width;
+    tempCanvas.height = data.height;
+    tempCanvas.style.borderRadius = "150px";
+    const tempCtx = tempCanvas.getContext("2d")!;
+    tempCtx.putImageData(data, 0, 0);
     const link = document.createElement("a");
     link.download = "cropped-image.png";
-    link.href = canvas.toDataURL("image/png");
+    link.href = tempCanvas.toDataURL("image/png");
     link.click();
   }
 }
@@ -51,6 +70,7 @@ async function handleDrag(e: MouseEvent) {
     const bitmap = await createImageBitmap(imageRef.value, 0, 0, 300, 300);
     ctx.clearRect(0, 0, 300, 300);
     console.log(x.value, y.value);
+    ctx.roundRect(0, 0, 300, 300, 150);
 
     ctx.drawImage(bitmap, x.value - 150, y.value - 150);
   }
@@ -59,8 +79,7 @@ async function handleDrag(e: MouseEvent) {
 onMounted(() => {
   offsetX.value = canvasRef.value!.offsetLeft;
   offsetY.value = canvasRef.value!.offsetTop;
-  console.log(offsetX.value);
-  console.log(offsetY.value);
+  ctxRef.value = canvasRef.value!.getContext("2d")!;
 });
 
 onBeforeUnmount(() => {});
@@ -75,7 +94,7 @@ onBeforeUnmount(() => {});
       @mousemove="handleDrag"
       @mouseout="handleOut"
     ></canvas>
-    <!-- <button type="button" @click="downloadImage">download image</button> -->
+    <button type="button" @click="downloadImage">download image</button>
   </div>
 </template>
 
