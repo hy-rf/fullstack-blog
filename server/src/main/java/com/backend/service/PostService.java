@@ -136,7 +136,8 @@ public class PostService {
         (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
         (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
         (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
-        (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags
+        (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags,
+        (SELECT STRING_AGG(pi.url, ',') FROM post_images pi WHERE pi.post_id = p.id) AS urls
         FROM posts p
       JOIN users u ON u.id = p.author_id
           """;
@@ -233,6 +234,7 @@ public class PostService {
       dto.setLikeCount(rs.getInt("like_count"));
       dto.setSaveCount(rs.getInt("save_count"));
       dto.setTags(rs.getString("tags"));
+      dto.setUrls(rs.getString("urls"));
       return dto;
     };
     List<PostSummary> items = jdbc.query(sql.toString(), params, mapper);

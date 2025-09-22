@@ -3,6 +3,7 @@ import { usePostSearchStore } from "~/stores/post_search";
 import { fetchPosts } from "~/services/posts_service";
 import PostCard from "~/components/post/PostCard.vue";
 import type PostListViewModel from "~/types/PostList";
+import type PostSummary from "~/types/PostSummary";
 
 // These func will move to util
 // Helper to convert local time (UTC+8) to UTC ISO string
@@ -72,7 +73,7 @@ const {
   data: posts,
   pending,
   error,
-} = await useAsyncData<PostListViewModel>(
+} = await useAsyncData<PostSummary>(
   () => `postsSearch-${JSON.stringify(route.query)}`,
   () => fetchPosts(route.query),
 );
