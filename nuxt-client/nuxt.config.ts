@@ -34,7 +34,6 @@ export default defineNuxtConfig({
     URL: process.env.URL,
     public: {
       GATEWAY_URL: process.env.GATEWAY_URL,
-      VERSION: process.env.VERSION,
       FILES_PREFIX: process.env.FILES_PREFIX,
     },
   },
