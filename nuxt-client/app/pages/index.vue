@@ -12,7 +12,7 @@ if (import.meta.server) {
   pending.value = true;
   try {
     const data = await $fetch<PostSummary[]>(
-      `/api/post?offset=${initialOffset}`,
+      `${config.URL}/post?offset=${initialOffset}`,
     );
 
     postStore.posts = data;
@@ -20,7 +20,7 @@ if (import.meta.server) {
   } catch {
     pending.value = true;
   } finally {
-    console.log("Feed initialized");
+    console.log("Feed initialized server side");
   }
 }
 
