@@ -247,6 +247,7 @@ public class PostService {
     return new PageImpl<PostSummary>(items, pageable, 9999999);
   }
 
+  @Transactional
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {
     Optional<Post> postToUpdateOpt = postRepository.findById(
       updatePostDto.getPostId()
@@ -264,6 +265,11 @@ public class PostService {
     );
     postToUpdate.setContent(updatePostDto.getContent());
     postRepository.save(postToUpdate);
+    PostHistory postHistory = new PostHistory();
+    postHistory.setPost(postToUpdate);
+    postHistory.setContent(postToUpdate.getContent());
+    // TODO: update image urls
+    postHistoryRepository.save(postHistory);
     return new UpdatePostResultDto(UpdatePostResultStatus.SUCCESS, "success");
   }
 
