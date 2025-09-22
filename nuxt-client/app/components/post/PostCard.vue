@@ -62,7 +62,7 @@ const prev = () => {
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (!width) return;
   const options: ScrollToOptions = {
-    left: -1 * width * 1.2,
+    left: -1 * width,
     behavior: "smooth",
   };
   imageScrollView.value?.scrollBy(options);
@@ -71,7 +71,7 @@ const next = () => {
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (width) {
     const options: ScrollToOptions = {
-      left: width * 1.2 - 5,
+      left: width,
       behavior: "smooth",
     };
     imageScrollView.value?.scrollBy(options);
@@ -288,9 +288,9 @@ button {
 }
 
 .image-wrapper {
-  min-width: 80%;
+  min-width: 100%;
   max-height: 50dvh;
-  margin-inline: 10%;
+  padding-inline: 10%;
   background-color: black;
   display: flex;
   align-items: center;
