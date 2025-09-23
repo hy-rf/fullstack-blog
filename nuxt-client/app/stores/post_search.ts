@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import type SearchQuery from "~/types/SearchQuery";
 
 export const usePostSearchStore = defineStore("postSearch", {
   state: () => ({
@@ -6,7 +7,7 @@ export const usePostSearchStore = defineStore("postSearch", {
     authorName: "",
     createdAfter: "",
     createdBefore: "",
-    sortBy: "likeCount",
+    sortBy: "createdAt",
     order: "desc",
     page: 1,
     size: 10,
@@ -24,12 +25,12 @@ export const usePostSearchStore = defineStore("postSearch", {
     }),
   },
   actions: {
-    setFromRoute(query: Record<string, any>) {
+    setFromRoute(query: SearchQuery) {
       this.keyword = query.keyword || "";
       this.authorName = query.authorName || "";
       this.createdAfter = query.createdAfter || "";
       this.createdBefore = query.createdBefore || "";
-      this.sortBy = query.sortBy || "likeCount";
+      this.sortBy = query.sortBy || "createdAt";
       this.order = query.order || "desc";
       this.page = Number(query.page) || 1;
       this.size = Number(query.size) || 10;

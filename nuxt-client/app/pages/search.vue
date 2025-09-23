@@ -2,8 +2,8 @@
 import { usePostSearchStore } from "~/stores/post_search";
 import { fetchPosts } from "~/services/posts_service";
 import PostCard from "~/components/post/PostCard.vue";
-import type PostListViewModel from "~/types/PostList";
-import type PostSummary from "~/types/PostSummary";
+import type SearchQuery from "~/types/SearchQuery";
+import type PostList from "~/types/PostList";
 
 // These func will move to util
 // Helper to convert local time (UTC+8) to UTC ISO string
@@ -15,22 +15,8 @@ function localToUTC(localValue: string): string {
 // When initializing form, convert UTC from backend to local for input
 function utcToLocal(utcValue: string): string {
   if (!utcValue) return "";
-  console.log(utcValue);
 
   const utcDate = new Date(utcValue + "Z");
-  console.log(
-    utcDate.toLocaleString(),
-    utcDate.toLocaleString("zh-TW", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-      timeZone: "Asia/Taipei",
-    }),
-  );
 
   return utcDate
     .toLocaleString("zh-TW", {
@@ -54,7 +40,17 @@ const router = useRouter();
 const searchStore = usePostSearchStore();
 
 // Initialize store from URL on load
-searchStore.setFromRoute(route.query);
+searchStore.setFromRoute({
+  keyword: (route.query.keyword as string) || "",
+  authorName: (route.query.authorName as string) || "",
+  createdAfter: (route.query.createdAfter as string) || "",
+  createdBefore: (route.query.createdBefore as string) || "",
+  sortBy: (route.query.sortBy as string) || "createdAt",
+  order: (route.query.order as string) || "desc",
+  page: Number(route.query.page) || 1,
+  size: Number(route.query.size) || 10,
+});
+console.log(searchStore.page);
 
 // Form state (local only, not used by fetch until Search clicked)
 const form = reactive({
@@ -67,22 +63,47 @@ const form = reactive({
   page: searchStore.page,
   size: searchStore.size,
 });
+const updateTime = ref(0);
 
 // API fetching
 const {
   data: posts,
   pending,
   error,
-} = await useAsyncData<PostSummary>(
-  () => `postsSearch-${JSON.stringify(route.query)}`,
-  () => fetchPosts(route.query),
+} = await useAsyncData<PostList>(
+  () => `postsSearch-${updateTime.value}`,
+  () =>
+    fetchPosts(
+      import.meta.server
+        ? {
+            keyword: (route.query.keyword as string) || "",
+            authorName: (route.query.authorName as string) || "",
+            createdAfter: (route.query.createdAfter as string) || "",
+            createdBefore: (route.query.createdBefore as string) || "",
+            sortBy: (route.query.sortBy as string) || "createdAt",
+            order: (route.query.order as string) || "desc",
+            page: Number(route.query.page) || 1,
+            size: Number(route.query.size) || 10,
+          }
+        : searchStore,
+    ),
 );
-
 // Watch route query → update store (and form)
 watch(
   () => route.query,
   (q) => {
-    searchStore.setFromRoute(q);
+    updateTime.value++;
+    const sq: SearchQuery = {
+      keyword: (q.keyword as string) || "",
+      authorName: (q.authorName as string) || "",
+      createdAfter: (q.createdAfter as string) || "",
+      createdBefore: (q.createdBefore as string) || "",
+      sortBy: (q.sortBy as string) || "createdAt",
+      order: (q.order as string) || "desc",
+      page: Number(q.page) || 1,
+      size: Number(q.size) || 10,
+    };
+    searchStore.setFromRoute(sq);
     Object.assign(form, {
       keyword: searchStore.keyword,
       authorName: searchStore.authorName,
@@ -105,8 +126,6 @@ async function changeSize() {
 
 // Click search → copy form values into store → update query
 async function performSearch() {
-  console.log(form);
-
   searchStore.keyword = form.keyword;
   searchStore.authorName = form.authorName;
   searchStore.createdAfter = localToUTC(form.createdAfter);
@@ -192,12 +211,12 @@ function prevPage() {
         </div> -->
         <div class="sort-options">
           <select v-model="form.sortBy">
+            <option value="createdAt">
+              {{ t("posts.search.created_at") }}
+            </option>
             <option value="likeCount">
               {{ t("posts.search.likes_count") }}
             </option>
-            <!-- <option value="createdAt">
-              {{ t("posts.search.created_at") }}
-            </option> -->
             <option value="postCount">
               {{ t("posts.search.posts_count") }}
             </option>
