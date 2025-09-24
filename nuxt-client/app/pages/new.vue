@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import compressAndConvertImage from "~/utils/ConvertImage";
+
 const router = useRouter();
 const { t } = useI18n();
 
@@ -32,6 +34,11 @@ const handleImageUpload = (event: Event) => {
 };
 
 const submitPost = async () => {
+  const imageConversionResult = images.value.map((f) =>
+    compressAndConvertImage(f, "image/webp", 0.8),
+  );
+  const imageBase64Strings: string[] = await Promise.all(imageConversionResult);
+
   if (!content.value) {
     alert("Title or content is missing!");
     return;
@@ -44,6 +51,7 @@ const submitPost = async () => {
     body: JSON.stringify({
       content: content.value,
       tags: tags.value,
+      imagesBase64Strings: imageBase64Strings,
     }),
   });
 
