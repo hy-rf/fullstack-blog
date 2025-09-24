@@ -23,7 +23,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +94,18 @@ public class PostController {
       createPostRequest.getPostId()
     );
     CreatePostCommandResult result = postService.createPost(createPostCommand);
+    createPostRequest
+      .getImagesBase64Strings()
+      .forEach(f -> {
+        byte[] file = Base64.getDecoder().decode(
+          f.split(",")[1].getBytes(StandardCharsets.UTF_8)
+        );
+        try {
+          uploadService.save(file, "post_image", result.getId());
+        } catch (IOException e) {
+          log.error(e.getLocalizedMessage());
+        }
+      });
     if (!result.isSuccess()) return ResponseEntity.badRequest().body(
       result.getId()
     );

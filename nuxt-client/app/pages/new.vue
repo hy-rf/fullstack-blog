@@ -60,7 +60,7 @@ const submitPost = async () => {
   }
 
   const result = await response.text();
-  await uploadImages(parseInt(result));
+  // await uploadImages(parseInt(result));
   alert(result);
   router.push("/");
 };

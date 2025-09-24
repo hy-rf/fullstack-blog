@@ -7,10 +7,12 @@ import com.backend.repository.AvatarRepository;
 import com.backend.repository.PostImageRepository;
 import com.backend.repository.PostRepository;
 import jakarta.annotation.PostConstruct;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +62,48 @@ public class UploadService {
     try {
       var in = file.getInputStream();
       Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
+      log.error(safeFilename, e);
+      return;
+    }
+
+    if (type.equals("avatar")) {
+      Avatar avatar = new Avatar();
+      avatar.setUserId(id);
+      avatar.setUrl(type + "/" + safeFilename);
+      avatarRepository.save(avatar);
+    }
+
+    if (type.equals("post_image")) {
+      Post post = postRepository.findById(id).get();
+      PostImage postImage = new PostImage();
+      postImage.setPost(post);
+      postImage.setUrl(type + "/" + safeFilename);
+      postImageRepository.save(postImage);
+    }
+
+    log.info("Multipart file saved to: {}", targetPath);
+  }
+
+  public void save(byte[] file, String type, Integer id) throws IOException {
+    String originalFilename =
+      type + "_" + id.toString() + LocalDateTime.now().toString();
+
+    String safeFilename = originalFilename + ".webp";
+
+    Path targetPath = this.rootPath.resolve(type)
+      .resolve(safeFilename)
+      .toAbsolutePath()
+      .normalize();
+
+    if (!targetPath.startsWith(rootPath)) {
+      throw new RuntimeException("Invalid destination path: " + targetPath);
+    }
+
+    try {
+      FileOutputStream fos = new FileOutputStream(targetPath.toString());
+      fos.write(file);
+      fos.close();
     } catch (IOException e) {
       log.error(safeFilename, e);
       return;
