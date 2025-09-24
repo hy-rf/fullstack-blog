@@ -1,16 +1,13 @@
 import { defineEventHandler, readBody } from "h3";
-import { API_BASE_URL } from "~/constants/api_constants";
 
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
   const path = event.node.req.url?.split("api")[1];
-  let body: any;
-  if (event.node.req.method != "GET") {
-    body = await readBody(event);
-  }
+
   const token = getCookie(event, "token");
   const refreshToken = getCookie(event, "refresh");
 
-  const backendUrl = new URL(`${API_BASE_URL}${path}`);
+  const backendUrl = new URL(`${runtimeConfig.URL}${path}`);
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -31,7 +28,9 @@ export default defineEventHandler(async (event) => {
     headers,
   };
 
+  let body: object;
   if (event.node.req.method != "GET") {
+    body = await readBody(event);
     options.body = JSON.stringify(body);
   }
 
