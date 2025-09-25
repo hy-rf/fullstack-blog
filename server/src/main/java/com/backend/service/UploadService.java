@@ -85,11 +85,20 @@ public class UploadService {
     log.info("Multipart file saved to: {}", targetPath);
   }
 
-  public void save(byte[] file, String type, Integer id) throws IOException {
+  /**
+   * Standardized upload service
+   * @param file
+   * @param type
+   * @param id
+   * @param extension
+   * @throws IOException
+   */
+  public void save(byte[] file, String type, Integer id, String extension)
+    throws IOException {
     String originalFilename =
       type + "_" + id.toString() + LocalDateTime.now().toString();
 
-    String safeFilename = originalFilename + ".webp";
+    String safeFilename = originalFilename + "." + extension;
 
     Path targetPath = this.rootPath.resolve(type)
       .resolve(safeFilename)

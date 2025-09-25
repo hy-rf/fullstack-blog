@@ -97,11 +97,17 @@ public class PostController {
     createPostRequest
       .getImagesBase64Strings()
       .forEach(f -> {
+        String[] fileStrings = f.split(",");
         byte[] file = Base64.getDecoder().decode(
-          f.split(",")[1].getBytes(StandardCharsets.UTF_8)
+          fileStrings[1].getBytes(StandardCharsets.UTF_8)
         );
         try {
-          uploadService.save(file, "post_image", result.getId());
+          uploadService.save(
+            file,
+            "post_image",
+            result.getId(),
+            fileStrings[0].split(";")[0].split("/")[1]
+          );
         } catch (IOException e) {
           log.error(e.getLocalizedMessage());
         }
