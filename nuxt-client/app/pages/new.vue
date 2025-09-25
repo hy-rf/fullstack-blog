@@ -35,7 +35,7 @@ const handleImageUpload = (event: Event) => {
 
 const submitPost = async () => {
   const imageConversionResult = images.value.map((f) =>
-    compressAndConvertImage(f, "image/webp", 0.8),
+    compressAndConvertImage(f, "image/webp", 0.1),
   );
   const imageBase64Strings: string[] = await Promise.all(imageConversionResult);
 
