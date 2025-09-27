@@ -68,6 +68,28 @@ const submitPost = async () => {
 const tagInputRef = ref<HTMLInputElement | null>(null);
 
 const getObjectURL = (file: File) => window.URL.createObjectURL(file);
+
+const imageScrollView = ref<HTMLDivElement>();
+
+const prev = () => {
+  const width = imageScrollView.value?.getBoundingClientRect().width;
+  if (!width) return;
+  const options: ScrollToOptions = {
+    left: -1 * width,
+    behavior: "smooth",
+  };
+  imageScrollView.value?.scrollBy(options);
+};
+const next = () => {
+  const width = imageScrollView.value?.getBoundingClientRect().width;
+  if (width) {
+    const options: ScrollToOptions = {
+      left: width,
+      behavior: "smooth",
+    };
+    imageScrollView.value?.scrollBy(options);
+  }
+};
 </script>
 
 <template>
@@ -110,13 +132,31 @@ const getObjectURL = (file: File) => window.URL.createObjectURL(file);
           >Upload
           <input type="file" multiple @change="handleImageUpload" />
         </label>
-        <div class="image-preview-container">
-          <div
-            v-for="(img, index) in images"
-            :key="index"
-            class="image-wrapper"
+        <div style="position: relative">
+          <button
+            v-if="images.length > 1"
+            type="button"
+            class="previous-image-button"
+            @click="prev"
           >
-            <img :src="getObjectURL(img)" alt="Uploaded Image" />
+            <Icon name="mdi-light:chevron-left" />
+          </button>
+          <button
+            v-if="images.length > 1"
+            type="button"
+            class="next-image-button"
+            @click="next"
+          >
+            <Icon name="mdi-light:chevron-right" />
+          </button>
+          <div ref="imageScrollView" class="image-preview-container">
+            <div
+              v-for="(img, index) in images"
+              :key="index"
+              class="image-wrapper"
+            >
+              <img :src="getObjectURL(img)" alt="Uploaded Image" />
+            </div>
           </div>
         </div>
       </div>
@@ -242,32 +282,52 @@ label:hover {
 
 /* Image Preview Styles */
 .image-preview-container {
+  position: relative;
   display: flex;
-  gap: 20%;
-  margin-top: 1rem;
+  margin-block: 1rem;
   overflow-x: auto;
-  & > div:first-child {
-    margin-left: 10%;
-  }
-  & > div:last-child {
-    margin-right: 10%;
-  }
+  border-radius: 0.5rem;
+  border: 0;
+  /* background-color: black; */
 }
 
 .image-wrapper {
-  min-width: 80%;
-  height: 50dvh;
+  min-width: 100%;
+  max-height: 50dvh;
+  padding-inline: 10%;
   background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0.5rem;
 }
 
 .image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border: 0;
+}
+
+.previous-image-button {
+  position: absolute;
+  padding: 0;
+  height: 100%;
+  z-index: 99;
+  width: 10%;
+  background-color: #999999aa;
+  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+.next-image-button {
+  position: absolute;
+  padding: 0;
+  height: 100%;
+  right: 0;
+  z-index: 99;
+  width: 10%;
+  background-color: #999999aa;
+  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 </style>

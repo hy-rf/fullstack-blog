@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type PostToEditViewModel from "./PostToEditViewModel";
+import type PostToEditViewModel from "~/types/PostToEditViewModel";
 const { t } = useI18n();
 
 const props = defineProps<{
