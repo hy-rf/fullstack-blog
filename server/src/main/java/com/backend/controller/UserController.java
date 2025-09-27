@@ -65,7 +65,7 @@ public class UserController {
     return ResponseEntity.ok("File uploaded successfully.");
   }
 
-  @PostMapping("/user/avatar")
+  @PostMapping("/user/avatar-base64")
   @PreAuthorize("hasRole('user')")
   public ResponseEntity<String> uploadAvatar(String base64String) {
     // TODO: turn base64 string to file then upload avatar by calling UploadService
