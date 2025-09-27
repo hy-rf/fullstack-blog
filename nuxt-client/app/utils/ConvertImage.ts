@@ -30,18 +30,3 @@ export default function compressAndConvertImage(
     reader.readAsDataURL(file);
   });
 }
-
-// Usage example:
-// const fileInput = document.getElementById('imageUpload');
-// fileInput.addEventListener('change', async (e) => {
-//   const file = e.target.files[0];
-//   if (file) {
-//     try {
-//       const compressedJpeg = await compressAndConvertImage(file, 'image/jpeg', 0.7); // 70% quality JPEG
-//       console.log('Compressed JPEG Data URL:', compressedJpeg);
-//       // Display the compressed image or send it to a server
-//     } catch (error) {
-//       console.error('Error processing image:', error);
-//     }
-//   }
-// });
