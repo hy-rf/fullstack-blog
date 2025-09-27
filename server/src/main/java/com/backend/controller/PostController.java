@@ -97,6 +97,9 @@ public class PostController {
     createPostRequest
       .getImagesBase64Strings()
       .forEach(f -> {
+        /**
+         * TODO: extract processing of raw base64 string
+         */
         String[] fileStrings = f.split(",");
         byte[] file = Base64.getDecoder().decode(
           fileStrings[1].getBytes(StandardCharsets.UTF_8)
