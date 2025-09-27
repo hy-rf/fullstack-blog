@@ -8,7 +8,7 @@ const content = ref("");
 const tagInput = ref("");
 const tags = ref<string[]>([]);
 const images = ref<File[]>([]);
-const MAX_IMAGE_SIZE = 25 * 1024 * 1024;
+const IMAGE_QUALITY = 0.1;
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
@@ -35,7 +35,7 @@ const handleImageUpload = (event: Event) => {
 
 const submitPost = async () => {
   const imageConversionResult = images.value.map((f) =>
-    compressAndConvertImage(f, "image/webp", 0.1),
+    compressAndConvertImage(f, "image/webp", IMAGE_QUALITY),
   );
   const imageBase64Strings: string[] = await Promise.all(imageConversionResult);
 
@@ -62,33 +62,7 @@ const submitPost = async () => {
   const result = await response.text();
   // await uploadImages(parseInt(result));
   alert(result);
-  router.push("/");
-};
-
-const uploadImages = async (postId: number) => {
-  images.value.forEach(async (file) => {
-    if (!file.type.startsWith("image")) {
-      alert(t("me.update.avatar.type_error"));
-      return;
-    }
-    if (file.size > MAX_IMAGE_SIZE) {
-      alert(t("me.update.avatar.size_error"));
-      return;
-    }
-    const fileToUpload: File = new File(
-      [file],
-      `${file.lastModified.toString()}.${file.name.split(".")[1]}`,
-      { type: file.type },
-    );
-    const formData = new FormData();
-    formData.append("file", fileToUpload);
-    formData.append("postId", postId.toString());
-    await fetch(`${useRuntimeConfig().public.GATEWAY_URL}/post-image`, {
-      method: "post",
-      body: formData,
-      credentials: "include",
-    });
-  });
+  router.push("/post/" + result);
 };
 
 const tagInputRef = ref<HTMLInputElement | null>(null);
