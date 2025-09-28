@@ -9,15 +9,13 @@ import com.backend.repository.PostRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -42,49 +40,6 @@ public class UploadService {
     log.info(String.format("Initialized rootPath: %s", rawPath.toString()));
   }
 
-  public void save(MultipartFile file, String type, Integer id)
-    throws IOException {
-    String originalFilename = file.getOriginalFilename();
-
-    String safeFilename = type.equals("post_image")
-      ? id.toString() + "_" + originalFilename
-      : originalFilename;
-
-    Path targetPath = this.rootPath.resolve(type)
-      .resolve(safeFilename)
-      .toAbsolutePath()
-      .normalize();
-
-    if (!targetPath.startsWith(rootPath)) {
-      throw new RuntimeException("Invalid destination path: " + targetPath);
-    }
-
-    try {
-      var in = file.getInputStream();
-      Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      log.error(safeFilename, e);
-      return;
-    }
-
-    if (type.equals("avatar")) {
-      Avatar avatar = new Avatar();
-      avatar.setUserId(id);
-      avatar.setUrl(type + "/" + safeFilename);
-      avatarRepository.save(avatar);
-    }
-
-    if (type.equals("post_image")) {
-      Post post = postRepository.findById(id).get();
-      PostImage postImage = new PostImage();
-      postImage.setPost(post);
-      postImage.setUrl(type + "/" + safeFilename);
-      postImageRepository.save(postImage);
-    }
-
-    log.info("Multipart file saved to: {}", targetPath);
-  }
-
   /**
    * Standardized upload service
    * @param file
@@ -95,13 +50,18 @@ public class UploadService {
    */
   public void save(byte[] file, String type, Integer id, String extension)
     throws IOException {
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+      "yyyyMMdd_HHmmss"
+    );
     String originalFilename =
-      type + "_" + id.toString() + LocalDateTime.now().toString();
-
+      type +
+      "_" +
+      id.toString() +
+      "_" +
+      LocalDateTime.now().format(dateTimeFormatter);
     String safeFilename = originalFilename + "." + extension;
 
-    Path targetPath = this.rootPath.resolve(type)
-      .resolve(safeFilename)
+    Path targetPath = this.rootPath.resolve(safeFilename)
       .toAbsolutePath()
       .normalize();
 
@@ -121,7 +81,7 @@ public class UploadService {
     if (type.equals("avatar")) {
       Avatar avatar = new Avatar();
       avatar.setUserId(id);
-      avatar.setUrl(type + "/" + safeFilename);
+      avatar.setUrl(safeFilename);
       avatarRepository.save(avatar);
     }
 
@@ -129,7 +89,7 @@ public class UploadService {
       Post post = postRepository.findById(id).get();
       PostImage postImage = new PostImage();
       postImage.setPost(post);
-      postImage.setUrl(type + "/" + safeFilename);
+      postImage.setUrl(safeFilename);
       postImageRepository.save(postImage);
     }
 

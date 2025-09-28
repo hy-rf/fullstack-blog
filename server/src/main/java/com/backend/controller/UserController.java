@@ -60,7 +60,12 @@ public class UserController {
     Integer userId =
       ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
 
-    uploadService.save(file, "avatar", Integer.valueOf(userId));
+    uploadService.save(
+      file.getBytes(),
+      "avatar",
+      Integer.valueOf(userId),
+      contentType.split("/")[1]
+    );
 
     return ResponseEntity.ok("File uploaded successfully.");
   }
