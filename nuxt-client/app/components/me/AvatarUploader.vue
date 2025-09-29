@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import compressAndConvertImage from "~/utils/ConvertImage";
 
 const file = ref<File | null>(null);
 const runtimeConfig = useRuntimeConfig();
 const { t } = useI18n();
-const userStore = useUserStore();
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -29,29 +29,39 @@ const uploadAvatar = async () => {
     file.value = null;
     return;
   }
-  const fileToUpload: File = new File(
-    [file.value],
-    `${userStore.user.username}_${file.value.lastModified.toString()}.${file.value.name.split(".")[1]}`,
-    { type: file.value.type },
-  );
+  await uploadImage(file.value);
+  file.value = null;
+  return;
+};
 
-  // Start to upload
-  const formData = new FormData();
-  formData.append("file", fileToUpload);
-  const response = await fetch(
-    `${runtimeConfig.public.GATEWAY_URL}/user/avatar`,
-    {
-      method: "post",
-      body: formData,
-      credentials: "include",
-    },
+const uploadImage = async (image: File) => {
+  const IMAGE_QUALITY = 0.1;
+  const imageBase64String = compressAndConvertImage(
+    image,
+    "image/webp",
+    IMAGE_QUALITY,
   );
+  const data = {
+    image: await imageBase64String,
+  };
+  const url = new URL(`${runtimeConfig.public.GATEWAY_URL}/user/avatar`);
+  const params = {
+    type: "base64",
+  };
+  url.search = new URLSearchParams(params).toString();
+
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "post",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
   if (response.ok) {
-    alert(t("me.update.avatar.success_message"));
-    file.value = null;
+    alert("Success");
   } else {
-    alert(t("me.update.avatar.error"));
-    file.value = null;
+    alert("Fail");
   }
 };
 </script>
