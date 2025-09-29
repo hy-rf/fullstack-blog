@@ -58,7 +58,15 @@ const isSaved = computed(() => userStore.savedPosts.includes(props.post.id));
 
 const imageScrollView = ref<HTMLDivElement>();
 
+const isPrevButtonDisabled = ref(false);
+const isNextButtonDisabled = ref(false);
+const scrollTime = 400;
+
 const prev = () => {
+  isPrevButtonDisabled.value = true;
+  setTimeout(() => {
+    isPrevButtonDisabled.value = false;
+  }, scrollTime);
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (!width) return;
   const options: ScrollToOptions = {
@@ -68,6 +76,10 @@ const prev = () => {
   imageScrollView.value?.scrollBy(options);
 };
 const next = () => {
+  isNextButtonDisabled.value = true;
+  setTimeout(() => {
+    isNextButtonDisabled.value = false;
+  }, scrollTime);
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (width) {
     const options: ScrollToOptions = {
@@ -99,6 +111,7 @@ const next = () => {
       <button
         v-if="post.urls && post.urls.length && post.urls.split(',').length > 1"
         class="previous-image-button"
+        :disabled="isPrevButtonDisabled"
         @click="prev"
       >
         <Icon name="mdi-light:chevron-left" />
@@ -106,6 +119,7 @@ const next = () => {
       <button
         v-if="post.urls && post.urls.length && post.urls.split(',').length > 1"
         class="next-image-button"
+        :disabled="isNextButtonDisabled"
         @click="next"
       >
         <Icon name="mdi-light:chevron-right" />
@@ -325,5 +339,9 @@ button {
   background-color: #999999aa;
   border-bottom-right-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
+}
+.previous-image-button:disabled,
+.next-image-button:disabled {
+  background-color: #9999994c;
 }
 </style>
