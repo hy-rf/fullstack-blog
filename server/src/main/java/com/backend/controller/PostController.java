@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -119,27 +118,6 @@ public class PostController {
       result.getId()
     );
     return ResponseEntity.ok().body(result.getId());
-  }
-
-  @PostMapping("/post-image")
-  @PreAuthorize("hasRole('user')")
-  public ResponseEntity<String> uploadAvatar(
-    @RequestParam("file") MultipartFile file,
-    @RequestParam Integer postId
-  ) throws IOException {
-    final long MAX_FILE_SIZE = 25 * 1024 * 1024;
-    if (file.getSize() > MAX_FILE_SIZE) {
-      return ResponseEntity.badRequest().body("Too big");
-    }
-    String contentType = file.getContentType();
-    if (contentType == null) {
-      return ResponseEntity.badRequest().body("Unknown file");
-    }
-    if (!contentType.startsWith("image/")) {
-      return ResponseEntity.badRequest().body("Not image");
-    }
-    uploadService.save(file, "post_image", Integer.valueOf(postId));
-    return ResponseEntity.ok("File uploaded successfully.");
   }
 
   @GetMapping("/post/{id}")
