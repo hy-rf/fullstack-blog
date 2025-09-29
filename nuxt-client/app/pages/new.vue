@@ -9,6 +9,9 @@ const tagInput = ref("");
 const tags = ref<string[]>([]);
 const images = ref<File[]>([]);
 const IMAGE_QUALITY = 0.1;
+const isPrevButtonDisabled = ref(false);
+const isNextButtonDisabled = ref(false);
+const scrollTime = 400;
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
@@ -25,12 +28,20 @@ const removeTag = (tag: string) => {
 };
 
 const handleImageUpload = (event: Event) => {
+  const wasNoImages = images.value.length == 0;
   const files = (event.target as HTMLInputElement).files;
   if (files) {
+    // console.log(files.length); // prints 1
     for (const file of files) {
       images.value.push(file);
     }
   }
+  setTimeout(
+    () => {
+      last();
+    },
+    wasNoImages ? 100 : 0,
+  );
 };
 
 const submitPost = async () => {
@@ -67,11 +78,17 @@ const submitPost = async () => {
 
 const tagInputRef = ref<HTMLInputElement | null>(null);
 
-const getObjectURL = (file: File) => window.URL.createObjectURL(file);
+const getObjectURL = (file: File) => {
+  return window.URL.createObjectURL(file);
+};
 
 const imageScrollView = ref<HTMLDivElement>();
 
 const prev = () => {
+  isPrevButtonDisabled.value = true;
+  setTimeout(() => {
+    isPrevButtonDisabled.value = false;
+  }, scrollTime);
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (!width) return;
   const options: ScrollToOptions = {
@@ -81,6 +98,10 @@ const prev = () => {
   imageScrollView.value?.scrollBy(options);
 };
 const next = () => {
+  isNextButtonDisabled.value = true;
+  setTimeout(() => {
+    isNextButtonDisabled.value = false;
+  }, scrollTime);
   const width = imageScrollView.value?.getBoundingClientRect().width;
   if (width) {
     const options: ScrollToOptions = {
@@ -89,6 +110,28 @@ const next = () => {
     };
     imageScrollView.value?.scrollBy(options);
   }
+};
+
+const last = () => {
+  isPrevButtonDisabled.value = true;
+  setTimeout(() => {
+    isPrevButtonDisabled.value = false;
+  }, scrollTime);
+  isNextButtonDisabled.value = true;
+  setTimeout(() => {
+    isNextButtonDisabled.value = false;
+  }, scrollTime);
+  console.log("Start scroll to last");
+
+  const width = imageScrollView.value?.getBoundingClientRect().width;
+  if (width) {
+    const options: ScrollToOptions = {
+      left: width * images.value.length,
+      behavior: "smooth",
+    };
+    imageScrollView.value?.scrollBy(options);
+  }
+  console.log("End scroll to last");
 };
 </script>
 
@@ -137,6 +180,7 @@ const next = () => {
             v-if="images.length > 1"
             type="button"
             class="previous-image-button"
+            :disabled="isPrevButtonDisabled"
             @click="prev"
           >
             <Icon name="mdi-light:chevron-left" />
@@ -145,6 +189,7 @@ const next = () => {
             v-if="images.length > 1"
             type="button"
             class="next-image-button"
+            :disabled="isNextButtonDisabled"
             @click="next"
           >
             <Icon name="mdi-light:chevron-right" />
@@ -311,6 +356,7 @@ label:hover {
 
 .previous-image-button {
   position: absolute;
+  margin: 0;
   padding: 0;
   height: 100%;
   z-index: 99;
@@ -321,6 +367,7 @@ label:hover {
 }
 .next-image-button {
   position: absolute;
+  margin: 0;
   padding: 0;
   height: 100%;
   right: 0;
@@ -329,5 +376,9 @@ label:hover {
   background-color: #999999aa;
   border-bottom-right-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
+}
+.previous-image-button:disabled,
+.next-image-button:disabled {
+  background-color: #9999994c;
 }
 </style>
