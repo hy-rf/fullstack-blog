@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import com.backend.controller.dto.user.CreateUserRequest;
+import com.backend.controller.dto.user.UpdateAvatarRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.controller.dto.user.UserBasicDto;
 import com.backend.mapper.UserMapper;
@@ -15,6 +16,8 @@ import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
@@ -28,7 +31,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,26 +47,23 @@ public class UserController {
   @PostMapping("/user/avatar")
   @PreAuthorize("hasRole('user')")
   public ResponseEntity<String> uploadAvatar(
-    @RequestParam("file") MultipartFile file
+    @RequestBody UpdateAvatarRequest updateAvatarRequest
   ) throws IOException {
-    if (file.getSize() > MAX_FILE_SIZE) {
-      return ResponseEntity.badRequest().body("Too big");
-    }
-    String contentType = file.getContentType();
-    if (contentType == null) {
-      return ResponseEntity.badRequest().body("Unknown file");
-    }
-    if (!contentType.startsWith("image/")) {
-      return ResponseEntity.badRequest().body("Not image");
-    }
     Integer userId =
       ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-
+    String f = updateAvatarRequest.getImage();
+    String[] fileStrings = f.split(",");
+    byte[] file = Base64.getDecoder().decode(
+      fileStrings[1].getBytes(StandardCharsets.UTF_8)
+    );
+    if (file.length > MAX_FILE_SIZE) {
+      return ResponseEntity.badRequest().body("Too big");
+    }
     uploadService.save(
-      file.getBytes(),
+      file,
       "avatar",
       Integer.valueOf(userId),
-      contentType.split("/")[1]
+      fileStrings[0].split(";")[0].split("/")[1]
     );
 
     return ResponseEntity.ok("File uploaded successfully.");
