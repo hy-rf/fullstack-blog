@@ -115,19 +115,16 @@ public class AuthService {
     Stream<Role> roleStream = roles.stream();
     Stream<String> roleNameStream = roleStream.map(Role::getName);
     List<String> roleNames = roleNameStream.toList();
+    JwtData jwtUserData = new JwtData(userId, username, roleNames);
     String token = jwtUtils.generateToken(
-      userId,
-      roleNames,
+      jwtUserData,
       JWT_SECRET,
-      TOKEN_AGE_IN_DAYS,
-      username
+      TOKEN_AGE_IN_DAYS
     );
     String refreshToken = jwtUtils.generateToken(
-      userId,
-      roleNames,
-      REFRESH_JWT_SECRET,
-      REFRESH_TOKEN_AGE_IN_DAYS,
-      username
+      jwtUserData,
+      JWT_SECRET,
+      TOKEN_AGE_IN_DAYS
     );
     return new LoginResult(
       "Login successful",
@@ -146,12 +143,15 @@ public class AuthService {
       refreshToken,
       REFRESH_JWT_SECRET
     );
-    String newToken = jwtUtils.generateToken(
+    JwtData jwtUserData = new JwtData(
       refreshData.getUserId(),
-      refreshData.getRoleNames(),
+      refreshData.getUserName(),
+      refreshData.getRoleNames()
+    );
+    String newToken = jwtUtils.generateToken(
+      jwtUserData,
       JWT_SECRET,
-      TOKEN_AGE_IN_DAYS,
-      refreshData.getUserName()
+      TOKEN_AGE_IN_DAYS
     );
     return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
   }

@@ -22,17 +22,15 @@ public class JwtUtils {
 
   // Generate a JWT token with userId and roleIds
   public String generateToken(
-    Integer userId,
-    List<String> roleNames,
+    JwtData jwtUserData,
     String secretKey,
-    Integer expirationDays,
-    String name
+    Integer expirationDays
   ) {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
     return Jwts.builder()
-      .claim("userId", userId)
-      .claim("roleNames", roleNames)
-      .claim("username", name)
+      .claim("userId", jwtUserData.getUserId())
+      .claim("roleNames", jwtUserData.getRoleNames())
+      .claim("username", jwtUserData.getUserName())
       .setIssuedAt(new Date())
       .setExpiration(
         new Date(
