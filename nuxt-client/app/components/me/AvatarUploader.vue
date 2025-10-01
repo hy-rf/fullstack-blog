@@ -5,12 +5,33 @@ import compressAndConvertImage from "~/utils/ConvertImage";
 const file = ref<File | null>(null);
 const runtimeConfig = useRuntimeConfig();
 const { t } = useI18n();
+const avatarPreview = ref<HTMLImageElement>();
+const IMAGE_QUALITY = 0.01;
 
-const handleFileChange = (event: Event) => {
+const handleFileChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;
+  if (!avatarPreview.value) {
+    return;
+  }
   if (target.files && target.files.length > 0) {
     file.value = target.files[0];
+    avatarPreview.value.src = await compressAndConvertImage(
+      file.value,
+      "image/webp",
+      IMAGE_QUALITY,
+    );
+    const width = avatarPreview.value.width,
+      height = avatarPreview.value.height;
+    console.log(`w: ${width}, h: ${height}`);
+    if (width !== 1024 || height !== 1024) {
+      console.log("Invalid width");
+      // avatarPreview.value.src = "";
+    }
   }
+};
+
+const handleClick = async () => {
+  console.log("File input clicked");
 };
 
 const uploadAvatar = async () => {
@@ -35,7 +56,6 @@ const uploadAvatar = async () => {
 };
 
 const uploadImage = async (image: File) => {
-  const IMAGE_QUALITY = 0.1;
   const imageBase64String = compressAndConvertImage(
     image,
     "image/webp",
@@ -68,13 +88,14 @@ const uploadImage = async (image: File) => {
 
 <template>
   <form @submit.prevent="uploadAvatar">
-    <image-cropper :image="file!" />
+    <img ref="avatarPreview" src="" alt="" />
     <label class="file-input">
       <input
         type="file"
         :aria-label="t('me.update.choose_file_label')"
         accept="image/*"
         @change="handleFileChange"
+        @click="handleClick"
       />
       <span class="file-label">{{ t("me.update.choose_file_label") }}</span>
     </label>
@@ -123,5 +144,11 @@ label {
 button {
   width: 10rem;
   margin-left: auto;
+}
+img {
+  max-width: 100%;
+  height: 30dvh;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
 }
 </style>
