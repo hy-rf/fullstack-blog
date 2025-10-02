@@ -69,13 +69,14 @@ public class UploadService {
       throw new RuntimeException("Invalid destination path: " + targetPath);
     }
 
+    FileOutputStream fos = new FileOutputStream(targetPath.toString());
     try {
-      FileOutputStream fos = new FileOutputStream(targetPath.toString());
       fos.write(file);
-      fos.close();
     } catch (IOException e) {
       log.error(safeFilename, e);
       return;
+    } finally {
+      fos.close();
     }
 
     if (type.equals("avatar")) {
