@@ -64,11 +64,13 @@ const uploadImage = async (image: File) => {
   const data = {
     image: await imageBase64String,
   };
-  const url = new URL(`${runtimeConfig.public.GATEWAY_URL}/user/avatar`);
+
   const params = {
     type: "base64",
   };
-  url.search = new URLSearchParams(params).toString();
+  const url =
+    `${runtimeConfig.public.GATEWAY_URL}/user/avatar?` +
+    new URLSearchParams(params).toString();
 
   const response = await fetch(url, {
     headers: {
