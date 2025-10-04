@@ -19,6 +19,7 @@ services:
     build:
       context: nuxt-client
     restart: always
+    platform: linux/amd64
 
   backend:
     image: forum-backend
@@ -29,6 +30,7 @@ services:
     volumes:
       - files:/files
     restart: always
+    platform: linux/amd64
 
   postgres:
     image: postgres:17
