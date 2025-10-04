@@ -1,3 +1,4 @@
 export const environment = {
-  API_BASE: '/gateway',
+  API_BASE: "http://localhost:8080",
+  FILES_PREFIX: "/files/",
 };
