@@ -8,3 +8,21 @@
 ### Database design
 
 ![entity](docs/entity.png)
+
+### Features
+
+- Account
+- Avatar
+- Role-based access control
+- Updating account info
+- Bcrypt password encrypting
+- Create post
+- Like/unlike for posts
+- Save/unsave posts
+- Create child posts
+- Follow/unfollow other users
+- Post hashtags
+- Search posts by content
+- Sort posts by like/save/child posts count in ascending and descending order
+- Images in post
+- Post history
