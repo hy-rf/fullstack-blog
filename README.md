@@ -26,3 +26,4 @@
 - Sort posts by like/save/child posts count in ascending and descending order
 - Images in post
 - Post history
+- Activities
