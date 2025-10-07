@@ -62,7 +62,6 @@ public class Post {
   private List<Post> posts = new ArrayList<>();
 
   @ManyToMany
-  @JsonManagedReference
   @JoinTable(
     name = "post_likes",
     joinColumns = @JoinColumn(name = "post_id"),

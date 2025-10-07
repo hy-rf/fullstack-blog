@@ -44,8 +44,7 @@ public class User {
   @Column(name = "created_at")
   private OffsetDateTime createdAt = OffsetDateTime.now();
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JsonManagedReference
+  @ManyToMany
   @JoinTable(
     name = "user_roles",
     joinColumns = @JoinColumn(name = "user_id"),
@@ -53,22 +52,13 @@ public class User {
   )
   private List<Role> roles = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JsonManagedReference
+  @ManyToMany
   @JoinTable(
     name = "followings",
     joinColumns = @JoinColumn(name = "follower_id"),
     inverseJoinColumns = @JoinColumn(name = "followee_id")
   )
   private List<User> followings = new ArrayList<>();
-
-  @ManyToMany
-  @JoinTable(
-    name = "user_saved_posts",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "post_id")
-  )
-  private List<Post> savedPosts = new ArrayList<>();
 
   @PrePersist
   public void onCreate() {
