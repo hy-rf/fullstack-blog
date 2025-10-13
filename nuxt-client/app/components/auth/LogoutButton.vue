@@ -3,9 +3,11 @@ const userStore = useUserStore();
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
+const cookie = useCookie("is-login");
 
 async function handleLogout() {
   await userStore.logout();
+  cookie.value = null;
   if (route.path.startsWith("/me")) {
     router.push("/");
   }

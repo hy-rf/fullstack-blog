@@ -6,6 +6,7 @@ const { t } = useI18n();
 
 const userStore = useUserStore();
 const router = useRouter();
+const cookie = useCookie("is-login");
 
 function routeAfterLoginSuccess() {
   if (router.options.history.state.back == "/register") {
@@ -25,10 +26,12 @@ async function login() {
     }),
   });
   if (res.ok) {
+    cookie.value = "Y";
     await userStore.fetchUser();
     alert(t("auth.login_success"));
     routeAfterLoginSuccess();
   } else {
+    cookie.value = null;
     alert("Invalid credentials");
     username.value = "";
     password.value = "";
