@@ -50,7 +50,7 @@ public class Post {
   private Post rootPost;
 
   @ManyToOne(optional = true)
-  @JoinColumn(name = "post_id")
+  @JoinColumn(name = "parent_post_id")
   private Post parentPost;
 
   private Integer likeCount;

@@ -15,7 +15,7 @@ CREATE TABLE
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
     author_id INTEGER,
     root_post_id INTEGER,
-    post_id INTEGER,
+    parent_post_id INTEGER,
     like_count INTEGER NOT NULL DEFAULT 0,
     save_count INTEGER NOT NULL DEFAULT 0,
     post_count INTEGER NOT NULL DEFAULT 0,

@@ -133,7 +133,7 @@ public class PostService {
         p.created_at,
         p.author_id,
         u.username,
-        (SELECT COUNT(*) FROM posts pc WHERE pc.post_id = p.id) AS post_count,
+        (SELECT COUNT(*) FROM posts pc WHERE pc.parent_post_id = p.id) AS post_count,
         (SELECT COUNT(*) FROM post_likes l WHERE l.post_id = p.id) AS like_count,
         (SELECT COUNT(*) FROM user_saved_posts usp WHERE usp.post_id = p.id) AS save_count,
         (SELECT STRING_AGG(t.name, ', ') FROM post_tags pt JOIN tags t ON pt.tag_id = t.id WHERE pt.post_id = p.id) AS tags,

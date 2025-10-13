@@ -55,6 +55,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Nullable Integer limit
   );
 
+  /**
+   * Get post and its child posts by id
+   * @param id
+   * @return
+   */
   @Query(
     value = """
             SELECT
@@ -72,7 +77,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     (SELECT STRING_AGG(pi.url, ',') FROM post_images pi WHERE pi.post_id = p.id) AS urls
     FROM posts p
     LEFT JOIN users u ON u.id = p.author_id
-    WHERE p.post_id = :id OR p.id = :id
+    WHERE p.parent_post_id = :id OR p.id = :id
     ORDER BY p.id ASC, p.created_at DESC;
             """,
     nativeQuery = true
