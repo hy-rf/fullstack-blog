@@ -61,7 +61,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         SecurityContextHolder.clearContext();
         log.warn("JWT authentication failed: {}", ex.getMessage());
       }
-    } else {}
+    } else {
+      log.info("No token provided");
+    }
     filterChain.doFilter(request, response);
   }
 }
