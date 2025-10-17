@@ -32,7 +32,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   private final AuthenticationManager authenticationManager;
 
   /**
-   * @see com.backend.security.JwtAuthenticationProvider
+   * To find authenticationManager.authenticate, @see com.backend.security.JwtAuthenticationProvider
    */
   public AuthenticationFilter(
     JwtUtils jwtUtils,

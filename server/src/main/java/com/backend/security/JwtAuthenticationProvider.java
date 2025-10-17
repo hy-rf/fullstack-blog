@@ -28,6 +28,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     this.jwtSecret = jwtSecret;
   }
 
+  /**
+   * Get user data with given token
+   */
   @Override
   public Authentication authenticate(Authentication authentication)
     throws AuthenticationException, BadCredentialsException {
@@ -38,6 +41,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     }
 
     JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+
+    // For less safe way to get user data
     UserDetails userDetails = customUserDetailsService.loadUserFromToken(
       jwtData
     );
