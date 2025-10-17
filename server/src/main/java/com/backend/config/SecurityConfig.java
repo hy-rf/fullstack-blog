@@ -1,6 +1,6 @@
 package com.backend.config;
 
-import com.backend.security.AuthorizationFilter;
+import com.backend.security.AuthenticationFilter;
 import com.backend.security.JwtAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,15 +23,15 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  private final AuthorizationFilter authorizationFilter;
+  private final AuthenticationFilter authenticationFilter;
 
   private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
   public SecurityConfig(
-    @Lazy AuthorizationFilter authorizationFilter,
+    @Lazy AuthenticationFilter authorizationFilter,
     JwtAuthenticationProvider jwtAuthenticationProvider
   ) {
-    this.authorizationFilter = authorizationFilter;
+    this.authenticationFilter = authorizationFilter;
     this.jwtAuthenticationProvider = jwtAuthenticationProvider;
   }
 
@@ -54,7 +54,7 @@ public class SecurityConfig {
       )
       .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
       .addFilterBefore(
-        authorizationFilter,
+        authenticationFilter,
         UsernamePasswordAuthenticationFilter.class
       );
     return http.build();

@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 @Slf4j
-public class AuthorizationFilter extends OncePerRequestFilter {
+public class AuthenticationFilter extends OncePerRequestFilter {
 
   @Value("${jwt.secret}")
   private String jwtSecret;
@@ -34,7 +34,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
   /**
    * @see com.backend.security.JwtAuthenticationProvider
    */
-  public AuthorizationFilter(
+  public AuthenticationFilter(
     JwtUtils jwtUtils,
     AuthenticationManager authenticationManager
   ) {
