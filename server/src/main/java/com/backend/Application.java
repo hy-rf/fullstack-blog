@@ -24,7 +24,7 @@ public class Application {
     log.info("Shutdown application");
   }
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     SpringApplication.run(Application.class, args);
   }
 }
