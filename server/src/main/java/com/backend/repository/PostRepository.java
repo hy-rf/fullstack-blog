@@ -69,7 +69,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     p.author_id,
     u.username,
     p.root_post_id,
-    p.post_id AS parent_post_id,
+    p.parent_post_id,
     p.post_count,
     p.like_count,
     p.save_count,
