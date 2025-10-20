@@ -22,7 +22,7 @@ CREATE TABLE
     PRIMARY KEY (id),
     FOREIGN KEY (author_id) REFERENCES users,
     FOREIGN KEY (root_post_id) REFERENCES posts,
-    FOREIGN KEY (post_id) REFERENCES posts
+    FOREIGN KEY (parent_post_id) REFERENCES posts
   );
 
 CREATE TABLE
