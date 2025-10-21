@@ -6,7 +6,7 @@ import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.controller.dto.user.UserBasicDto;
 import com.backend.mapper.UserMapper;
 import com.backend.model.User;
-import com.backend.repository.UserRepository;
+import com.backend.repository.JpaUserRepository;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
@@ -40,7 +40,7 @@ public class UserController {
 
   private final UserService userService;
   private final UploadService uploadService;
-  private final UserRepository userRepository;
+  private final JpaUserRepository userRepository;
 
   private final UserMapper userMapper;
 

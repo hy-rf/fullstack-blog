@@ -3,7 +3,7 @@ package com.backend.security;
 import com.backend.common.JwtData;
 import com.backend.model.Role;
 import com.backend.model.User;
-import com.backend.repository.UserRepository;
+import com.backend.repository.JpaUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private final UserRepository userRepository;
+  private final JpaUserRepository userRepository;
 
-  public CustomUserDetailsService(UserRepository userRepository) {
+  public CustomUserDetailsService(JpaUserRepository userRepository) {
     this.userRepository = userRepository;
   }
 

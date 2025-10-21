@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends BaseRepository<User, Integer> {
+public interface JpaUserRepository extends BaseRepository<User, Integer> {
   @Override
   @NonNull
   Optional<User> findById(@NonNull Integer id);

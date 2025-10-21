@@ -2,7 +2,7 @@ package com.backend.service;
 
 import com.backend.common.PasswordUtils;
 import com.backend.model.User;
-import com.backend.repository.UserRepository;
+import com.backend.repository.JpaUserRepository;
 import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserFieldResult;
 import com.backend.service.dto.user.UpdateUserResult;
@@ -19,11 +19,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
-  private final UserRepository userRepository;
+  private final JpaUserRepository userRepository;
   private final PasswordUtils passwordUtils;
 
   public UserService(
-    UserRepository userRepository,
+    JpaUserRepository userRepository,
     PasswordUtils passwordUtils
   ) {
     this.userRepository = userRepository;

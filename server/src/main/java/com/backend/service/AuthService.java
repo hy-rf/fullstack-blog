@@ -5,8 +5,8 @@ import com.backend.common.JwtUtils;
 import com.backend.common.PasswordUtils;
 import com.backend.model.Role;
 import com.backend.model.User;
+import com.backend.repository.JpaUserRepository;
 import com.backend.repository.RoleRepository;
-import com.backend.repository.UserRepository;
 import com.backend.service.dto.auth.LoginResult;
 import com.backend.service.dto.auth.LoginStatus;
 import com.backend.service.dto.auth.RefreshResult;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
-  private final UserRepository userRepository;
+  private final JpaUserRepository userRepository;
   private final RoleRepository roleRepository;
   private final JwtUtils jwtUtils;
   private final PasswordUtils passwordUtils;
@@ -42,7 +42,7 @@ public class AuthService {
   private String REFRESH_JWT_SECRET;
 
   public AuthService(
-    UserRepository userRepository,
+    JpaUserRepository userRepository,
     RoleRepository roleRepository,
     JwtUtils jwtUtils,
     PasswordUtils passwordUtils

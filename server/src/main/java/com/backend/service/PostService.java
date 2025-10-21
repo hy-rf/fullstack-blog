@@ -4,9 +4,9 @@ import com.backend.controller.dto.post.PostSummary;
 import com.backend.model.Post;
 import com.backend.model.PostHistory;
 import com.backend.model.User;
+import com.backend.repository.JpaUserRepository;
 import com.backend.repository.PostHistoryRepository;
 import com.backend.repository.PostRepository;
-import com.backend.repository.UserRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
@@ -39,7 +39,7 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final PostHistoryRepository postHistoryRepository;
-  private final UserRepository userRepository;
+  private final JpaUserRepository userRepository;
   private final NamedParameterJdbcTemplate jdbc;
 
   /**
