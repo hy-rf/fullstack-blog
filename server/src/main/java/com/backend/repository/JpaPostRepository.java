@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface JpaPostRepository extends JpaRepository<Post, Integer> {
   @Override
   @NonNull
   @EntityGraph(attributePaths = { "author" })

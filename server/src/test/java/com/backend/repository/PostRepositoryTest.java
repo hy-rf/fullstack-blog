@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 public class PostRepositoryTest {
 
   @Mock
-  private PostRepository postRepository;
+  private JpaPostRepository postRepository;
 
   @BeforeEach
   public void setUp() {

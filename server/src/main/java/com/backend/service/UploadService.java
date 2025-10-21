@@ -4,8 +4,8 @@ import com.backend.model.Avatar;
 import com.backend.model.Post;
 import com.backend.model.PostImage;
 import com.backend.repository.AvatarRepository;
+import com.backend.repository.JpaPostRepository;
 import com.backend.repository.PostImageRepository;
-import com.backend.repository.PostRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class UploadService {
 
   private final AvatarRepository avatarRepository;
   private final PostImageRepository postImageRepository;
-  private final PostRepository postRepository;
+  private final JpaPostRepository postRepository;
 
   /**
    * Base raw path of root directory where files being stored

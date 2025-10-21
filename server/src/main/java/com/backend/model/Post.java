@@ -53,7 +53,9 @@ public class Post {
   private Post parentPost;
 
   private Integer likeCount;
+
   private Integer saveCount;
+
   private Integer postCount;
 
   @JsonIgnore
