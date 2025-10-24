@@ -40,10 +40,6 @@ public class Post {
   @Column(name = "created_at")
   private OffsetDateTime createdAt;
 
-  @ManyToOne
-  @JoinColumn(name = "author_id", referencedColumnName = "id")
-  private User author;
-
   @ManyToOne(optional = true)
   @JoinColumn(name = "root_post_id")
   private Post rootPost;
@@ -61,14 +57,6 @@ public class Post {
   @JsonIgnore
   @OneToMany(mappedBy = "rootPost", cascade = CascadeType.PERSIST)
   private List<Post> posts = new ArrayList<>();
-
-  @ManyToMany
-  @JoinTable(
-    name = "post_likes",
-    joinColumns = @JoinColumn(name = "post_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id")
-  )
-  private Set<User> likes = new HashSet<>();
 
   @ManyToMany
   @JoinTable(

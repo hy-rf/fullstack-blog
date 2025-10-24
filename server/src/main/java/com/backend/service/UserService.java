@@ -1,47 +1,28 @@
 package com.backend.service;
 
 import com.backend.common.PasswordUtils;
-import com.backend.model.User;
-import com.backend.repository.JpaUserRepository;
+import com.backend.dao.User;
+import com.backend.dao.UserRepository;
 import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserFieldResult;
 import com.backend.service.dto.user.UpdateUserResult;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-  private final JpaUserRepository userRepository;
+  private final UserRepository userRepository;
   private final PasswordUtils passwordUtils;
-
-  public UserService(
-    JpaUserRepository userRepository,
-    PasswordUtils passwordUtils
-  ) {
-    this.userRepository = userRepository;
-    this.passwordUtils = passwordUtils;
-  }
 
   public void createUser(String username, String password, List<String> roles) {
     // Logic to create a new user
-  }
-
-  public Page<User> getUsers(int page, int size) {
-    Pageable pageable = PageRequest.of(page - 1, size);
-    return userRepository.findAll(pageable);
-  }
-
-  public List<User> getAllUsers() {
-    log.info("Fetching all users from the database.");
-    return userRepository.findAll();
   }
 
   public User getUserById(Integer id) {

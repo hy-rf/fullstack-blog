@@ -1,13 +1,9 @@
 package com.backend.service;
 
 import com.backend.controller.dto.post.PostSummary;
+import com.backend.dao.Post;
 import com.backend.dao.PostRepository;
-import com.backend.model.Post;
-import com.backend.model.PostHistory;
-import com.backend.model.User;
 import com.backend.repository.JpaPostRepository;
-import com.backend.repository.JpaUserRepository;
-import com.backend.repository.PostHistoryRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
@@ -39,8 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
   private final JpaPostRepository jpaPostRepository;
-  private final PostHistoryRepository postHistoryRepository;
-  private final JpaUserRepository userRepository;
   private final NamedParameterJdbcTemplate jdbc;
   private final PostRepository postRepository;
 
@@ -74,31 +68,17 @@ public class PostService {
     Integer userId = createPostCommand.getAuthorId();
     Optional<Integer> rootPostId = createPostCommand.getRootPostId();
     Optional<Integer> parentPostId = createPostCommand.getParentPostId();
-    User author = userRepository.getReferenceById(userId);
     Post post = new Post();
     post.setContent(content);
-    post.setAuthor(author);
+    post.setAuthorId(userId);
     if (rootPostId.isPresent()) {
-      Post rootPost = jpaPostRepository.getReferenceById(rootPostId.get());
-      post.setRootPost(rootPost);
+      post.setRootPostId(rootPostId.get());
     }
     if (parentPostId.isPresent()) {
-      Post parentPost = jpaPostRepository.getReferenceById(parentPostId.get());
-      post.setParentPost(parentPost);
+      post.setParentPostId(parentPostId.get());
     }
-    Post p = jpaPostRepository.save(post);
-    PostHistory postHistory = new PostHistory();
-    postHistory.setPost(p);
-    postHistory.setContent(p.getContent());
-    postHistory.setImageUrls(
-      p
-        .getPostImages()
-        .stream()
-        .map(e -> e.getId())
-        .toList()
-    );
-    postHistoryRepository.save(postHistory);
-    return new CreatePostCommandResult(true, p.getId());
+    postRepository.save(post);
+    return new CreatePostCommandResult(true, post.getId());
   }
 
   /**
@@ -251,7 +231,7 @@ public class PostService {
 
   @Transactional
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {
-    Optional<Post> postToUpdateOpt = jpaPostRepository.findById(
+    Optional<Post> postToUpdateOpt = postRepository.findById(
       updatePostDto.getPostId()
     );
     if (postToUpdateOpt.isEmpty()) return new UpdatePostResultDto(
@@ -260,36 +240,27 @@ public class PostService {
     );
     Post postToUpdate = postToUpdateOpt.get();
     if (
-      !postToUpdate.getAuthor().getId().equals(updatePostDto.getAuthorId())
+      !postToUpdate.getAuthorId().equals(updatePostDto.getAuthorId())
     ) return new UpdatePostResultDto(
       UpdatePostResultStatus.AUTHOR_UNMATCHED,
       "Author unmatched"
     );
     postToUpdate.setContent(updatePostDto.getContent());
-    jpaPostRepository.save(postToUpdate);
-    PostHistory postHistory = new PostHistory();
-    postHistory.setPost(postToUpdate);
-    postHistory.setContent(postToUpdate.getContent());
-    // TODO: update image urls
-    postHistoryRepository.save(postHistory);
+    postRepository.save(postToUpdate);
     return new UpdatePostResultDto(UpdatePostResultStatus.SUCCESS, "success");
   }
 
   public void createLike(CreateLikeCommand createLikeCommand) {
-    Integer postId = createLikeCommand.getPostId();
-    Integer userId = createLikeCommand.getUserId();
-    User user = userRepository.findById(userId).orElseThrow();
-    Post post = jpaPostRepository.findById(postId).orElseThrow();
-    post.getLikes().add(user);
-    jpaPostRepository.save(post);
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException(
+      "Unimplemented method 'loadUserByUsername'"
+    );
   }
 
   public void removeLike(RemoveLikeCommand removeLikeCommand) {
-    Integer postId = removeLikeCommand.getPostId();
-    Integer userId = removeLikeCommand.getUserId();
-    User user = userRepository.findById(userId).orElseThrow();
-    Post post = jpaPostRepository.findById(postId).orElseThrow();
-    post.getLikes().remove(user);
-    jpaPostRepository.save(post);
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException(
+      "Unimplemented method 'loadUserByUsername'"
+    );
   }
 }

@@ -5,8 +5,6 @@ import com.backend.controller.dto.user.UpdateAvatarRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
 import com.backend.controller.dto.user.UserBasicDto;
 import com.backend.mapper.UserMapper;
-import com.backend.model.User;
-import com.backend.repository.JpaUserRepository;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
@@ -40,7 +38,6 @@ public class UserController {
 
   private final UserService userService;
   private final UploadService uploadService;
-  private final JpaUserRepository userRepository;
 
   private final UserMapper userMapper;
 
@@ -67,13 +64,6 @@ public class UserController {
     );
 
     return ResponseEntity.ok("File uploaded successfully.");
-  }
-
-  @PostMapping("/user/avatar-base64")
-  @PreAuthorize("hasRole('user')")
-  public ResponseEntity<String> uploadAvatar(String base64String) {
-    // TODO: turn base64 string to file then upload avatar by calling UploadService
-    return ResponseEntity.ok("Success");
   }
 
   /**
@@ -144,14 +134,5 @@ public class UserController {
     );
     UpdateUserResult result = userService.updateUser(updateCommand);
     return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
-  }
-
-  @GetMapping("/following")
-  @PreAuthorize("hasRole('user')")
-  public ResponseEntity<List<User>> getFollowing() {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    List<User> users = userRepository.findById(userId).get().getFollowings();
-    return ResponseEntity.ok(users);
   }
 }

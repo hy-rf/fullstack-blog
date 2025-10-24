@@ -1,7 +1,6 @@
 package com.backend.security;
 
-import com.backend.model.Role;
-import com.backend.model.User;
+import com.backend.common.JwtData;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,15 +13,14 @@ public class CustomUserDetails implements UserDetails {
   private final String password;
   private final Collection<? extends GrantedAuthority> authorities;
 
-  public CustomUserDetails(User user) {
-    this.id = user.getId();
-    this.username = user.getUsername();
-    this.password = user.getPasswordHash();
+  public CustomUserDetails(JwtData user) {
+    this.id = user.getUserId();
+    this.username = user.getUserName();
+    this.password = "";
     this.authorities = user
-      .getRoles()
+      .getRoleNames()
       .stream()
-      .map(Role::getName)
-      .map(role -> (GrantedAuthority) () -> "ROLE_" + role)
+      .map(roleName -> (GrantedAuthority) () -> "ROLE_" + roleName)
       .collect(Collectors.toList());
   }
 
@@ -37,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public String getPassword() {
-    return password;
+    return "";
   }
 
   @Override
