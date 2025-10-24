@@ -1,16 +1,16 @@
 package com.backend.service;
 
 import com.backend.model.Role;
-import com.backend.repository.RoleRepository;
+import com.backend.repository.JpaRoleRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {
 
-  private final RoleRepository roleRepository;
+  private final JpaRoleRepository roleRepository;
 
-  public RoleService(RoleRepository roleRepository) {
+  public RoleService(JpaRoleRepository roleRepository) {
     this.roleRepository = roleRepository;
   }
 

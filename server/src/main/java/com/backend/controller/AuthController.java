@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
   @Value("${auth.token.age.days}")
@@ -42,16 +44,6 @@ public class AuthController {
   private final CookieHelper cookieHelper;
   private final JwtUtils jwtUtils;
   private final AuthService authService;
-
-  public AuthController(
-    CookieHelper cookieHelper,
-    JwtUtils jwtUtils,
-    AuthService authService
-  ) {
-    this.cookieHelper = cookieHelper;
-    this.jwtUtils = jwtUtils;
-    this.authService = authService;
-  }
 
   @PostMapping("/register")
   @Operation(summary = "Register")

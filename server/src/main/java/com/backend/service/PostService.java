@@ -1,6 +1,7 @@
 package com.backend.service;
 
 import com.backend.controller.dto.post.PostSummary;
+import com.backend.dao.PostRepository;
 import com.backend.model.Post;
 import com.backend.model.PostHistory;
 import com.backend.model.User;
@@ -37,10 +38,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-  private final JpaPostRepository postRepository;
+  private final JpaPostRepository jpaPostRepository;
   private final PostHistoryRepository postHistoryRepository;
   private final JpaUserRepository userRepository;
   private final NamedParameterJdbcTemplate jdbc;
+  private final PostRepository postRepository;
 
   /**
    * Provide feed posts
@@ -48,7 +50,7 @@ public class PostService {
    * @return
    */
   public List<PostSummary> getPosts(Integer offset) {
-    List<PostSummary> p = postRepository.findAllByPostSummariesAndOffset(
+    List<PostSummary> p = jpaPostRepository.findAllByPostSummariesAndOffset(
       offset,
       50
     );
@@ -77,14 +79,14 @@ public class PostService {
     post.setContent(content);
     post.setAuthor(author);
     if (rootPostId.isPresent()) {
-      Post rootPost = postRepository.getReferenceById(rootPostId.get());
+      Post rootPost = jpaPostRepository.getReferenceById(rootPostId.get());
       post.setRootPost(rootPost);
     }
     if (parentPostId.isPresent()) {
-      Post parentPost = postRepository.getReferenceById(parentPostId.get());
+      Post parentPost = jpaPostRepository.getReferenceById(parentPostId.get());
       post.setParentPost(parentPost);
     }
-    Post p = postRepository.save(post);
+    Post p = jpaPostRepository.save(post);
     PostHistory postHistory = new PostHistory();
     postHistory.setPost(p);
     postHistory.setContent(p.getContent());
@@ -110,7 +112,7 @@ public class PostService {
     GetPostByIdCommand getPostByIdCommand
   ) {
     List<PostPage> posts =
-      postRepository.findAllByRootPostIdOrderByCreatedAtDesc(
+      jpaPostRepository.findAllByRootPostIdOrderByCreatedAtDesc(
         getPostByIdCommand.getId()
       );
     return posts;
@@ -249,7 +251,7 @@ public class PostService {
 
   @Transactional
   public UpdatePostResultDto UpdatePost(UpdatePostDto updatePostDto) {
-    Optional<Post> postToUpdateOpt = postRepository.findById(
+    Optional<Post> postToUpdateOpt = jpaPostRepository.findById(
       updatePostDto.getPostId()
     );
     if (postToUpdateOpt.isEmpty()) return new UpdatePostResultDto(
@@ -264,7 +266,7 @@ public class PostService {
       "Author unmatched"
     );
     postToUpdate.setContent(updatePostDto.getContent());
-    postRepository.save(postToUpdate);
+    jpaPostRepository.save(postToUpdate);
     PostHistory postHistory = new PostHistory();
     postHistory.setPost(postToUpdate);
     postHistory.setContent(postToUpdate.getContent());
@@ -277,17 +279,17 @@ public class PostService {
     Integer postId = createLikeCommand.getPostId();
     Integer userId = createLikeCommand.getUserId();
     User user = userRepository.findById(userId).orElseThrow();
-    Post post = postRepository.findById(postId).orElseThrow();
+    Post post = jpaPostRepository.findById(postId).orElseThrow();
     post.getLikes().add(user);
-    postRepository.save(post);
+    jpaPostRepository.save(post);
   }
 
   public void removeLike(RemoveLikeCommand removeLikeCommand) {
     Integer postId = removeLikeCommand.getPostId();
     Integer userId = removeLikeCommand.getUserId();
     User user = userRepository.findById(userId).orElseThrow();
-    Post post = postRepository.findById(postId).orElseThrow();
+    Post post = jpaPostRepository.findById(postId).orElseThrow();
     post.getLikes().remove(user);
-    postRepository.save(post);
+    jpaPostRepository.save(post);
   }
 }
