@@ -6,6 +6,7 @@ const username = ref("");
 const password = ref("");
 const message = ref("");
 const router = useRouter();
+const cookie = useCookie("is-login");
 
 const userStore = useUserStore();
 
@@ -22,7 +23,8 @@ const register = async () => {
     });
     const text = await res.text();
     if (res.ok) {
-      await fetch("/api/register", {
+      cookie.value = "Y";
+      await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

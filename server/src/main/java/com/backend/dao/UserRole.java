@@ -9,7 +9,5 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("user_roles")
 public class UserRole {
 
-  private Integer userId;
-
   private Integer roleId;
 }

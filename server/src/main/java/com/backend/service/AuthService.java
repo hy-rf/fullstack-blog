@@ -54,8 +54,8 @@ public class AuthService {
     User user = new User();
     user.setUsername(username);
     user.setPasswordHash(hash);
+    user.getUserRoles().add(new UserRole(2));
     userRepository.save(user);
-    log.info(String.format("Registered, id: %d", user.getId()));
 
     return new RegisterResult(RegisterStatus.SUCCESS);
   }

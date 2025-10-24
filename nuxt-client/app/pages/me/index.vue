@@ -12,7 +12,7 @@ const userStore = useUserStore();
             <span>{{ t("me.username") }}</span>
             <span>{{ userStore.user.username }}</span>
           </div>
-          <div v-if="userStore.isAdmin">
+          <div v-if="userStore.isUser">
             <span class="role-list-title">{{ t("me.your_permissions") }}</span
             ><br />
             <span
