@@ -31,7 +31,6 @@ public class AuthService {
 
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
-  private final UserRoleRepository userRoleRepository;
   private final JwtUtils jwtUtils;
   private final PasswordUtils passwordUtils;
 
