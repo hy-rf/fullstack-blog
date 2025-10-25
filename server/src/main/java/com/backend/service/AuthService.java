@@ -7,7 +7,6 @@ import com.backend.dao.RoleRepository;
 import com.backend.dao.User;
 import com.backend.dao.UserRepository;
 import com.backend.dao.UserRole;
-import com.backend.dao.UserRoleRepository;
 import com.backend.service.dto.auth.LoginResult;
 import com.backend.service.dto.auth.LoginStatus;
 import com.backend.service.dto.auth.RefreshResult;
