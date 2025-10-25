@@ -3,8 +3,7 @@ package com.backend.controller;
 import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateAvatarRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
-import com.backend.controller.dto.user.UserBasicDto;
-import com.backend.mapper.UserMapper;
+import com.backend.dao.User;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
@@ -38,8 +37,6 @@ public class UserController {
 
   private final UserService userService;
   private final UploadService uploadService;
-
-  private final UserMapper userMapper;
 
   @PostMapping("/user/avatar")
   @PreAuthorize("hasRole('user')")
@@ -91,12 +88,12 @@ public class UserController {
    */
   @PreAuthorize("hasRole('admin')")
   @GetMapping("/users")
-  public ResponseEntity<List<UserBasicDto>> getUsers(
+  public ResponseEntity<List<User>> getUsers(
     @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "100") int size
   ) {
-    List<UserBasicDto> users = userMapper.selectAll((page - 1) * size, size);
-    return ResponseEntity.ok().body(users);
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method");
   }
 
   /**
@@ -105,9 +102,9 @@ public class UserController {
    * @return
    */
   @GetMapping("/user/{id}")
-  public ResponseEntity<UserBasicDto> getUserById(@PathVariable Integer id) {
-    UserBasicDto user = userMapper.selectBasicById(id);
-    return ResponseEntity.ok(user);
+  public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method");
   }
 
   /**

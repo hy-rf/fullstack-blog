@@ -3,7 +3,7 @@ package com.backend.service;
 import com.backend.model.Avatar;
 import com.backend.model.Post;
 import com.backend.model.PostImage;
-import com.backend.repository.AvatarRepository;
+import com.backend.repository.JpaAvatarRepository;
 import com.backend.repository.JpaPostRepository;
 import com.backend.repository.PostImageRepository;
 import jakarta.annotation.PostConstruct;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UploadService {
 
-  private final AvatarRepository avatarRepository;
+  private final JpaAvatarRepository avatarRepository;
   private final PostImageRepository postImageRepository;
   private final JpaPostRepository postRepository;
 

@@ -4,4 +4,4 @@ import com.backend.model.Avatar;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AvatarRepository extends BaseRepository<Avatar, Integer> {}
+public interface JpaAvatarRepository extends BaseRepository<Avatar, Integer> {}
