@@ -66,9 +66,6 @@ public class Post {
   )
   private Set<Tag> tags = new HashSet<>();
 
-  @OneToMany(mappedBy = "post")
-  private List<PostImage> postImages = new ArrayList<>();
-
   @PrePersist
   public void onCreate() {
     createdAt = OffsetDateTime.now();

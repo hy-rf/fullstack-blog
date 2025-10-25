@@ -1,11 +1,11 @@
 package com.backend.service;
 
-import com.backend.model.Avatar;
+import com.backend.dao.Avatar;
+import com.backend.dao.AvatarRepository;
+import com.backend.dao.PostImage;
+import com.backend.dao.PostImageRepository;
 import com.backend.model.Post;
-import com.backend.model.PostImage;
-import com.backend.repository.JpaAvatarRepository;
 import com.backend.repository.JpaPostRepository;
-import com.backend.repository.PostImageRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UploadService {
 
-  private final JpaAvatarRepository avatarRepository;
+  private final AvatarRepository avatarRepository;
   private final PostImageRepository postImageRepository;
   private final JpaPostRepository postRepository;
 
@@ -87,9 +87,8 @@ public class UploadService {
     }
 
     if (type.equals("post_image")) {
-      Post post = postRepository.findById(id).get();
       PostImage postImage = new PostImage();
-      postImage.setPost(post);
+      postImage.setPostId(id);
       postImage.setUrl(safeFilename);
       postImageRepository.save(postImage);
     }

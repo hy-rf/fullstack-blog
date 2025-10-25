@@ -55,16 +55,16 @@ public class UserService {
       user.setUsername(updateUserRequest.getUsername());
     }
 
-    if (updateUserRequest.getEmail() != null) {
-      updateUserResult.setEmail(
-        new UpdateUserFieldResult<>(
-          "email",
-          user.getEmail(),
-          updateUserRequest.getEmail()
-        )
-      );
-      user.setEmail(updateUserRequest.getEmail());
-    }
+    // if (updateUserRequest.getEmail() != null) {
+    //   updateUserResult.setEmail(
+    //     new UpdateUserFieldResult<>(
+    //       "email",
+    //       user.getEmail(),
+    //       updateUserRequest.getEmail()
+    //     )
+    //   );
+    //   user.setEmail(updateUserRequest.getEmail());
+    // }
 
     if (updateUserRequest.getPassword() != null) {
       updateUserResult.setPassword(

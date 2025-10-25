@@ -18,7 +18,7 @@ public class Post {
 
   private String content;
 
-  private OffsetDateTime createdAt;
+  private OffsetDateTime createdAt = OffsetDateTime.now();
 
   private Integer authorId;
 
@@ -26,9 +26,9 @@ public class Post {
 
   private Integer parentPostId;
 
-  private Integer likeCount;
+  private Integer likeCount = 0;
 
-  private Integer saveCount;
+  private Integer saveCount = 0;
 
-  private Integer postCount;
+  private Integer postCount = 0;
 }
