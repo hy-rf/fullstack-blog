@@ -10,24 +10,23 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
   public UserDetails loadUserById(Integer id) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException(
-      "Unimplemented method 'loadUserByUsername'"
+      "Unimplemented method 'loadUserById'"
     );
   }
 
   public UserDetails loadUserFromToken(JwtData data) {
-    JwtData user = new JwtData();
-    user.setUserId(data.getUserId());
-    user.setRoleNames(data.getRoleNames());
-    user.setUserName(data.getUserName());
+    JwtData user = new JwtData(
+      data.getUserId(),
+      data.getUserName(),
+      data.getRoleNames()
+    );
     return new CustomUserDetails(user);
   }
 
   @Override
   public UserDetails loadUserByUsername(String username)
     throws UsernameNotFoundException {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException(
       "Unimplemented method 'loadUserByUsername'"
     );
