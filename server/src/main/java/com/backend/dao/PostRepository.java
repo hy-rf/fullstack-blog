@@ -1,7 +1,7 @@
 package com.backend.dao;
 
 import com.backend.controller.dto.post.PostSummary;
-import com.backend.repository.dto.PostPage;
+import com.backend.dao.dto.PostPage;
 import io.micrometer.common.lang.Nullable;
 import java.util.List;
 import org.springframework.data.jdbc.repository.query.Query;

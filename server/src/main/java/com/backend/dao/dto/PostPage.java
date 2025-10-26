@@ -1,4 +1,4 @@
-package com.backend.repository.dto;
+package com.backend.dao.dto;
 
 import java.time.Instant;
 import lombok.AllArgsConstructor;

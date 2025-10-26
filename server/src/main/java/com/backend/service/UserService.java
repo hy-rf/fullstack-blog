@@ -6,12 +6,12 @@ import com.backend.dao.UserRepository;
 import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserFieldResult;
 import com.backend.service.dto.user.UpdateUserResult;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j

@@ -6,7 +6,7 @@ import com.backend.controller.dto.post.CreatePostRequest;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
-import com.backend.repository.dto.PostPage;
+import com.backend.dao.dto.PostPage;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
 import com.backend.service.UploadService;

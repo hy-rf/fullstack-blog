@@ -6,13 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @Slf4j
 @SpringBootApplication(scanBasePackages = { "com.backend" })
 @EnableJdbcRepositories(basePackages = "com.backend.dao")
-@EnableJpaRepositories(basePackages = "com.backend.repository")
 @EnableAsync
 public class Application {
 

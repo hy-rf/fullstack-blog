@@ -1,4 +1,4 @@
-package com.backend.repository.dto;
+package com.backend.dao.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
