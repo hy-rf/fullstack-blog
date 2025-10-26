@@ -1,4 +1,4 @@
-package com.backend.helper;
+package com.backend.common;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.core.env.Environment;

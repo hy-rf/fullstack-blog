@@ -1,10 +1,10 @@
 package com.backend.controller;
 
+import com.backend.common.CookieHelper;
 import com.backend.common.JwtUtils;
 import com.backend.controller.dto.auth.CurrentUserResponse;
 import com.backend.controller.dto.auth.LoginRequest;
 import com.backend.controller.dto.auth.RegisterRequest;
-import com.backend.helper.CookieHelper;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.AuthService;
 import com.backend.service.dto.auth.LoginResult;
