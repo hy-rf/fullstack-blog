@@ -6,7 +6,6 @@ import com.backend.controller.dto.post.CreatePostRequest;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
-import com.backend.repository.JpaPostRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
@@ -49,7 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-  private final JpaPostRepository postRepository;
   private final PostService postService;
   private final UploadService uploadService;
 
@@ -248,37 +246,20 @@ public class PostController {
   public ResponseEntity<Boolean> savePost(
     @RequestParam(name = "post-id") Integer postId
   ) {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    int result = postRepository.addSavedPost(userId, postId);
-    if (result == 0) return ResponseEntity.status(403).body(false);
-    if (result == 1) return ResponseEntity.ok(true);
-    if (result > 1) {
-      return ResponseEntity.status(500).body(false);
-    } else {
-      return ResponseEntity.status(500).body(false);
-    }
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method");
   }
 
   @DeleteMapping("/save-post")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Boolean> removeSavedPost(@RequestParam Integer postId) {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    int result = postRepository.removeSavedPost(userId, postId);
-    if (result == 0) return ResponseEntity.status(403).body(false);
-    if (result == 1) return ResponseEntity.ok(true);
-    if (result > 1) {
-      return ResponseEntity.status(500).body(false);
-    } else {
-      return ResponseEntity.status(500).body(false);
-    }
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method");
   }
 
   @GetMapping("/saved")
   public ResponseEntity<List<PostSummary>> getSavedPosts() {
-    Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    return ResponseEntity.ok(postRepository.getSavedPostsByUserId(userId));
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method");
   }
 }

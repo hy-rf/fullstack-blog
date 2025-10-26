@@ -3,7 +3,6 @@ package com.backend.service;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.dao.Post;
 import com.backend.dao.PostRepository;
-import com.backend.repository.JpaPostRepository;
 import com.backend.repository.dto.PostPage;
 import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-  private final JpaPostRepository jpaPostRepository;
   private final NamedParameterJdbcTemplate jdbc;
   private final PostRepository postRepository;
 
@@ -44,7 +42,7 @@ public class PostService {
    * @return
    */
   public List<PostSummary> getPosts(Integer offset) {
-    List<PostSummary> p = jpaPostRepository.findAllByPostSummariesAndOffset(
+    List<PostSummary> p = postRepository.findAllByPostSummariesAndOffset(
       offset,
       50
     );
@@ -92,7 +90,7 @@ public class PostService {
     GetPostByIdCommand getPostByIdCommand
   ) {
     List<PostPage> posts =
-      jpaPostRepository.findAllByRootPostIdOrderByCreatedAtDesc(
+      postRepository.findAllByRootPostIdOrderByCreatedAtDesc(
         getPostByIdCommand.getId()
       );
     return posts;

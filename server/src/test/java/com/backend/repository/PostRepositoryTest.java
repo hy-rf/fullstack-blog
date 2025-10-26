@@ -1,6 +1,7 @@
 package com.backend.repository;
 
 import com.backend.controller.dto.post.PostSummary;
+import com.backend.dao.PostRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 public class PostRepositoryTest {
 
   @Mock
-  private JpaPostRepository postRepository;
+  private PostRepository postRepository;
 
   @BeforeEach
   public void setUp() {
