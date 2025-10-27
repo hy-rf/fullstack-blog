@@ -1,17 +1,20 @@
 package com.backend.security;
 
+import com.backend.common.JwtData;
 import com.backend.common.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,24 +26,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   @Value("${jwt.secret}")
   private String jwtSecret;
 
   private final JwtUtils jwtUtils;
-  private final AuthenticationManager authenticationManager;
-
-  /**
-   * To find authenticationManager.authenticate, @see com.backend.security.JwtAuthenticationProvider
-   */
-  public AuthenticationFilter(
-    JwtUtils jwtUtils,
-    AuthenticationManager authenticationManager
-  ) {
-    this.jwtUtils = jwtUtils;
-    this.authenticationManager = authenticationManager;
-  }
 
   @Override
   protected void doFilterInternal(
@@ -51,12 +43,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     String token = jwtUtils.resolveToken(request);
     if (token != null) {
       try {
-        Authentication authRequest = new JwtAuthenticationToken(token);
-
-        Authentication authResult = authenticationManager.authenticate(
-          authRequest
+        JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+        CustomUserDetails userDetails = new CustomUserDetails(jwtData);
+        Authentication authRequest = new UsernamePasswordAuthenticationToken(
+          userDetails,
+          null,
+          userDetails.getAuthorities()
         );
-        SecurityContextHolder.getContext().setAuthentication(authResult);
+        SecurityContextHolder.getContext().setAuthentication(authRequest);
       } catch (AuthenticationException ex) {
         SecurityContextHolder.clearContext();
         log.warn("JWT authentication failed: {}", ex.getMessage());

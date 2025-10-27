@@ -147,7 +147,7 @@ public class AuthController {
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/me")
-  public CurrentUserResponse getCurrentUser() {
+  public ResponseEntity<CurrentUserResponse> getCurrentUser() {
     Authentication authentication =
       SecurityContextHolder.getContext().getAuthentication();
     CustomUserDetails userDetails =
@@ -159,7 +159,7 @@ public class AuthController {
       .stream()
       .map(auth -> auth.getAuthority())
       .toList();
-    return new CurrentUserResponse(userId, username, roles);
+    return ResponseEntity.ok(new CurrentUserResponse(userId, username, roles));
   }
 
   @PostMapping("/check")

@@ -1,13 +1,11 @@
 package com.backend.config;
 
 import com.backend.security.AuthenticationFilter;
-import com.backend.security.JwtAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,31 +16,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-@EnableMethodSecurity
+@Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
   private final AuthenticationFilter authenticationFilter;
-
-  private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
-  public SecurityConfig(
-    @Lazy AuthenticationFilter authorizationFilter,
-    JwtAuthenticationProvider jwtAuthenticationProvider
-  ) {
-    this.authenticationFilter = authorizationFilter;
-    this.jwtAuthenticationProvider = jwtAuthenticationProvider;
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http)
-    throws Exception {
-    return http
-      .getSharedObject(AuthenticationManagerBuilder.class)
-      .authenticationProvider(jwtAuthenticationProvider)
-      .build();
-  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -63,6 +44,7 @@ public class SecurityConfig {
   @Bean
   @Profile("dev")
   public CorsFilter corsFilterDev() {
+    log.info("Set cors config in dev");
     CorsConfiguration config = new CorsConfiguration();
     config.addAllowedOrigin("http://localhost:3000");
     config.addAllowedHeader("*");
