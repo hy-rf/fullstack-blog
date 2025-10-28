@@ -23,6 +23,7 @@ const { data: user } = await useAsyncData<User>("user", async () => {
     cookie.value = "Y";
     return user;
   } catch {
+    console.log("Fail to parse token, set is-login cookie to null.");
     cookie.value = null;
     return {
       username: "Guest",
