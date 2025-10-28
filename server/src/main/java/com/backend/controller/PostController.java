@@ -1,5 +1,6 @@
 package com.backend.controller;
 
+import com.backend.common.JwtData;
 import com.backend.controller.dto.post.AddLikeRequest;
 import com.backend.controller.dto.post.AddLikeResponse;
 import com.backend.controller.dto.post.CreatePostRequest;
@@ -7,7 +8,6 @@ import com.backend.controller.dto.post.PostSummary;
 import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.dao.dto.PostPage;
-import com.backend.security.CustomUserDetails;
 import com.backend.service.PostService;
 import com.backend.service.UploadService;
 import com.backend.service.dto.post.CreateLikeCommand;
@@ -34,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,7 +84,7 @@ public class PostController {
     HttpServletResponse response
   ) {
     Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((JwtData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     CreatePostCommand createPostCommand = new CreatePostCommand(
       createPostRequest.getContent(),
       userId,
@@ -173,7 +174,7 @@ public class PostController {
     @Valid @RequestBody UpdatePostRequest updatePostRequest
   ) {
     Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((JwtData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     UpdatePostDto updatePostDto = new UpdatePostDto(
       updatePostRequest.getPostId(),
       userId,
@@ -220,11 +221,8 @@ public class PostController {
     @RequestBody AddLikeRequest addLikeRequest
   ) {
     Integer postId = addLikeRequest.getPostId();
-    Authentication authentication =
-      SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails =
-      (CustomUserDetails) authentication.getPrincipal();
-    Integer userId = userDetails.getId();
+    Integer userId =
+      ((JwtData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
   }
@@ -236,7 +234,7 @@ public class PostController {
   ) {
     Integer postId = addLikeRequest.getPostId();
     Integer userId =
-      ((CustomUserDetails) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((JwtData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
   }

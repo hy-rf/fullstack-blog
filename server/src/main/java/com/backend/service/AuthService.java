@@ -114,8 +114,8 @@ public class AuthService {
       REFRESH_JWT_SECRET
     );
     JwtData jwtUserData = new JwtData(
-      refreshData.getUserId(),
-      refreshData.getUserName(),
+      refreshData.getId(),
+      refreshData.getUsername(),
       refreshData.getRoleNames()
     );
     String newToken = jwtUtils.generateToken(

@@ -28,9 +28,9 @@ public class JwtUtils {
   ) {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
     return Jwts.builder()
-      .claim("userId", jwtUserData.getUserId())
+      .claim("id", jwtUserData.getId())
       .claim("roleNames", jwtUserData.getRoleNames())
-      .claim("username", jwtUserData.getUserName())
+      .claim("username", jwtUserData.getUsername())
       .setIssuedAt(new Date())
       .setExpiration(
         new Date(
@@ -54,7 +54,7 @@ public class JwtUtils {
 
     Claims claims = jws.getBody();
 
-    Object userIdObj = claims.get("userId");
+    Object userIdObj = claims.get("id");
     if (!(userIdObj instanceof Number)) {
       return null;
     }
