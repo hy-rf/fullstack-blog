@@ -22,7 +22,7 @@ public class JwtUtils {
 
   // Generate a JWT token with userId and roleIds
   public String generateToken(
-    AuthTokenData jwtUserData,
+    AccessTokenData jwtUserData,
     String secretKey,
     Integer expirationDays
   ) {
@@ -41,7 +41,7 @@ public class JwtUtils {
       .compact();
   }
 
-  public AuthTokenData verifyToken(String token, String secretKey) {
+  public AccessTokenData verifyToken(String token, String secretKey) {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
     JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
     Jws<Claims> jws;
@@ -75,7 +75,7 @@ public class JwtUtils {
       .map(Object::toString)
       .toList();
 
-    return new AuthTokenData(userId, userName, roleNames);
+    return new AccessTokenData(userId, userName, roleNames);
   }
 
   public String resolveToken(HttpServletRequest request) {

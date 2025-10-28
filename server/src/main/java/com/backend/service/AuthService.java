@@ -1,6 +1,6 @@
 package com.backend.service;
 
-import com.backend.common.AuthTokenData;
+import com.backend.common.AccessTokenData;
 import com.backend.common.JwtUtils;
 import com.backend.common.PasswordUtils;
 import com.backend.dao.RoleRepository;
@@ -85,7 +85,11 @@ public class AuthService {
       String name = roleRepository.findById(e.getRoleId()).get().getName();
       roleNames.add(name);
     });
-    AuthTokenData jwtUserData = new AuthTokenData(userId, username, roleNames);
+    AccessTokenData jwtUserData = new AccessTokenData(
+      userId,
+      username,
+      roleNames
+    );
     String token = jwtUtils.generateToken(
       jwtUserData,
       JWT_SECRET,
@@ -109,11 +113,11 @@ public class AuthService {
   }
 
   public RefreshResult refreshToken(String token, String refreshToken) {
-    AuthTokenData refreshData = jwtUtils.verifyToken(
+    AccessTokenData refreshData = jwtUtils.verifyToken(
       refreshToken,
       REFRESH_JWT_SECRET
     );
-    AuthTokenData jwtUserData = new AuthTokenData(
+    AccessTokenData jwtUserData = new AccessTokenData(
       refreshData.getId(),
       refreshData.getUsername(),
       refreshData.getRoleNames()

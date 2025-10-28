@@ -1,6 +1,6 @@
 package com.backend.controller;
 
-import com.backend.common.AuthTokenData;
+import com.backend.common.AccessTokenData;
 import com.backend.controller.dto.post.AddLikeRequest;
 import com.backend.controller.dto.post.AddLikeResponse;
 import com.backend.controller.dto.post.CreatePostRequest;
@@ -82,7 +82,7 @@ public class PostController {
     HttpServletResponse response
   ) {
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     CreatePostCommand createPostCommand = new CreatePostCommand(
       createPostRequest.getContent(),
       userId,
@@ -172,7 +172,7 @@ public class PostController {
     @Valid @RequestBody UpdatePostRequest updatePostRequest
   ) {
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     UpdatePostDto updatePostDto = new UpdatePostDto(
       updatePostRequest.getPostId(),
       userId,
@@ -220,7 +220,7 @@ public class PostController {
   ) {
     Integer postId = addLikeRequest.getPostId();
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
   }
@@ -232,7 +232,7 @@ public class PostController {
   ) {
     Integer postId = addLikeRequest.getPostId();
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     postService.createLike(new CreateLikeCommand(postId, userId));
     return ResponseEntity.ok(new AddLikeResponse(true));
   }

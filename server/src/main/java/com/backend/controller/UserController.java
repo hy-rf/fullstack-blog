@@ -1,6 +1,6 @@
 package com.backend.controller;
 
-import com.backend.common.AuthTokenData;
+import com.backend.common.AccessTokenData;
 import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateAvatarRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
@@ -44,7 +44,7 @@ public class UserController {
     @RequestBody UpdateAvatarRequest updateAvatarRequest
   ) throws IOException {
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     String f = updateAvatarRequest.getImage();
     String[] fileStrings = f.split(",");
     byte[] file = Base64.getDecoder().decode(
@@ -121,7 +121,7 @@ public class UserController {
     @Valid @RequestBody UpdateUserRequest updateUserRequest
   ) {
     Integer userId =
-      ((AuthTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
     updateUserRequest.setId(userId);
     UpdateUserCommand updateCommand = new UpdateUserCommand(
       userId,
