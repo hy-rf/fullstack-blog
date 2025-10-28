@@ -1,7 +1,7 @@
 package com.backend.controller;
 
+import com.backend.common.AuthTokenData;
 import com.backend.common.CookieHelper;
-import com.backend.common.JwtData;
 import com.backend.common.JwtUtils;
 import com.backend.controller.dto.auth.CurrentUserResponse;
 import com.backend.controller.dto.auth.LoginRequest;
@@ -150,7 +150,7 @@ public class AuthController {
   public ResponseEntity<CurrentUserResponse> getCurrentUser() {
     Authentication authentication =
       SecurityContextHolder.getContext().getAuthentication();
-    JwtData userDetails = (JwtData) authentication.getPrincipal();
+    AuthTokenData userDetails = (AuthTokenData) authentication.getPrincipal();
     Integer userId = userDetails.getId().intValue();
     String username = authentication.getName();
     List<String> roles = authentication

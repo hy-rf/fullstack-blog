@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtData implements UserDetails {
+public class AuthTokenData implements UserDetails {
 
   private Integer id;
   private String username;

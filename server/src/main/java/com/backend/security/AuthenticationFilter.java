@@ -1,6 +1,6 @@
 package com.backend.security;
 
-import com.backend.common.JwtData;
+import com.backend.common.AuthTokenData;
 import com.backend.common.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +42,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     String token = jwtUtils.resolveToken(request);
     if (token != null) {
       try {
-        JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+        AuthTokenData jwtData = jwtUtils.verifyToken(token, jwtSecret);
         Authentication authRequest = new UsernamePasswordAuthenticationToken(
           jwtData,
           null,
