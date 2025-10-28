@@ -6,7 +6,6 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
@@ -45,12 +44,7 @@ public class JwtUtils {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
     JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
     Jws<Claims> jws;
-    try {
-      jws = jwtParser.parseClaimsJws(token);
-    } catch (SecurityException e) {
-      log.info("Fail to parse jwt");
-      return null;
-    }
+    jws = jwtParser.parseClaimsJws(token);
 
     Claims claims = jws.getBody();
 
