@@ -1,3 +1,5 @@
+[![zh-tw](https://img.shields.io/badge/lang-zh--tw-green.svg)](https://github.com/hy-rf/fullstack-blog/blob/main/README.zh-tw.md)
+
 ### Local dev
 
 1. Install postgresql 17
