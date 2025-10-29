@@ -85,7 +85,16 @@ const {
             page: Number(route.query.page) || 1,
             size: Number(route.query.size) || 10,
           }
-        : searchStore,
+        : {
+            keyword: (searchStore.keyword as string) || "",
+            authorName: (searchStore.authorName as string) || "",
+            createdAfter: (searchStore.createdAfter as string) || "",
+            createdBefore: (searchStore.createdBefore as string) || "",
+            sortBy: (searchStore.sortBy as string) || "createdAt",
+            order: (searchStore.order as string) || "desc",
+            page: Number(searchStore.page) || 1,
+            size: Number(searchStore.size) || 10,
+          },
     ),
 );
 // Watch route query → update store (and form)
