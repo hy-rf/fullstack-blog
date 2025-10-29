@@ -59,9 +59,9 @@ public class PostController {
   @GetMapping("/post")
   public ResponseEntity<List<PostSummary>> getFeed(
     @Parameter(
-      description = "Page token for pagination",
-      example = "default_page_token",
-      schema = @Schema(defaultValue = "default_page_token")
+      description = "offset",
+      example = "0",
+      schema = @Schema(defaultValue = "0")
     ) @RequestParam Integer offset
   ) {
     List<PostSummary> posts = postService.getPosts(offset);
