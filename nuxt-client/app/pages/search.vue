@@ -5,14 +5,12 @@ import PostCard from "~/components/post/PostCard.vue";
 import type SearchQuery from "~/types/SearchQuery";
 import type PostList from "~/types/PostList";
 
-// These func will move to util
-// Helper to convert local time (UTC+8) to UTC ISO string
 function localToUTC(localValue: string): string {
   if (!localValue) return "";
   const localDate = new Date(localValue);
   return localDate.toISOString().replace(/\.000Z$/, "");
 }
-// When initializing form, convert UTC from backend to local for input
+
 function utcToLocal(utcValue: string): string {
   if (!utcValue) return "";
 
@@ -39,7 +37,6 @@ const route = useRoute();
 const router = useRouter();
 const searchStore = usePostSearchStore();
 
-// Initialize store from URL on load
 searchStore.setFromRoute({
   keyword: (route.query.keyword as string) || "",
   authorName: (route.query.authorName as string) || "",
@@ -50,9 +47,7 @@ searchStore.setFromRoute({
   page: Number(route.query.page) || 1,
   size: Number(route.query.size) || 10,
 });
-console.log(searchStore.page);
 
-// Form state (local only, not used by fetch until Search clicked)
 const form = reactive({
   keyword: searchStore.keyword,
   authorName: searchStore.authorName,
@@ -63,41 +58,34 @@ const form = reactive({
   page: searchStore.page,
   size: searchStore.size,
 });
-const updateTime = ref(0);
 
-// API fetching
-const {
-  data: posts,
-  pending,
-  error,
-} = await useAsyncData<PostList>(
-  () => `postsSearch-${updateTime.value}`,
-  () =>
-    fetchPosts(
-      import.meta.server
-        ? {
-            keyword: (route.query.keyword as string) || "",
-            authorName: (route.query.authorName as string) || "",
-            createdAfter: (route.query.createdAfter as string) || "",
-            createdBefore: (route.query.createdBefore as string) || "",
-            sortBy: (route.query.sortBy as string) || "createdAt",
-            order: (route.query.order as string) || "desc",
-            page: Number(route.query.page) || 1,
-            size: Number(route.query.size) || 10,
-          }
-        : {
-            keyword: (searchStore.keyword as string) || "",
-            authorName: (searchStore.authorName as string) || "",
-            createdAfter: (searchStore.createdAfter as string) || "",
-            createdBefore: (searchStore.createdBefore as string) || "",
-            sortBy: (searchStore.sortBy as string) || "createdAt",
-            order: (searchStore.order as string) || "desc",
-            page: Number(searchStore.page) || 1,
-            size: Number(searchStore.size) || 10,
-          },
-    ),
-);
-// Watch route query → update store (and form)
+const updateTime = ref(0);
+const posts = ref<PostList | null>(null);
+const pending = ref(false);
+const error = ref<Error | null>(null);
+
+async function fetchSearchResults() {
+  pending.value = true;
+  error.value = null;
+  try {
+    const result = await fetchPosts({
+      keyword: searchStore.keyword,
+      authorName: searchStore.authorName,
+      createdAfter: searchStore.createdAfter,
+      createdBefore: searchStore.createdBefore,
+      sortBy: searchStore.sortBy,
+      order: searchStore.order,
+      page: searchStore.page,
+      size: searchStore.size,
+    });
+    posts.value = result;
+  } catch (err) {
+    error.value = err as Error;
+  } finally {
+    pending.value = false;
+  }
+}
+
 watch(
   () => route.query,
   (q) => {
@@ -123,17 +111,17 @@ watch(
       page: searchStore.page,
       size: searchStore.size,
     });
+    fetchSearchResults();
   },
+  { immediate: true },
 );
 
-// Change size → update store and query ( No search button click needed )
 async function changeSize() {
   router.push({
     query: searchStore.queryParams,
   });
 }
 
-// Click search → copy form values into store → update query
 async function performSearch() {
   searchStore.keyword = form.keyword;
   searchStore.authorName = form.authorName;
@@ -141,19 +129,19 @@ async function performSearch() {
   searchStore.createdBefore = localToUTC(form.createdBefore);
   searchStore.sortBy = form.sortBy;
   searchStore.order = form.order;
-  searchStore.page = 1; // reset to first page
+  searchStore.page = 1;
   await router.push({
     query: searchStore.queryParams,
   });
 }
 
-// Paging
 function nextPage() {
   searchStore.page++;
   router.push({
     query: searchStore.queryParams,
   });
 }
+
 function prevPage() {
   searchStore.page--;
   router.push({
