@@ -191,5 +191,5 @@ EXECUTE FUNCTION increment_save_count();
 CREATE TRIGGER trigger_increment_post_count
 AFTER INSERT ON posts
 FOR EACH ROW
-WHEN (NEW.post_id IS NOT NULL)
+WHEN (NEW.parent_post_id IS NOT NULL)
 EXECUTE FUNCTION increment_post_count();
