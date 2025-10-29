@@ -3,6 +3,7 @@ import compressAndConvertImage from "~/utils/ConvertImage";
 
 const router = useRouter();
 const { t } = useI18n();
+const config = useRuntimeConfig();
 
 const content = ref("");
 const tagInput = ref("");
@@ -54,7 +55,7 @@ const submitPost = async () => {
     alert("Title or content is missing!");
     return;
   }
-  const response = await fetch("/api/post", {
+  const response = await fetch(`${config.public.GATEWAY_URL}/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -64,6 +65,7 @@ const submitPost = async () => {
       tags: tags.value,
       imagesBase64Strings: imageBase64Strings,
     }),
+    credentials: "include",
   });
 
   if (!response.ok) {
