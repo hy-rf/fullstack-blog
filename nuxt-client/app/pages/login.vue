@@ -5,6 +5,7 @@ const password = ref("");
 const { t } = useI18n();
 
 const userStore = useUserStore();
+const config = useRuntimeConfig();
 const router = useRouter();
 const cookie = useCookie("is-login");
 
@@ -17,13 +18,14 @@ function routeAfterLoginSuccess() {
 }
 
 async function login() {
-  const res = await fetch(`/api/login`, {
+  const res = await fetch(`${config.public.GATEWAY_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       username: username.value,
       password: password.value,
     }),
+    credentials: "include",
   });
   if (res.ok) {
     cookie.value = "Y";
