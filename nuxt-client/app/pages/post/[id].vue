@@ -42,7 +42,7 @@ async function refresh() {
       <PostEditor
         :post-to-edit="{ id: null, content: '' }"
         :root-post-id="posts![0].rootPostId || posts![0].id"
-        :post-id="parseInt(postId)"
+        :parent-post-id="parseInt(postId)"
         :refresh="refresh"
       />
     </div>

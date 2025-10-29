@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type PostToEditViewModel from "~/types/PostToEditViewModel";
+import compressAndConvertImage from "~/utils/ConvertImage";
 const { t } = useI18n();
 
 const props = defineProps<{
   postToEdit: PostToEditViewModel;
   rootPostId: number;
-  postId: number;
+  parentPostId: number;
   refresh: () => void;
 }>();
 
@@ -13,7 +14,6 @@ const content = ref("");
 const tagInput = ref("");
 const tags = ref<string[]>([]);
 const images = ref<File[]>([]);
-const MAX_IMAGE_SIZE = 25 * 1024 * 1024;
 
 const addTag = () => {
   if (tagInput.value.trim() === "") {
@@ -40,32 +40,6 @@ const handleImageUpload = (event: Event) => {
 
 const getObjectURL = (file: File) => window.URL.createObjectURL(file);
 
-const uploadImages = async (postId: number) => {
-  images.value.forEach(async (file) => {
-    if (!file.type.startsWith("image")) {
-      alert(t("me.update.avatar.type_error"));
-      return;
-    }
-    if (file.size > MAX_IMAGE_SIZE) {
-      alert(t("me.update.avatar.size_error"));
-      return;
-    }
-    const fileToUpload: File = new File(
-      [file],
-      `${file.lastModified.toString()}.${file.name.split(".")[1]}`,
-      { type: file.type },
-    );
-    const formData = new FormData();
-    formData.append("file", fileToUpload);
-    formData.append("postId", postId.toString());
-    await fetch(`${useRuntimeConfig().public.GATEWAY_URL}/post-image`, {
-      method: "post",
-      body: formData,
-      credentials: "include",
-    });
-  });
-};
-
 const submitPost = async () => {
   if (!content.value.trim()) {
     alert("Content is missing!");
@@ -82,7 +56,13 @@ const submitPost = async () => {
         content: content.value.trim(),
         tags: tags.value,
         rootPostId: props.rootPostId,
-        postId: props.postId,
+        parentPostId: props.parentPostId,
+        imagesBase64Strings:
+          images.value.length > 0
+            ? images.value.forEach((e) =>
+                compressAndConvertImage(e, "image/webp", 0.1),
+              )
+            : [],
       }),
     });
 
@@ -91,8 +71,6 @@ const submitPost = async () => {
     }
 
     const result = await response.text();
-    await uploadImages(parseInt(result));
-    alert(result);
     content.value = "";
     tagInput.value = "";
     tags.value = [];
@@ -105,7 +83,7 @@ const submitPost = async () => {
   }
 };
 onMounted(async () => {
-  console.log(`root: ${props.rootPostId}, parent: ${props.postId}`);
+  console.log(`root: ${props.rootPostId}, parent: ${props.parentPostId}`);
 });
 </script>
 

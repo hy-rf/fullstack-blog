@@ -87,7 +87,7 @@ public class PostController {
       createPostRequest.getContent(),
       userId,
       createPostRequest.getRootPostId(),
-      createPostRequest.getPostId()
+      createPostRequest.getParentPostId()
     );
     CreatePostCommandResult result = postService.createPost(createPostCommand);
     createPostRequest

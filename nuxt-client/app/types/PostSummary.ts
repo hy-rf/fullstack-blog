@@ -9,5 +9,5 @@ export default interface PostSummary {
   saveCount: number;
   urls: string;
   rootPostId?: number;
-  postId?: number;
+  parentPostId?: number;
 }
