@@ -161,9 +161,4 @@ public class AuthController {
       .toList();
     return ResponseEntity.ok(new CurrentUserResponse(userId, username, roles));
   }
-
-  @PostMapping("/check")
-  public ResponseEntity<Boolean> isUsernameAvailable() {
-    return ResponseEntity.ok(true);
-  }
 }
