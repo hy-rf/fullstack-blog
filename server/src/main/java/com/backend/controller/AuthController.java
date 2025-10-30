@@ -47,7 +47,7 @@ public class AuthController {
 
   @PostMapping("/register")
   @Operation(summary = "Register")
-  public ResponseEntity<String> signup(
+  public ResponseEntity<String> register(
     @Valid @RequestBody RegisterRequest registerRequest,
     HttpSession session,
     HttpServletResponse response
