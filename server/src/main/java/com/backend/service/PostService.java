@@ -4,11 +4,9 @@ import com.backend.controller.dto.post.PostSummary;
 import com.backend.dao.PostRepository;
 import com.backend.dao.dto.PostPage;
 import com.backend.dao.model.Post;
-import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
-import com.backend.service.dto.post.RemoveLikeCommand;
 import com.backend.service.dto.post.UpdatePostDto;
 import com.backend.service.dto.post.UpdatePostResultDto;
 import com.backend.service.dto.post.UpdatePostResultStatus;
@@ -246,19 +244,5 @@ public class PostService {
     postToUpdate.setContent(updatePostDto.getContent());
     postRepository.save(postToUpdate);
     return new UpdatePostResultDto(UpdatePostResultStatus.SUCCESS, "success");
-  }
-
-  public void createLike(CreateLikeCommand createLikeCommand) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException(
-      "Unimplemented method 'loadUserByUsername'"
-    );
-  }
-
-  public void removeLike(RemoveLikeCommand removeLikeCommand) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException(
-      "Unimplemented method 'loadUserByUsername'"
-    );
   }
 }

@@ -1,8 +1,7 @@
 package com.backend.controller;
 
 import com.backend.common.AccessTokenData;
-import com.backend.controller.dto.post.AddLikeRequest;
-import com.backend.controller.dto.post.AddLikeResponse;
+import com.backend.controller.dto.post.AddReactionRequest;
 import com.backend.controller.dto.post.CreatePostRequest;
 import com.backend.controller.dto.post.PostSummary;
 import com.backend.controller.dto.post.UpdatePostRequest;
@@ -10,7 +9,6 @@ import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.dao.dto.PostPage;
 import com.backend.service.PostService;
 import com.backend.service.UploadService;
-import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
@@ -33,7 +31,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -128,7 +125,18 @@ public class PostController {
     return ResponseEntity.ok().body(posts);
   }
 
-  // 3 db queries
+  /**
+   * Search for posts
+   * @param keyword
+   * @param authorName
+   * @param createdAfter
+   * @param createdBefore
+   * @param sortBy
+   * @param order
+   * @param page
+   * @param size
+   * @return
+   */
   @GetMapping("/posts/search")
   public PageImpl<PostSummary> getPosts(
     @RequestParam(required = false) String keyword,
@@ -213,49 +221,15 @@ public class PostController {
     );
   }
 
-  @PostMapping("/like")
+  @PostMapping("/reaction")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<AddLikeResponse> addLike(
-    @RequestBody AddLikeRequest addLikeRequest
+  public ResponseEntity<Boolean> addReaction(
+    @RequestBody AddReactionRequest addLikeRequest
   ) {
     Integer postId = addLikeRequest.getPostId();
     Integer userId =
       ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    postService.createLike(new CreateLikeCommand(postId, userId));
-    return ResponseEntity.ok(new AddLikeResponse(true));
-  }
-
-  @DeleteMapping("/like")
-  @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<AddLikeResponse> removeLike(
-    @RequestBody AddLikeRequest addLikeRequest
-  ) {
-    Integer postId = addLikeRequest.getPostId();
-    Integer userId =
-      ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
-    postService.createLike(new CreateLikeCommand(postId, userId));
-    return ResponseEntity.ok(new AddLikeResponse(true));
-  }
-
-  @PostMapping("/save-post")
-  @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Boolean> savePost(
-    @RequestParam(name = "post-id") Integer postId
-  ) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method");
-  }
-
-  @DeleteMapping("/save-post")
-  @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Boolean> removeSavedPost(@RequestParam Integer postId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method");
-  }
-
-  @GetMapping("/saved")
-  public ResponseEntity<List<PostSummary>> getSavedPosts() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method");
+    log.info(String.format("%d%d", postId, userId));
+    return ResponseEntity.ok(true);
   }
 }
