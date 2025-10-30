@@ -34,7 +34,6 @@ public class UploadService {
   @PostConstruct
   public void init() {
     rootPath = Path.of(rawPath).toAbsolutePath().normalize();
-    log.info(String.format("Initialized rootPath: %s", rawPath.toString()));
   }
 
   /**

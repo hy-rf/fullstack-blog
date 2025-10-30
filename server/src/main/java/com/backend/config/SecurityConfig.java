@@ -44,7 +44,6 @@ public class SecurityConfig {
   @Bean
   @Profile("dev")
   public CorsFilter corsFilterDev() {
-    log.info("Set cors config in dev");
     CorsConfiguration config = new CorsConfiguration();
     config.addAllowedOrigin("http://localhost:3000");
     config.addAllowedHeader("*");
