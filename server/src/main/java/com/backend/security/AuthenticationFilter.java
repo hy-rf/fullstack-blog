@@ -18,11 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/// * AuthorizeFilter is a filter that intercepts HTTP requests to check for JWT tokens.
-/*
- * It extracts the token from the request, verifies it, and processes the JWT data. This filter is
- * executed once per request.
- */
 @Component
 @Slf4j
 @RequiredArgsConstructor
