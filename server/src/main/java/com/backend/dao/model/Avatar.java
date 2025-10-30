@@ -1,4 +1,4 @@
-package com.backend.dao;
+package com.backend.dao.model;
 
 import java.time.OffsetDateTime;
 import lombok.Data;

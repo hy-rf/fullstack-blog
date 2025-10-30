@@ -1,9 +1,9 @@
 package com.backend.service;
 
 import com.backend.controller.dto.post.PostSummary;
-import com.backend.dao.Post;
 import com.backend.dao.PostRepository;
 import com.backend.dao.dto.PostPage;
+import com.backend.dao.model.Post;
 import com.backend.service.dto.post.CreateLikeCommand;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;

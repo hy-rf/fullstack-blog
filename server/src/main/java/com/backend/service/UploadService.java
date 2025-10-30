@@ -1,9 +1,9 @@
 package com.backend.service;
 
-import com.backend.dao.Avatar;
 import com.backend.dao.AvatarRepository;
-import com.backend.dao.PostImage;
 import com.backend.dao.PostImageRepository;
+import com.backend.dao.model.Avatar;
+import com.backend.dao.model.PostImage;
 import jakarta.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;

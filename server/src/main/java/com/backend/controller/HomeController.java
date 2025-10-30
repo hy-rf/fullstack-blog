@@ -1,9 +1,9 @@
 package com.backend.controller;
 
-import com.backend.dao.Post;
 import com.backend.dao.PostRepository;
-import com.backend.dao.User;
 import com.backend.dao.UserRepository;
+import com.backend.dao.model.Post;
+import com.backend.dao.model.User;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -4,7 +4,7 @@ import com.backend.common.AccessTokenData;
 import com.backend.controller.dto.user.CreateUserRequest;
 import com.backend.controller.dto.user.UpdateAvatarRequest;
 import com.backend.controller.dto.user.UpdateUserRequest;
-import com.backend.dao.User;
+import com.backend.dao.model.User;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
 import com.backend.service.dto.user.CreateUserResult;
