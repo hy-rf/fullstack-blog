@@ -1,9 +1,7 @@
 package com.backend.service;
 
 import com.backend.dao.AvatarRepository;
-import com.backend.dao.PostImageRepository;
 import com.backend.dao.model.Avatar;
-import com.backend.dao.model.PostImage;
 import jakarta.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,7 +19,8 @@ import org.springframework.stereotype.Service;
 public class UploadService {
 
   private final AvatarRepository avatarRepository;
-  private final PostImageRepository postImageRepository;
+
+  //private final PostImageRepository postImageRepository;
 
   /**
    * Base raw path of root directory where files being stored
@@ -82,12 +81,12 @@ public class UploadService {
       avatarRepository.save(avatar);
     }
 
-    if (type.equals("post_image")) {
-      PostImage postImage = new PostImage();
-      postImage.setPostId(id);
-      postImage.setUrl(safeFilename);
-      postImageRepository.save(postImage);
-    }
+    // if (type.equals("post_image")) {
+    //   PostImage postImage = new PostImage();
+    //   postImage.setPostId(id);
+    //   postImage.setUrl(safeFilename);
+    //   postImageRepository.save(postImage);
+    // }
 
     log.info("Multipart file saved to: {}", targetPath);
   }

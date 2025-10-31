@@ -31,14 +31,15 @@
       "type": "java",
       "name": "Server",
       "request": "launch",
-      "cwd": "${workspaceFolder}/server",
+      "cwd": "${workspaceFolder}/backend",
       "console": "integratedTerminal",
       "mainClass": "com.backend.Application",
       "args": [
         "-Dspring-boot.run.fork=false",
         "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080",
         "-Duser.timezone=UTC",
-        "spring-boot:run"
+        "spring-boot:run",
+        "-pl api"
       ],
       "env": {
         "SPRING_PROFILES_ACTIVE": "dev"

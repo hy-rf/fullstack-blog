@@ -8,7 +8,7 @@ import com.backend.controller.dto.post.UpdatePostRequest;
 import com.backend.controller.dto.post.UpdatePostResponse;
 import com.backend.dao.dto.PostPage;
 import com.backend.service.PostService;
-import com.backend.service.UploadService;
+import com.backend.service.UploadPostImageService;
 import com.backend.service.dto.post.CreatePostCommand;
 import com.backend.service.dto.post.CreatePostCommandResult;
 import com.backend.service.dto.post.GetPostByIdCommand;
@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   private final PostService postService;
-  private final UploadService uploadService;
+  private final UploadPostImageService uploadPostImageService;
 
   /**
    * This is for getting feeds on home page and it gets different posts if page_token exists.
@@ -98,7 +98,7 @@ public class PostController {
           fileStrings[1].getBytes(StandardCharsets.UTF_8)
         );
         try {
-          uploadService.save(
+          uploadPostImageService.save(
             file,
             "post_image",
             result.getId(),

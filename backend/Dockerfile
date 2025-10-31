@@ -10,7 +10,7 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/api/target/*.jar app.jar
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=sandbox"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=sandbox", "-pl", "api"]
