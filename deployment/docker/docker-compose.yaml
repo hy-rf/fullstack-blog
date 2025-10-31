@@ -1,0 +1,51 @@
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - type: bind
+        source: "./nginx/nginx.conf"
+        target: "/etc/nginx/nginx.conf"
+      - files:/var/www/files
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+
+  frontend:
+    image: forum-frontend
+    build:
+      context: ../../nuxt-client
+    restart: always
+    platform: linux/amd64
+
+  backend:
+    image: forum-backend
+    build:
+      context: ../../backend
+    depends_on:
+      - postgres
+    volumes:
+      - files:/files
+    restart: always
+    platform: linux/amd64
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - type: bind
+        source: "./postgres"
+        target: "/docker-entrypoint-initdb.d"
+      - database:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  database:
+  files:
