@@ -1,16 +1,16 @@
 package com.backend.controller;
 
 import com.backend.common.AccessTokenData;
-import com.backend.controller.dto.user.CreateUserRequest;
-import com.backend.controller.dto.user.UpdateAvatarRequest;
-import com.backend.controller.dto.user.UpdateUserRequest;
+import com.backend.controller.dto.CreateUserRequest;
+import com.backend.controller.dto.UpdateAvatarRequest;
+import com.backend.controller.dto.UpdateUserRequest;
 import com.backend.dao.model.User;
 import com.backend.service.UploadService;
 import com.backend.service.UserService;
-import com.backend.service.dto.user.CreateUserResult;
-import com.backend.service.dto.user.CreateUserStatus;
-import com.backend.service.dto.user.UpdateUserCommand;
-import com.backend.service.dto.user.UpdateUserResult;
+import com.backend.service.dto.CreateUserResult;
+import com.backend.service.dto.CreateUserStatus;
+import com.backend.service.dto.UpdateUserCommand;
+import com.backend.service.dto.UpdateUserResult;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

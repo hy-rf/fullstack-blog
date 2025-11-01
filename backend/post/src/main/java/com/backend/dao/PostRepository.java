@@ -1,6 +1,6 @@
 package com.backend.dao;
 
-import com.backend.controller.dto.post.PostSummary;
+import com.backend.controller.dto.PostSummary;
 import com.backend.dao.dto.PostPage;
 import com.backend.dao.model.Post;
 import io.micrometer.common.lang.Nullable;

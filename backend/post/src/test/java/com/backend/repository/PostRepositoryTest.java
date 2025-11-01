@@ -1,6 +1,6 @@
 package com.backend.repository;
 
-import com.backend.controller.dto.post.PostSummary;
+import com.backend.controller.dto.PostSummary;
 import com.backend.dao.PostRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

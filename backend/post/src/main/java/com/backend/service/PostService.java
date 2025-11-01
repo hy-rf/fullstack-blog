@@ -1,15 +1,15 @@
 package com.backend.service;
 
-import com.backend.controller.dto.post.PostSummary;
+import com.backend.controller.dto.PostSummary;
 import com.backend.dao.PostRepository;
 import com.backend.dao.dto.PostPage;
 import com.backend.dao.model.Post;
-import com.backend.service.dto.post.CreatePostCommand;
-import com.backend.service.dto.post.CreatePostCommandResult;
-import com.backend.service.dto.post.GetPostByIdCommand;
-import com.backend.service.dto.post.UpdatePostDto;
-import com.backend.service.dto.post.UpdatePostResultDto;
-import com.backend.service.dto.post.UpdatePostResultStatus;
+import com.backend.service.dto.CreatePostCommand;
+import com.backend.service.dto.CreatePostCommandResult;
+import com.backend.service.dto.GetPostByIdCommand;
+import com.backend.service.dto.UpdatePostDto;
+import com.backend.service.dto.UpdatePostResultDto;
+import com.backend.service.dto.UpdatePostResultStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
