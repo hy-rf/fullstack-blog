@@ -23,6 +23,11 @@
         <artifactId>post</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.backend</groupId>
+        <artifactId>product</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
 
     <build>
