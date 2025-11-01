@@ -13,4 +13,4 @@ WORKDIR /app
 COPY --from=build /app/api/target/*.jar app.jar
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=sandbox", "-pl", "api"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod", "-pl", "api"]

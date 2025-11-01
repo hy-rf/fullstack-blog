@@ -8,7 +8,7 @@ RUN npm i
 
 COPY . .
 
-RUN npm run build-sandbox
+RUN npm run build
 
 RUN rm -rf node_modules .nuxt
 
