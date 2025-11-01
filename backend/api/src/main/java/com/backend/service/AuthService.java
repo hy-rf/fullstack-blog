@@ -82,7 +82,11 @@ public class AuthService {
     Set<UserRole> roles = user.getUserRoles();
     List<String> roleNames = new ArrayList<>();
     roles.forEach(e -> {
-      String name = roleRepository.findById(e.getRoleId()).get().getName();
+      Integer id = e.getRoleId();
+      if (id == null) {
+        return;
+      }
+      String name = roleRepository.findById(id).get().getName();
       roleNames.add(name);
     });
     AccessTokenData jwtUserData = new AccessTokenData(

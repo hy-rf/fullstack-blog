@@ -215,7 +215,11 @@ public class PostService {
       dto.setUrls(rs.getString("urls"));
       return dto;
     };
-    List<PostSummary> items = jdbc.query(sql.toString(), params, mapper);
+    String sqlString = sql.toString();
+    if (sqlString == null) {
+      throw new IllegalStateException("Sql string should not be null");
+    }
+    List<PostSummary> items = jdbc.query(sqlString, params, mapper);
 
     Pageable pageable = PageRequest.of(
       safePage - 1,

@@ -122,6 +122,9 @@ public class UserController {
   ) {
     Integer userId =
       ((AccessTokenData) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal()).getId();
+    if (userId == null) {
+      throw new IllegalStateException("User ID should not be null");
+    }
     updateUserRequest.setId(userId);
     UpdateUserCommand updateCommand = new UpdateUserCommand(
       userId,

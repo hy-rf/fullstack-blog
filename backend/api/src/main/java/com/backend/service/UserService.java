@@ -6,9 +6,9 @@ import com.backend.dao.model.User;
 import com.backend.service.dto.user.UpdateUserCommand;
 import com.backend.service.dto.user.UpdateUserResult;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,18 +24,18 @@ public class UserService {
     // Logic to create a new user
   }
 
-  public User getUserById(Integer id) {
+  public User getUserById(@NonNull Integer id) {
     return userRepository.findById(id).get();
   }
 
   @Transactional
   public UpdateUserResult updateUser(UpdateUserCommand updateUserRequest) {
-    Optional<User> userOpt = userRepository.findById(updateUserRequest.getId());
-    if (!userOpt.isPresent()) {
-      log.error("User with ID {} not found", updateUserRequest.getId());
-      throw new RuntimeException("User not found");
-    }
-    User user = userOpt.get();
+    User user = userRepository
+      .findById(updateUserRequest.getId())
+      .orElseThrow(() -> {
+        log.error("User with ID {} not found", updateUserRequest.getId());
+        return new RuntimeException("User not found");
+      });
 
     if (updateUserRequest.getUsername() != null) {
       user.setUsername(updateUserRequest.getUsername());
@@ -46,7 +46,11 @@ public class UserService {
         passwordUtils.hashPassword(updateUserRequest.getPassword())
       );
     }
+    if (user == null) {
+      throw new IllegalStateException("User should not be null");
+    }
     userRepository.save(user);
+
     return new UpdateUserResult(user.getId(), user);
   }
 }
