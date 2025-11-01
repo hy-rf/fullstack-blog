@@ -79,7 +79,6 @@ public class PostService {
 
   /**
    * This is getting child posts of current post so no need to get post content of current post.
-   * TODO: filter child posts
    *
    * @param getPostByIdCommand
    * @return
