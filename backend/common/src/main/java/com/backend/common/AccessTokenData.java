@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccessTokenData implements UserDetails {
+public class AccessTokenData implements UserDetails, UserDetailsService {
 
   private Integer id;
   private String username;
@@ -39,5 +41,14 @@ public class AccessTokenData implements UserDetails {
 
   public List<String> getRoleNames() {
     return roleNames;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username)
+    throws UsernameNotFoundException {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException(
+      "Unimplemented method 'loadUserByUsername'"
+    );
   }
 }
